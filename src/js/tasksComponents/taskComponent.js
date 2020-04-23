@@ -7,13 +7,15 @@ export class TaskComponent extends React.Component {
     super();
     this.state = {
       taskDivs: [],
-      focus:0,
     };
   }
 
   addTask(i) {
     let taskDivs = this.state.taskDivs;
-    taskDivs.splice(i, 0, { checked: false, value: "" });
+    taskDivs.forEach(element =>{
+      element.focus = false;
+    })
+    taskDivs.splice(i, 0, { checked: false, value: "",focus:true});
     this.setState({ taskDivs });
     console.log(taskDivs);
   }
@@ -25,9 +27,11 @@ export class TaskComponent extends React.Component {
 
   render() {
     let allTaskDivs = this.state.taskDivs.map((taskDiv, i) => {
+
       let onChange = (value) => {
         let { taskDivs } = this.state;
         taskDivs[i].value = value;
+        taskDivs[i].focus=false;
         this.setState({ taskDivs });
         console.log(this.state)
       };
@@ -38,7 +42,6 @@ export class TaskComponent extends React.Component {
           key={i}
           changeElement={onChange}
           addNewTask={(e)=>this.checkEnter(e,i+1)}
-          
         />
       );
     });
