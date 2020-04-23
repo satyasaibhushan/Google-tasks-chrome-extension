@@ -1,0 +1,27 @@
+.newTaskContainer{
+    height: 3rem;
+    display: flex;
+}
+.plusImageNewTask{
+    position: relative;
+    height:1.2rem;
+    top: 50%;
+    transform: translate(0,-50%);
+    margin:0 1rem;
+}
+.textAreaNewTask{
+    position: relative;
+    height:1.8rem;
+    top: 50%;
+    transform: translate(0,-50%);
+    line-height: 1.2rem;
+    font-size: 1.2rem;
+    border: none;
+    outline: none;
+    resize: none;
+    padding: 0 1rem 0 0.5rem;
+    border-radius: 20px;
+}
+.textAreaNewTask:hover::placeholder,.textAreaNewTask:focus::placeholder{
+    color:rgba(0, 0, 0, 0.719)
+}
