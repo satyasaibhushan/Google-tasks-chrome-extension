@@ -1,6 +1,9 @@
 .newTaskContainer{
     height: 3rem;
     display: flex;
+    border: 0.01px solid;
+    border-radius: 3rem;
+    margin: 10px;
 }
 .plusImageNewTask{
     position: relative;
@@ -23,5 +26,18 @@
     border-radius: 20px;
 }
 .textAreaNewTask:hover::placeholder,.textAreaNewTask:focus::placeholder{
+    /* background-color: rgba(212, 211, 211, 0.178); */
     color:rgba(0, 0, 0, 0.719)
+}
+.newTaskImgContainer{
+    transition: all 0.5s;
+    /* height: 1vh; */
+    border:0.1rem ;
+    border-radius: 50%;
+}
+.newTaskContainer:hover{
+    background-color: rgba(212, 211, 211, 0.178);
+}
+.newTaskContainer:hover > .textAreaNewTask{
+    background-color: rgba(212, 211, 211, 0.068);
 }

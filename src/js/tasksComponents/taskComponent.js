@@ -17,12 +17,16 @@ export class TaskComponent extends React.Component {
     })
     taskDivs.splice(i, 0, { checked: false, value: "",focus:true});
     this.setState({ taskDivs });
-    console.log(taskDivs);
   }
   checkEnter(e,i){
     if(e.keyCode == 13){
       this.addTask(i)
     }
+    // if(e.keyCode== 8 && e.target.value ==""){
+    //   if(i!=0){
+    //     console.log('remove')
+    //   }
+    // }
   }
 
   render() {
@@ -31,9 +35,8 @@ export class TaskComponent extends React.Component {
       let onChange = (value) => {
         let { taskDivs } = this.state;
         taskDivs[i].value = value;
-        taskDivs[i].focus=false;
+        taskDivs.forEach(element =>{element.focus = false;})
         this.setState({ taskDivs });
-        console.log(this.state)
       };
 
       return (
@@ -47,8 +50,8 @@ export class TaskComponent extends React.Component {
     });
 
     return (
-      <div
-        style={{ width: "20rem", height: "25rem", backgroundColor: "white" }} >
+      <div 
+        style={{ width: "20rem", height: "25rem", backgroundColor: "white",overflowY:"scroll" }} >
         <Newtask enterNewTask={(e)=>this.checkEnter(e,0)} plusNewTask={_=>this.addTask(0)} />
         {allTaskDivs}
         {/* <TaskDiv/> */}
