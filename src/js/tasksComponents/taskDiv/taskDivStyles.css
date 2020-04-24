@@ -1,7 +1,8 @@
 .taskDiv{
     height: 3rem;
     display: flex;
-    
+    transition: all 1s;
+    transition: border-bottom 0s;
 }
 .taskDivCheck{
     position: relative;
@@ -10,7 +11,7 @@
     border: 0.5rem solid #ffffff;
     box-shadow: 0 0 0.1rem 0.1rem rgba(136, 136, 136, 0.534);
     border-radius: 50%;
-    top: 50%;
+    top: 1.5rem;
     transform: translate(0,-50%);
     margin:0 1rem;
 }
@@ -36,8 +37,8 @@
     padding: 0rem 2rem 0rem 0.5rem;
     font-weight: 300;
 }
-.textAreaTaskDiv:hover::placeholder,.textAreaTaskDiv:focus::placeholder{
-    color:rgba(0, 0, 0, 0.719)
+.textAreaTaskDiv:focus{
+    background-color:rgba(212, 211, 211, 0.034)
 }
 .taskIconContainer{
     transition: all 0.5s;
@@ -54,5 +55,8 @@
 }
 .taskInputContainer{
 
-    border-bottom: 1px ridge rgb(224,224,224) ;
+    border-bottom: 1px solid rgb(224,224,224) ;
 }
+/* .taskDiv:focus  {
+    border-bottom: 1px ridge rgb(101, 231, 107) ;
+} */

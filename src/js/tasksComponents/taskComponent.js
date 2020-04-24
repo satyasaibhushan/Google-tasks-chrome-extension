@@ -22,27 +22,37 @@ export class TaskComponent extends React.Component {
     if(e.keyCode == 13){
       this.addTask(i)
     }
-    // if(e.keyCode== 8 && e.target.value ==""){
-    //   if(i!=0){
-    //     console.log('remove')
-    //   }
-    // }
+    if(e.keyCode== 8 && e.target.value ==""){
+      if(i!=0){
+        let taskDivs = this.state.taskDivs;
+        taskDivs[i-1] = { checked: false, value: "",focus:false,remove:true}
+        if(i==1&& taskDivs.length>1) taskDivs[i].focus=true
+        else if(i>1 ) taskDivs[i-2].focus=true
+        taskDivs.splice(i-1,1)
+        e.preventDefault()
+        this.setState({taskDivs})
+      }
+    }
   }
 
   render() {
     let allTaskDivs = this.state.taskDivs.map((taskDiv, i) => {
 
-      let onChange = (value) => {
+      let onChange = (value,isFocus) => {
         let { taskDivs } = this.state;
         taskDivs[i].value = value;
         taskDivs.forEach(element =>{element.focus = false;})
+        if(isFocus)taskDivs[i].focus = true;
+        else taskDivs[i].focus = false;
         this.setState({ taskDivs });
+        console.log(taskDivs)
       };
 
       return (
         <TaskDiv
           taskArrayElement={taskDiv}
           key={i}
+          keys={i}
           changeElement={onChange}
           addNewTask={(e)=>this.checkEnter(e,i+1)}
         />
