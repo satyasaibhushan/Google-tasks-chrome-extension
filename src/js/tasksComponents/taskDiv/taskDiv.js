@@ -52,7 +52,7 @@ export class TaskDiv extends React.Component {
         >
           {div}
         </div>
-        <div className="taskInputContainer">
+        <div className="taskInputContainer" onClick={(e)=>this.props.changeElement(false,true)}>
           <input
             type="text"
             ref={this.input}

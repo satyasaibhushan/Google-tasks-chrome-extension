@@ -34,6 +34,7 @@
     /* height: 1vh; */
     border:0.1rem ;
     border-radius: 50%;
+    cursor: pointer;
 }
 .newTaskContainer:hover{
     background-color: rgba(212, 211, 211, 0.178);

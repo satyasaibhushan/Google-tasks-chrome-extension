@@ -10,42 +10,59 @@ export class TaskComponent extends React.Component {
     };
   }
 
-  addTask(i) {
+  addTask(i, value = "") {
     let taskDivs = this.state.taskDivs;
-    taskDivs.forEach(element =>{
+    taskDivs.forEach((element) => {
       element.focus = false;
-    })
-    taskDivs.splice(i, 0, { checked: false, value: "",focus:true});
+    });
+    taskDivs.splice(i, 0, { checked: false, value: value, focus: true });
     this.setState({ taskDivs });
   }
-  checkEnter(e,i){
-    if(e.keyCode == 13){
-      this.addTask(i)
+
+  checkKeyPress(e, i) {
+    let taskDivs = this.state.taskDivs;
+    if (e.keyCode == 13) {
+      if (i == 0) {
+        this.addTask(i, e.target.value);
+        e.target.value = "";
+      } else this.addTask(i);
     }
-    if(e.keyCode== 8 && e.target.value ==""){
-      if(i!=0){
-        let taskDivs = this.state.taskDivs;
-        taskDivs[i-1] = { checked: false, value: "",focus:false,remove:true}
-        if(i==1&& taskDivs.length>1) taskDivs[i].focus=true
-        else if(i>1 ) taskDivs[i-2].focus=true
-        taskDivs.splice(i-1,1)
-        e.preventDefault()
-        this.setState({taskDivs})
+    if (e.keyCode == 8 && e.target.value == "") {
+      if (i != 0) {
+        taskDivs[i - 1] = {
+          checked: false,
+          value: "",
+          focus: false,
+          remove: true,
+        };
+        if (i == 1 && taskDivs.length > 1) taskDivs[i].focus = true;
+        else if (i > 1) taskDivs[i - 2].focus = true;
+        taskDivs.splice(i - 1, 1);
+        e.preventDefault();
+        this.setState({ taskDivs });
       }
+    }
+    if (e.keyCode == 38 && i != 1) {
+      taskDivs[i - 2].focus = true;
+      this.setState({ taskDivs });
+    }
+    if (e.keyCode == 40 && i != taskDivs.length) {
+      taskDivs[i].focus = true;
+      this.setState({ taskDivs });
     }
   }
 
   render() {
     let allTaskDivs = this.state.taskDivs.map((taskDiv, i) => {
-
-      let onChange = (value,isFocus) => {
+      let onChanged = (value, isFocus) => {
         let { taskDivs } = this.state;
-        taskDivs[i].value = value;
-        taskDivs.forEach(element =>{element.focus = false;})
-        if(isFocus)taskDivs[i].focus = true;
+        if (value || value === "") taskDivs[i].value = value;
+        taskDivs.forEach((element) => {
+          element.focus = false;
+        });
+        if (isFocus) taskDivs[i].focus = true;
         else taskDivs[i].focus = false;
         this.setState({ taskDivs });
-        console.log(taskDivs)
       };
 
       return (
@@ -53,16 +70,25 @@ export class TaskComponent extends React.Component {
           taskArrayElement={taskDiv}
           key={i}
           keys={i}
-          changeElement={onChange}
-          addNewTask={(e)=>this.checkEnter(e,i+1)}
+          changeElement={onChanged}
+          addNewTask={(e) => this.checkKeyPress(e, i + 1)}
         />
       );
     });
 
     return (
-      <div 
-        style={{ width: "20rem", height: "25rem", backgroundColor: "white",overflowY:"scroll" }} >
-        <Newtask enterNewTask={(e)=>this.checkEnter(e,0)} plusNewTask={_=>this.addTask(0)} />
+      <div
+        style={{
+          width: "20rem",
+          height: "25rem",
+          backgroundColor: "white",
+          overflowY: "scroll",
+        }}
+      >
+        <Newtask
+          enterNewTask={(e) => this.checkKeyPress(e, 0)}
+          plusNewTask={(_) => this.addTask(0)}
+        />
         {allTaskDivs}
         {/* <TaskDiv/> */}
       </div>

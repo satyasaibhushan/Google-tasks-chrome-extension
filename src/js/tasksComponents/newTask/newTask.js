@@ -4,9 +4,9 @@ import "./newTaskStyles.css";
 export default function Newtask(props) {
   return (
     <div className="newTaskContainer">
-      <div className="newTaskImgContainer" >
+      <div className="newTaskImgContainer"onClick={_=>props.plusNewTask()} >
       <img
-        onClick={_=>props.plusNewTask()}
+        
         src="../../images/plus.svg"
         alt="plus sign"
         className="plusImageNewTask"
