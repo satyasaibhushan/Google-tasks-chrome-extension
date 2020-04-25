@@ -1,5 +1,5 @@
 import React from "react";
-import "./newTaskStyles.css";
+import "./newTask.css";
 
 export default function Newtask(props) {
   return (
