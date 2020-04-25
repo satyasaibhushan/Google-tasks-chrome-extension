@@ -25,14 +25,9 @@ export class TaskComponent extends React.Component {
 
   checkKeyPress(e, i) {
     let taskDivs = this.state.taskDivs;
-    if (e.keyCode == 13) {
-      if (i == 0) {
-        this.addTask(i, e.target.value);
-        e.target.value = "";
-      } else this.addTask(i);
-    }
-    if (e.keyCode == 8 && e.target.value == "") {
-      if (i != 0) {
+    if (e.keyCode == 13) this.addTask(i);
+    
+    else if (e.keyCode == 8 && e.target.value == "") {
         taskDivs[i - 1] = {
           checked: false,
           value: "",
@@ -40,42 +35,44 @@ export class TaskComponent extends React.Component {
           remove: true,
         };
         e.preventDefault()
-        this.setState({ taskDivs });
-      }
+        
     }
-    if (e.keyCode == 38 && i != 1) {
-      taskDivs[i - 2].focus = true;
-      this.setState({ taskDivs });
-    }
-    if (e.keyCode == 40 && i != taskDivs.length) {
-      taskDivs[i].focus = true;
-      this.setState({ taskDivs });
-    }
+    else if (e.keyCode == 38 && i != 1)  taskDivs[i - 2].focus = true;
+
+    else if (e.keyCode == 40 && i != taskDivs.length)   taskDivs[i].focus = true;
+    
+    else return
+    
+    this.setState({ taskDivs });
   }
+
 checkedTask(i){
   let taskDivs = this.state.taskDivs;
   taskDivs[i].checked = (taskDivs[i].checked== true) ? false:true;
-  
   this.setState({ taskDivs });
 }
+modifyTaskAfterAnimation(ClassName,i){
+  let taskDivs = this.state.taskDivs;
+  if(ClassName == "newlyAdded") taskDivs[i].newlyAdded = false;
+  if(ClassName == "remove") {
+    taskDivs[i].remove = false;
+    if (i == 0 && taskDivs.length > 1) taskDivs[i+1].focus = true;
+    else if (i > 0) taskDivs[i - 1].focus = true;
+    taskDivs.splice(i , 1);
+  }
+  this.setState({ taskDivs });
+}
+
   render() {
     let allTaskDivs = this.state.taskDivs.map((taskDiv, i) => {
       let onChanged = (value, isFocus) => {
         let { taskDivs } = this.state;
-        if(taskDivs[i].remove == true) {
-          if (i == 0 && taskDivs.length > 1) taskDivs[i+1].focus = true;
-          else if (i > 0) taskDivs[i - 1].focus = true;
-          taskDivs.splice(i , 1);
-        }
-        else{
-        if (value || value === "") if(!taskDivs[i].checked) taskDivs[i].value = value;
+        if ((value || value === "") && !taskDivs[i].checked)  taskDivs[i].value = value;
+        if(!isFocus || value != '') taskDivs[i].newlyAdded = false
         taskDivs.forEach((element) => {
           element.focus = false;
         });
-        if(!isFocus || value != '') taskDivs[i].newlyAdded = false
-        if (isFocus) taskDivs[i].focus = true;
-        else taskDivs[i].focus = false;
-      }
+        taskDivs[i].focus = isFocus
         this.setState({ taskDivs });
       };
 
@@ -83,10 +80,11 @@ checkedTask(i){
         <TaskDiv
           taskArrayElement={taskDiv}
           key={i}
-          keys={i}
+          // keys={i}
           changeElement={onChanged}
-          addNewTask={(e) => this.checkKeyPress(e, i + 1)}
+          manageTasks={(e) => this.checkKeyPress(e, i + 1)}
           clickedTick={()=>this.checkedTask(i)}
+          changeClass={(value)=>this.modifyTaskAfterAnimation(value,i)}
           />
       );
     });
@@ -94,7 +92,9 @@ checkedTask(i){
     return (
       <div className="tasksComponentContainer">
         <Newtask
-          enterNewTask={(e) => this.checkKeyPress(e, 0)}
+          enterNewTask={(e) =>{if(e.keyCode ==13){this.addTask(0, e.target.value);
+            e.target.value = "";
+            }}}
           plusNewTask={(_) => this.addTask(0)}
         />
         {allTaskDivs}
