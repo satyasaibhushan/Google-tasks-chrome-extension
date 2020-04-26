@@ -50,17 +50,28 @@ checkedTask(i){
   let taskDivs = this.state.taskDivs;
   taskDivs[i].checked = (taskDivs[i].checked== true) ? false:true;
   this.setState({ taskDivs });
+  
 }
-modifyTaskAfterAnimation(ClassName,i){
+modifyTaskAfterAnimation(KeyName,i){
   let taskDivs = this.state.taskDivs;
-  if(ClassName == "newlyAdded") taskDivs[i].newlyAdded = false;
-  if(ClassName == "remove") {
-    taskDivs[i].remove = false;
+  let checkedDivs = this.state.checkedTaskDivs;
+  if(KeyName == "newlyAdded") taskDivs[i].newlyAdded = false;
+  if(KeyName == "remove") {
     if (i == 0 && taskDivs.length > 1) taskDivs[i+1].focus = true;
     else if (i > 0) taskDivs[i - 1].focus = true;
     taskDivs.splice(i , 1);
+    console.log(taskDivs)
   }
+  if(KeyName == "checked" && taskDivs[i].checked == true) {
+    console.log(taskDivs[i])
+    if (i == 0 && taskDivs.length > 1) taskDivs[i+1].focus = true;
+    else if (i > 0) taskDivs[i - 1].focus = true;
+     checkedDivs.push(taskDivs[i].value)
+     taskDivs.splice(i , 1)
+  }
+
   this.setState({ taskDivs });
+  this.setState({checkedDivs})
 }
 
   render() {
@@ -84,7 +95,7 @@ modifyTaskAfterAnimation(ClassName,i){
           changeElement={onChanged}
           manageTasks={(e) => this.checkKeyPress(e, i + 1)}
           clickedTick={()=>this.checkedTask(i)}
-          changeClass={(value)=>this.modifyTaskAfterAnimation(value,i)}
+          changeElementKey={(value)=>this.modifyTaskAfterAnimation(value,i)}
           />
       );
     });

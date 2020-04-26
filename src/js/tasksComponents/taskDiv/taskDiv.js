@@ -15,13 +15,23 @@ export class TaskDiv extends React.Component {
       this.input.current.focus();
     }
     if (this.props.taskArrayElement.newlyAdded == true) {
-      this.Animation(this.wholeDiv.current, "forward", 0.4);
-      this.props.changeClass("newlyAdded");
+      this.Animation(this.wholeDiv.current, "forward", 0.4,0);
+      this.props.changeElementKey("newlyAdded");
     }
     if (this.props.taskArrayElement.remove == true) {
-      this.Animation(this.wholeDiv.current, "backward", 0.4);
+      this.Animation(this.wholeDiv.current, "backward", 0.25,0);
       setTimeout(() => {
-        this.props.changeClass("remove");
+        this.props.changeElementKey("remove");
+        if (this.wholeDiv.current)
+          this.Animation(this.wholeDiv.current, "forward", 0.01,0);
+      }, 250);
+    }
+    if (this.props.taskArrayElement.checked == true){
+      console.log(this.props.taskArrayElement)
+      // this.Animation(this.wholeDiv.current, "none", 2);
+      this.Animation(this.wholeDiv.current, "backward", 0.25,0.10);
+      setTimeout(() => {
+        this.props.changeElementKey("checked");
         if (this.wholeDiv.current)
           this.Animation(this.wholeDiv.current, "forward", 0.01);
       }, 400);
@@ -46,24 +56,26 @@ export class TaskDiv extends React.Component {
       );
     }
   }
-  Animation(element, direction, time) {
+  Animation(element, direction, time,delay) {
     if (direction == "forward")
       return TweenMax.fromTo(
         element,
         { height: 0, opacity: 0 },
-        { duration: time, height: "3rem", opacity: 1 }
+        { duration: time, height: "3rem", opacity: 1 , delay:delay}
       );
     else if (direction == "backward")
       return TweenMax.fromTo(
         element,
         { height: "3rem", opacity: 1 },
-        { duration: time, height: "0", opacity: 0 }
+        { duration: time, height: "0", opacity: 0 , delay:delay}
       );
   }
 
  setIcon(mouseEnter){
-   if(this.props.taskArrayElement.checked==true  ||  mouseEnter) return this.setState({ icon: "tick" })
-   else if (!mouseEnter) return this.setState({ icon: "circle" })
+  //  console.log(this.state.icon)
+  if(this.props.taskArrayElement.checked==true ) return 
+  else if(mouseEnter&& this.state.icon =="circle") return this.setState({ icon: "tick" })
+  else if (!mouseEnter && this.state.icon =="tick") return this.setState({ icon: "circle" })
  } 
 
   render() {
@@ -88,7 +100,7 @@ export class TaskDiv extends React.Component {
           className="taskIconContainer"
           onMouseOver={(_) => this.setIcon(true)}
           onMouseLeave={(_) => this.setIcon(false)}
-          onClick={this.props.clickedTick}
+          onClick={_ =>{ if(!this.props.taskArrayElement.checked) this.props.clickedTick()}}
         >
           {div}
         </div>
