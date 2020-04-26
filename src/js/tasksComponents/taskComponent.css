@@ -4,6 +4,7 @@
     background-color: white;
     overflow-y: scroll;
     overflow-x: hidden;
+	position: relative;
 }
 
 .tasksComponentContainer::-webkit-scrollbar-track

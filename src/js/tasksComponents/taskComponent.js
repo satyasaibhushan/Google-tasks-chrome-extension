@@ -1,9 +1,10 @@
 import React from "react";
 import Newtask from "./newTask/newTask";
 import { TaskDiv } from "./taskDiv/taskDiv";
+import { CheckedDivTotal } from "./checkedDivTotal/checkedDivContainer";
 
 import "./taskComponent.css";
-
+import { CheckedDiv } from "./checkedDivTotal/checkedDiv/checkedDiv";
 export class TaskComponent extends React.Component {
   constructor() {
     super();
@@ -52,26 +53,27 @@ checkedTask(i){
   this.setState({ taskDivs });
   
 }
-modifyTaskAfterAnimation(KeyName,i){
+modifyTaskAfterAnimation(KeyName,i,isFromCheckedList){
   let taskDivs = this.state.taskDivs;
-  let checkedDivs = this.state.checkedTaskDivs;
+  let checkedTaskDivs = this.state.checkedTaskDivs;
   if(KeyName == "newlyAdded") taskDivs[i].newlyAdded = false;
   if(KeyName == "remove") {
     if (i == 0 && taskDivs.length > 1) taskDivs[i+1].focus = true;
     else if (i > 0) taskDivs[i - 1].focus = true;
     taskDivs.splice(i , 1);
-    console.log(taskDivs)
+    // console.log(taskDivs)
   }
   if(KeyName == "checked" && taskDivs[i].checked == true) {
-    console.log(taskDivs[i])
+    // console.log(taskDivs[i])
     if (i == 0 && taskDivs.length > 1) taskDivs[i+1].focus = true;
     else if (i > 0) taskDivs[i - 1].focus = true;
-     checkedDivs.push(taskDivs[i].value)
+    taskDivs[i].newlyAdded=true;
+     checkedTaskDivs.unshift(taskDivs[i])
      taskDivs.splice(i , 1)
   }
 
   this.setState({ taskDivs });
-  this.setState({checkedDivs})
+  this.setState({checkedTaskDivs})
 }
 
   render() {
@@ -96,6 +98,7 @@ modifyTaskAfterAnimation(KeyName,i){
           manageTasks={(e) => this.checkKeyPress(e, i + 1)}
           clickedTick={()=>this.checkedTask(i)}
           changeElementKey={(value)=>this.modifyTaskAfterAnimation(value,i)}
+          checkedList = {false}
           />
       );
     });
@@ -109,7 +112,10 @@ modifyTaskAfterAnimation(KeyName,i){
           plusNewTask={(_) => this.addTask(0)}
         />
         {allTaskDivs}
-        {/* <TaskDiv/> */}
+        <CheckedDivTotal 
+          checkedList={this.state.checkedTaskDivs}
+          changeElementKey={(value,i)=>this.modifyTaskAfterAnimation(value,i,true)}
+        />
       </div>
     );
   }

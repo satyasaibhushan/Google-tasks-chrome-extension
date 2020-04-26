@@ -2,13 +2,12 @@ import React from "react";
 import "./taskDiv.css";
 
 export class TaskDiv extends React.Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
-      icon: "circle",
+      icon: props.checkedList ? "tick" :"circle",
       newlyAdded: false,
     };
-    // this.myTween = TimelineLite({paused: true});
   }
   componentDidUpdate() {
     if (this.props.taskArrayElement.focus == true) {
@@ -26,9 +25,8 @@ export class TaskDiv extends React.Component {
           this.Animation(this.wholeDiv.current, "forward", 0.01,0);
       }, 250);
     }
-    if (this.props.taskArrayElement.checked == true){
-      console.log(this.props.taskArrayElement)
-      // this.Animation(this.wholeDiv.current, "none", 2);
+    if (this.props.taskArrayElement.checked == true && this.props.checkedList!=true){
+      // console.log(this.props.taskArrayElement)
       this.Animation(this.wholeDiv.current, "backward", 0.25,0.10);
       setTimeout(() => {
         this.props.changeElementKey("checked");
@@ -73,6 +71,7 @@ export class TaskDiv extends React.Component {
 
  setIcon(mouseEnter){
   //  console.log(this.state.icon)
+  if(this.props.taskArrayElement.checked==true && this.props.checkedList == true) return this.setState({ icon: "tick" })
   if(this.props.taskArrayElement.checked==true ) return 
   else if(mouseEnter&& this.state.icon =="circle") return this.setState({ icon: "tick" })
   else if (!mouseEnter && this.state.icon =="tick") return this.setState({ icon: "circle" })
@@ -113,6 +112,7 @@ export class TaskDiv extends React.Component {
             ref={this.input}
             name=""
             value={this.props.taskArrayElement.value}
+            readOnly = {this.props.checkedList}
             onChange={(e) => {
               if (this.props.taskArrayElement.remove == true)
                 e.preventDefault();
@@ -131,8 +131,10 @@ export class TaskDiv extends React.Component {
               this.props.changeElement(e.target.value, false)
             }
             style={{
-              textDecoration:
+              textDecoration: 
                 this.props.taskArrayElement.checked == true? "line-through": "none",
+              textDecoration: 
+                this.props.checkedList == true? "line-through": "none",  
             }}
           />
         </div>
