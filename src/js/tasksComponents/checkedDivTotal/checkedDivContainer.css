@@ -1,6 +1,4 @@
 .chekedDivContainer{
-    position: absolute;
-    /* margin-top: 3rem; */
-    bottom: 0;
-    /* clear: both; */
+    flex-shrink: 0;
+    width:20rem;
 }

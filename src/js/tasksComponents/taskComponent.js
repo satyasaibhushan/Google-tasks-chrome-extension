@@ -4,7 +4,6 @@ import { TaskDiv } from "./taskDiv/taskDiv";
 import { CheckedDivTotal } from "./checkedDivTotal/checkedDivContainer";
 
 import "./taskComponent.css";
-import { CheckedDiv } from "./checkedDivTotal/checkedDiv/checkedDiv";
 export class TaskComponent extends React.Component {
   constructor() {
     super();
@@ -111,11 +110,12 @@ modifyTaskAfterAnimation(KeyName,i,isFromCheckedList){
             }}}
           plusNewTask={(_) => this.addTask(0)}
         />
-        {allTaskDivs}
+        <div style={{paddingBottom:'1rem',flex: '1 0 auto'}}>    
+          {allTaskDivs}</div>
         <CheckedDivTotal 
           checkedList={this.state.checkedTaskDivs}
           changeElementKey={(value,i)=>this.modifyTaskAfterAnimation(value,i,true)}
-        />
+        /> 
       </div>
     );
   }
