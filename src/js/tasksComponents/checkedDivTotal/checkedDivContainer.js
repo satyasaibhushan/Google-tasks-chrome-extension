@@ -24,8 +24,6 @@ export class CheckedDivTotal extends React.Component {
         checkedArray[i].unchecked = false;
         tasksArray.unshift(checkedArray[i])
         checkedArray.splice(i , 1)
-        console.log(this.state.checkedArray,this.state.tasksArray)
-        console.log(checkedArray,tasksArray)
         this.props.changeCheckedArray(checkedArray)
         this.props.changeTaskArray(tasksArray)
     }

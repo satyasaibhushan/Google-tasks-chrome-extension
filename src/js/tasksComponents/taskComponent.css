@@ -4,7 +4,7 @@
 	min-height: 100%;
 	position: relative;
     background-color: white;
-    overflow-y: scroll;
+    overflow-y: auto;
 	overflow-x: hidden;
 	display: flex;
 	flex-direction: column;

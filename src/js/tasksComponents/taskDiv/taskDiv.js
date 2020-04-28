@@ -98,8 +98,6 @@ export class TaskDiv extends React.Component {
           this.props.taskArrayElement.newlyAdded == true? "taskDiv newElement" : "taskDiv"
         }
         style={{
-          borderBottom:
-            this.props.taskArrayElement.focus == true? "2px solid rgb(66,133,244)": "none",
           backgroundColor:
             this.props.taskArrayElement.focus == true? " rgba(212, 211, 211, 0.1)" : "transparent",
         }}
@@ -116,7 +114,7 @@ export class TaskDiv extends React.Component {
           className="taskInputContainer"
           onClick={(e) => this.props.changeElement(false, true)}
         >
-          <input
+          <textarea
             type="text"
             ref={this.input}
             name=""
@@ -139,14 +137,20 @@ export class TaskDiv extends React.Component {
             onBlurCapture={(e) =>
               this.props.changeElement(e.target.value, false)
             }
+            onInput={e=>{ e.target.style.height = (e.target.scrollHeight)+"px"}}
             style={{
               textDecoration: 
                 this.props.taskArrayElement.checked == true? "line-through": "none",
               textDecoration: 
                 this.props.checkedList == true? "line-through": "none",  
             }}
-          />
+          ></textarea>
         </div>
+        <span className="bottomBorder"
+        style={{
+          transform: this.props.taskArrayElement.focus == true ? 'scaleX(1)':'scaleX(0)'
+        }}
+        ></span>
       </div>
     );
   }

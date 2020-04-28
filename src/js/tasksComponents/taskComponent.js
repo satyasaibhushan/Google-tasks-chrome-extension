@@ -25,7 +25,7 @@ export class TaskComponent extends React.Component {
 
   checkKeyPress(e, i) {
     let taskDivs = this.state.taskDivs;
-    if (e.keyCode == 13) this.addTask(i);
+    if (e.keyCode == 13) {e.preventDefault();this.addTask(i); }
     
     else if (e.keyCode == 8 && e.target.value == "") {
         taskDivs[i - 1] = {
@@ -37,9 +37,9 @@ export class TaskComponent extends React.Component {
         e.preventDefault()
         
     }
-    else if (e.keyCode == 38 && i != 1)  taskDivs[i - 2].focus = true;
+    else if (e.keyCode == 38 && i != 1 && e.target.selectionEnd ==0 )  taskDivs[i-2].focus = true;
 
-    else if (e.keyCode == 40 && i != taskDivs.length)   taskDivs[i].focus = true;
+    else if (e.keyCode == 40 && i != taskDivs.length &&e.target.selectionEnd==e.target.value.length)   taskDivs[i].focus = true;
     
     else return
     
@@ -48,13 +48,17 @@ export class TaskComponent extends React.Component {
 
 checkedTask(i){
   let taskDivs = this.state.taskDivs;
-  taskDivs[i].checked = (taskDivs[i].checked== true) ? false:true;
+  if(taskDivs[i].value =="") {taskDivs.splice(i , 1); console.log('deleted empty task')}
+  else {taskDivs[i].checked = (taskDivs[i].checked== true) ? false:true;
+    console.log('1 task Completed')
+  }
   this.setState({ taskDivs });
   
 }
 uncheckedTask(i){
   let checkedTaskDivs = this.state.checkedTaskDivs;
   checkedTaskDivs[i].unchecked = (checkedTaskDivs[i].unchecked== true) ? false:true;
+  console.log('1 task marked incomplete')
   this.setState({ checkedTaskDivs });
 }
 modifyTaskAfterAnimation(KeyName,i,isFromCheckedList){
@@ -110,7 +114,7 @@ modifyTaskAfterAnimation(KeyName,i,isFromCheckedList){
     return (
       <div className="tasksComponentContainer">
         <Newtask
-          enterNewTask={(e) =>{if(e.keyCode ==13){this.addTask(0, e.target.value);
+          enterNewTask={(e) =>{if(e.keyCode ==13){e.preventDefault();this.addTask(0,e.target.value);
             e.target.value = "";
             }}}
           plusNewTask={(_) => this.addTask(0)}
