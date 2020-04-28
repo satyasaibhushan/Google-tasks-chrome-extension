@@ -1,4 +1,38 @@
 .chekedDivContainer{
     flex-shrink: 0;
     width:20rem;
+    border-top: 1px solid rgb(224,224,224);
 }
+
+.chekedDivsWrapper{
+    height: 3rem;
+    width: 20rem;
+    font-size: 1.2rem;
+    display: flex;
+    padding-left:2rem;
+    position:relative;
+     /* justifyContent: space-around; */
+    align-items: center;
+    cursor:pointer;
+    color: rgb(95,98,104);
+
+  }
+
+i {
+    border: solid rgb(95,99,104);
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    position: absolute;
+    right:2rem;
+  }
+
+  i.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  
+  i.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  } 

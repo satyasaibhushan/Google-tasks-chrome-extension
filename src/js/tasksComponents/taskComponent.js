@@ -52,6 +52,11 @@ checkedTask(i){
   this.setState({ taskDivs });
   
 }
+uncheckedTask(i){
+  let checkedTaskDivs = this.state.checkedTaskDivs;
+  checkedTaskDivs[i].unchecked = (checkedTaskDivs[i].unchecked== true) ? false:true;
+  this.setState({ checkedTaskDivs });
+}
 modifyTaskAfterAnimation(KeyName,i,isFromCheckedList){
   let taskDivs = this.state.taskDivs;
   let checkedTaskDivs = this.state.checkedTaskDivs;
@@ -114,7 +119,12 @@ modifyTaskAfterAnimation(KeyName,i,isFromCheckedList){
           {allTaskDivs}</div>
         <CheckedDivTotal 
           checkedList={this.state.checkedTaskDivs}
+          tasksList={this.state.taskDivs}
+          // hey={console.log(this.state.checkedTaskDivs)}
           changeElementKey={(value,i)=>this.modifyTaskAfterAnimation(value,i,true)}
+          clickedTick={(i)=>this.uncheckedTask(i)}
+          changeCheckedArray={(array)=>this.setState({checkedTaskDivs:array})}
+          changeTaskArray={(array)=>this.setState({taskDivs:array})}
         /> 
       </div>
     );

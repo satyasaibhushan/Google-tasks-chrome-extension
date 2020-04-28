@@ -26,10 +26,18 @@ export class TaskDiv extends React.Component {
       }, 250);
     }
     if (this.props.taskArrayElement.checked == true && this.props.checkedList!=true){
-      // console.log(this.props.taskArrayElement)
       this.Animation(this.wholeDiv.current, "backward", 0.25,0.10);
       setTimeout(() => {
         this.props.changeElementKey("checked");
+        if (this.wholeDiv.current)
+          this.Animation(this.wholeDiv.current, "forward", 0.01);
+      }, 400);
+    }
+    if (this.props.taskArrayElement.unchecked == true && this.props.checkedList==true){
+      // console.log(this.props.taskArrayElement)
+      this.Animation(this.wholeDiv.current, "backward", 0.25,0.10);
+      setTimeout(() => {
+        this.props.changeElementKey("unchecked");
         if (this.wholeDiv.current)
           this.Animation(this.wholeDiv.current, "forward", 0.01);
       }, 400);
@@ -71,6 +79,7 @@ export class TaskDiv extends React.Component {
 
  setIcon(mouseEnter){
   //  console.log(this.state.icon)
+  if(this.props.taskArrayElement.unchecked==true  ) return
   if(this.props.taskArrayElement.checked==true && this.props.checkedList == true) return this.setState({ icon: "tick" })
   if(this.props.taskArrayElement.checked==true ) return 
   else if(mouseEnter&& this.state.icon =="circle") return this.setState({ icon: "tick" })
@@ -99,7 +108,7 @@ export class TaskDiv extends React.Component {
           className="taskIconContainer"
           onMouseOver={(_) => this.setIcon(true)}
           onMouseLeave={(_) => this.setIcon(false)}
-          onClick={_ =>{ if(!this.props.taskArrayElement.checked) this.props.clickedTick()}}
+          onClick={_ =>{ this.props.clickedTick()}}
         >
           {div}
         </div>

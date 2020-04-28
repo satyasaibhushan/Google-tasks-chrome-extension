@@ -4,7 +4,7 @@
     transition: all 1s;
     transition: border-bottom 0s;
     position: relative;
-    opacity: 1;
+    /* opacity: 1; */
 }
 .taskDivCheck{
     position: relative;
