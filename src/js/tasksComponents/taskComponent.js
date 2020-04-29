@@ -19,7 +19,7 @@ export class TaskComponent extends React.Component {
       element.focus = false;
       element.newlyAdded = false
     });
-    taskDivs.splice(i, 0, { checked: false, value: value, focus: true,newlyAdded: true });
+    taskDivs.splice(i, 0, { checked: false, value: value, focus: true,newlyAdded: true,height:0 });
     this.setState({ taskDivs });
   }
 
@@ -83,6 +83,11 @@ modifyTaskAfterAnimation(KeyName,i,isFromCheckedList){
   this.setState({ taskDivs });
   this.setState({checkedTaskDivs})
 }
+setHeight(value,i){
+  let taskDivs = this.state.taskDivs;
+  taskDivs[i].height=value;
+  this.setState({ taskDivs });
+}
 
   render() {
     let allTaskDivs = this.state.taskDivs.map((taskDiv, i) => {
@@ -105,6 +110,7 @@ modifyTaskAfterAnimation(KeyName,i,isFromCheckedList){
           changeElement={onChanged}
           manageTasks={(e) => this.checkKeyPress(e, i + 1)}
           clickedTick={()=>this.checkedTask(i)}
+          setHeight={(value)=>this.setHeight(value,i)}
           changeElementKey={(value)=>this.modifyTaskAfterAnimation(value,i)}
           checkedList = {false}
           />
