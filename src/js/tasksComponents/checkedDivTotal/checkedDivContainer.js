@@ -24,9 +24,10 @@ export class CheckedDivTotal extends React.Component {
         checkedArray[i].unchecked = false;
         tasksArray.unshift(checkedArray[i])
         checkedArray.splice(i , 1)
-        this.props.changeCheckedArray(checkedArray)
-        this.props.changeTaskArray(tasksArray)
+        
     }
+    this.props.changeCheckedArray(checkedArray)
+    this.props.changeTaskArray(tasksArray)
     this.setState({ tasksArray });
     this.setState({ checkedArray });
   }
@@ -55,7 +56,7 @@ export class CheckedDivTotal extends React.Component {
     });
   }
   render() {
-    // console.log(this.props);
+    console.log(this.props.checkedList);
     return (
       <div className="chekedDivContainer">
         <div style={{display: this.state.checkedArray.length==0 ?'none' : ''}}

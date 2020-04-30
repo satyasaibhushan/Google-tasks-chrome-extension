@@ -112,7 +112,7 @@ export class TaskDiv extends React.Component {
   }
 
   render() {
-
+      // console.log(this.props.taskArrayElement)
     return (
       <div
         ref={this.wholeDiv}
