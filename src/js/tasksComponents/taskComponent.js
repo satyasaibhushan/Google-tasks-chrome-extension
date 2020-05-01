@@ -67,7 +67,9 @@ export class TaskComponent extends React.Component {
     let taskList = this.state.taskList;
     let taskDivs = taskList[this.state.taskListIndex].taskDivs;
     if (taskDivs[i].value == "") {
-      taskDivs.splice(i, 1);
+      taskDivs[i].checked = true;
+      taskDivs[i].remove = true;
+
       console.log("deleted empty task");
     } else {
       taskDivs[i].checked = taskDivs[i].checked == true ? false : true;
@@ -94,11 +96,12 @@ export class TaskComponent extends React.Component {
       taskDivs.splice(i, 1);
       // console.log(taskDivs)
     }
-    if (KeyName == "checked" && taskDivs[i].checked == true) {
+    if (KeyName == "checked" && taskDivs[i].checked == true ) {
       // console.log(taskDivs[i])
       if (i == 0 && taskDivs.length > 1) taskDivs[i + 1].focus = true;
       else if (i > 0) taskDivs[i - 1].focus = true;
       taskDivs[i].newlyAdded = true;
+      if(taskDivs[i].value!='')
       checkedTaskDivs.unshift(taskDivs[i]);
       taskDivs.splice(i, 1);
     }
