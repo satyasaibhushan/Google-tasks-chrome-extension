@@ -14,8 +14,8 @@ export class CheckedDivTotal extends React.Component {
   }
 
   changeElementKey(keyName, i) {
-    let checkedArray = this.state.checkedArray;
-    let tasksArray = this.state.tasksArray;
+    let checkedArray = this.props.checkedList;
+    let tasksArray = this.props.tasksList;
     if (keyName == "newlyAdded" && checkedArray[i].newlyAdded == true)
       checkedArray[i].newlyAdded = false;
     if (keyName == "unchecked" && checkedArray[i].unchecked == true) {
@@ -28,13 +28,11 @@ export class CheckedDivTotal extends React.Component {
     }
     this.props.changeCheckedArray(checkedArray)
     this.props.changeTaskArray(tasksArray)
-    this.setState({ tasksArray });
-    this.setState({ checkedArray });
   }
   removeClick(i) {
-    let checkedArray = this.state.checkedArray;
+    let checkedArray = this.props.checkedList;
     checkedArray[i].focus = false;
-    this.setState({ checkedArray });
+    this.props.changeCheckedArray(checkedArray)
   }
 
   allCheckedDivs(checkedList) {
@@ -56,20 +54,19 @@ export class CheckedDivTotal extends React.Component {
     });
   }
   render() {
-    console.log(this.props.checkedList);
     return (
       <div className="chekedDivContainer">
-        <div style={{display: this.state.checkedArray.length==0 ?'none' : ''}}
+        <div style={{display: this.props.checkedList.length==0 ?'none' : ''}}
           className="chekedDivsWrapper"
           onClick={(_) =>
             this.setState({ opened: this.state.opened ? false : true })
           }
         >
-          Completed ({this.state.checkedArray.length})
+          Completed ({this.props.checkedList.length})
           <i className={this.state.opened ? "down" : "up"}></i>
         </div>
         <div style={{ display: this.state.opened ? "block" : "none" }} >
-        {this.allCheckedDivs(this.state.checkedArray)}
+        {this.allCheckedDivs(this.props.checkedList)}
         </div>
       </div>
     );

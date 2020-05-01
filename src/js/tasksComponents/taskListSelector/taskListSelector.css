@@ -1,0 +1,57 @@
+.taskListSelector {
+    position: relative;
+    font-family: Arial;
+  }
+  
+  .taskListSelector select {
+    display: none; 
+  }
+  
+  .select-selected:after {
+    position: absolute;
+    content: "";
+    top: 14px;
+    right: 60%;
+    /* transform: translate(40px,2px); */
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: rgba(33,34,37,0.7) transparent transparent transparent;
+  }
+  
+  .select-selected.select-arrow-active:after {
+    border-color: transparent transparent rgba(33,34,37,0.7) transparent;
+    top: 7px;
+  }
+  
+  .select-items div,.select-selected {
+    width: 100%;
+    color: rgba(33,34,37,0.7);
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  .select-selected {
+    width: 50%;  
+    /* background-color: DodgerBlue; */
+  }
+  
+  
+  .select-items {
+    width: 70%;
+    position: absolute;
+    background-color: white;
+    top: 120%;
+    left: 3%;
+    right: 0;
+    z-index: 99;
+    border-radius: 10px;
+    box-shadow: 0.1rem 0.1rem 0.2rem 0.05rem rgba(121, 119, 119, 0.384) ;
+  }
+  
+  .select-hide {
+    display: none;
+  }
+  
+  .select-items div:hover, .same-as-selected {
+    background-color: whitesmoke;
+  }

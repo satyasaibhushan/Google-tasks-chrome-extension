@@ -78,6 +78,7 @@
     background-color: rgba(212, 211, 211, 0.171);
 }
 .taskDiv:hover{
+    transition: all 0.2s;
     box-shadow: 0px 0px 0.2rem 0.08rem  rgba(121, 119, 119, 0.384);
     /* box-shadow: 0 2rem 0 grey; */
 }

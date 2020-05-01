@@ -33,7 +33,7 @@ export class TaskDiv extends React.Component {
       this.props.taskArrayElement.checked == true &&
       this.props.checkedList != true
     ) {
-      this.Animation(this.wholeDiv.current, "backward", 0.25, 0.1);
+      this.Animation(this.wholeDiv.current, "backward", 0.2, 0.2);
       setTimeout(() => {
         this.props.changeElementKey("checked");
         if (this.wholeDiv.current)
@@ -134,6 +134,7 @@ export class TaskDiv extends React.Component {
           onMouseOver={(_) => this.setIcon(true)}
           onMouseLeave={(_) => this.setIcon(false)}
           onClick={(_) => {
+            if(!this.props.taskArrayElement.checked || this.props.checkedList)
             this.props.clickedTick();
           }}
         >
