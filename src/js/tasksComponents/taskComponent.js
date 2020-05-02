@@ -43,12 +43,7 @@ export class TaskComponent extends React.Component {
       e.preventDefault();
       this.addTask(i);
     } else if (e.keyCode == 8 && e.target.value == "") {
-      taskDivs[i - 1] = {
-        checked: false,
-        value: "",
-        focus: false,
-        remove: true,
-      };
+      taskDivs[i - 1].remove = true
       e.preventDefault();
     } else if (e.keyCode == 38 && i != 1 && e.target.selectionEnd == 0)
       taskDivs[i - 2].focus = true;
