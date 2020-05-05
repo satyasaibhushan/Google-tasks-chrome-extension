@@ -10,10 +10,6 @@ export class CheckedDivTotal extends React.Component {
     };
     this.checkedDivs = React.createRef();
   }
-  componentDidUpdate(){
-    console.log('hi')
-    
-  }
 
   changeElementKey(keyName, i) {
     let checkedArray = this.props.checkedList;

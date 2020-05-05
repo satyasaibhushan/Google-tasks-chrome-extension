@@ -3,8 +3,11 @@ import Newtask from "./newTask/newTask";
 import { TaskDiv } from "./taskDiv/taskDiv";
 import { CheckedDivTotal } from "./checkedDivTotal/checkedDivContainer";
 import { TaskListSelector } from "./taskListSelector/taskListSelector"
-
+import { ReactSortable } from "react-sortablejs"
 import "./taskComponent.css";
+
+// import _ from "../tasksComponents/dragTasks/dragTasks"
+
 export class TaskComponent extends React.Component {
   constructor() {
     super();
@@ -111,7 +114,7 @@ export class TaskComponent extends React.Component {
   }
 
   render() {
-    // console.log(this.state.taskListIndex,this.state.taskList[this.state.taskListIndex])
+
     let allTaskDivs = () => {
       if (this.state.taskListIndex != -1)
         return this.state.taskList[this.state.taskListIndex].taskDivs.map(
@@ -132,7 +135,6 @@ export class TaskComponent extends React.Component {
               <TaskDiv
                 taskArrayElement={taskDiv}
                 key={i}
-                // keys={i}
                 changeElement={onChanged}
                 manageTasks={(e) => this.checkKeyPress(e, i + 1)}
                 clickedTick={() => this.checkedTask(i)}
@@ -164,13 +166,12 @@ export class TaskComponent extends React.Component {
           }}
           plusNewTask={(_) => this.addTask(0)}
         />
-        <div style={{ paddingBottom: "1rem", flex: "1 0 auto" }}>
-          {allTaskDivs()}
+        <div className='taskDivsContainer' style={{ paddingBottom: "1rem", flex: "1 0 auto" }}>
+        {allTaskDivs()}
         </div>
         <CheckedDivTotal
           checkedList={this.state.taskList[this.state.taskListIndex].checkedDivs}
           tasksList={this.state.taskList[this.state.taskListIndex].taskDivs}
-          // hey={console.log(this.state.checkedTaskDivs)}
           clickedTick={(i) => this.uncheckedTask(i)}
           changeCheckedArray={(array) => {
             let taskList = this.state.taskList;

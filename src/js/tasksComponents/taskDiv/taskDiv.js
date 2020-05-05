@@ -23,17 +23,15 @@ export class TaskDiv extends React.Component {
     if (
       this.props.taskArrayElement.checked == true &&
       this.props.checkedList != true
-    ) {
-      this.removeAfterAnimation(this.wholeDiv.current,"checked", 0.25, 0.2);
-    } else if (this.props.taskArrayElement.remove == true) {
-      this.removeAfterAnimation(this.wholeDiv.current,"remove", 0.3, 0);
-    }
+    )
+      this.removeAfterAnimation(this.wholeDiv.current, "checked", 0.25, 0.2);
+    else if (this.props.taskArrayElement.remove == true)
+      this.removeAfterAnimation(this.wholeDiv.current, "remove", 0.3, 0);
     if (
       this.props.taskArrayElement.unchecked == true &&
       this.props.checkedList == true
-    ) {
-      this.removeAfterAnimation(this.wholeDiv.current,"unchecked", 0.25, 0.1);
-    }
+    )
+      this.removeAfterAnimation(this.wholeDiv.current, "unchecked", 0.25, 0.1);
   }
   componentDidMount() {
     if (this.props.taskArrayElement.focus == true) {
@@ -73,23 +71,21 @@ export class TaskDiv extends React.Component {
         { duration: time, height: "0", opacity: 0, delay: delay }
       );
   }
-  removeAfterAnimation(element,keyName, duration, delay) {
+  removeAfterAnimation(element, keyName, duration, delay) {
     this.Animation(element, "backward", duration, delay);
     setTimeout(() => {
       this.props.changeElementKey(keyName);
-      if (element)
-        this.Animation(element, "forward", 0.01);
-    }, (duration + delay)*1000);
+      if (element) this.Animation(element, "forward", 0.01);
+    }, (duration + delay) * 1000);
   }
 
-  setIcon(mouseEnter) {
-    if (this.props.taskArrayElement.unchecked == true) return;
-    else if (
+  setIcon(mouseEnter) {  
+    if (
       this.props.taskArrayElement.checked == true &&
       this.props.checkedList == true
     )
       return this.setState({ icon: "tick" });
-    else if (this.props.taskArrayElement.checked == true) return;
+    if (this.props.taskArrayElement.unchecked ||this.props.taskArrayElement.checked) return;  
     else if (mouseEnter && this.state.icon == "circle")
       return this.setState({ icon: "tick" });
     else if (!mouseEnter && this.state.icon == "tick")
@@ -98,7 +94,9 @@ export class TaskDiv extends React.Component {
   setHeight(e) {
     e.target.style.height = "auto";
     e.target.style.height = e.target.scrollHeight + "px";
-    if (e.target.clientHeight != this.props.taskArrayElement.height && !this.props.checkedList)
+    if (
+      e.target.clientHeight != this.props.taskArrayElement.height &&
+      !this.props.checkedList)
       this.props.setHeight(e.target.clientHeight + 22);
   }
   tickAnimation() {
