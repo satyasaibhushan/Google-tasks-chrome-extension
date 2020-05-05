@@ -22,21 +22,32 @@ export class TaskComponent extends React.Component {
     };
   }
 
-  addTask(i, value = "") {
+  addTask(i, value = "",isSubset = false,isBefore = true) {
     let taskList = this.state.taskList;
     let taskDivs = taskList[this.state.taskListIndex].taskDivs;
     taskDivs.forEach((element) => {
       element.focus = false;
       element.newlyAdded = false;
     });
-    taskDivs.splice(i, 0, {
+    console.log(taskDivs[i-1])
+    if(taskDivs[i-1] && taskDivs[i-1].subset!=-1) isSubset = true
+    let taskDiv={
       checked: false,
       value: value,
       focus: true,
       newlyAdded: true,
       height: 0,
-    });
+      subset:isSubset ? i-1 :-1
+    } 
+    if(!isBefore){taskDivs.splice(i-1,1,{checked: false,
+      value: '',
+      focus: false,
+      newlyAdded: false,
+      height: 0,
+      subset:-1})}
+    taskDivs.splice(i, 0,taskDiv);
     this.setState({ taskList });
+     console.log(this.state.taskList)
   }
 
   checkKeyPress(e, i) {
@@ -44,6 +55,13 @@ export class TaskComponent extends React.Component {
     let taskDivs = taskList[this.state.taskListIndex].taskDivs;
     if (e.keyCode == 13) {
       e.preventDefault();
+      if(e.metaKey){
+        this.addTask(i,'',true)
+      }
+      else if(e.target.selectionEnd == 0 && e.target.value !=''){
+        this.addTask(i,e.target.value,false,false)
+      }
+      else
       this.addTask(i);
     } else if (e.keyCode == 8 && e.target.value == "") {
       taskDivs[i - 1].remove = true
@@ -122,13 +140,15 @@ export class TaskComponent extends React.Component {
             let onChanged = (value, isFocus) => {
               let taskList = this.state.taskList;
               let taskDivs = taskList[this.state.taskListIndex].taskDivs;
-              if ((value || value === "") && !taskDivs[i].checked)
-                taskDivs[i].value = value;
-              if (!isFocus || value != "") taskDivs[i].newlyAdded = false;
+              taskDivs.forEach(element => {
+                
+              });
+              if ((value || value === "") && !taskDiv.checked)
+                taskDiv.value = value;
               taskDivs.forEach((element) => {
                 element.focus = false;
               });
-              taskDivs[i].focus = isFocus;
+              taskDiv.focus = isFocus;
               this.setState({ taskList });
             };
             return (

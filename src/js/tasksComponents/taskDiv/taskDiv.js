@@ -11,6 +11,7 @@ export class TaskDiv extends React.Component {
     this.wholeDiv = React.createRef();
   }
   componentDidUpdate() {
+    // this.setHeight(this.input)
     if (this.props.taskArrayElement.focus == true) {
       this.input.current.focus();
     }
@@ -26,7 +27,7 @@ export class TaskDiv extends React.Component {
     )
       this.removeAfterAnimation(this.wholeDiv.current, "checked", 0.25, 0.2);
     else if (this.props.taskArrayElement.remove == true)
-      this.removeAfterAnimation(this.wholeDiv.current, "remove", 0.3, 0);
+      this.removeAfterAnimation(this.wholeDiv.current, "remove", 0.3, 0.2);
     if (
       this.props.taskArrayElement.unchecked == true &&
       this.props.checkedList == true
@@ -64,12 +65,13 @@ export class TaskDiv extends React.Component {
           delay: delay,
         }
       );
-    else if (direction == "backward")
+    else if (direction == "backward"){
+      element.blur()
       return TweenMax.fromTo(
         element,
         { height: this.props.taskArrayElement.height, opacity: 1 },
         { duration: time, height: "0", opacity: 0, delay: delay }
-      );
+      );}
   }
   removeAfterAnimation(element, keyName, duration, delay) {
     this.Animation(element, "backward", duration, delay);
@@ -92,12 +94,13 @@ export class TaskDiv extends React.Component {
       return this.setState({ icon: "circle" });
   }
   setHeight(e) {
-    e.target.style.height = "auto";
-    e.target.style.height = e.target.scrollHeight + "px";
+    e.style.height = "auto";
+    e.style.height = e.scrollHeight + "px";
     if (
-      e.target.clientHeight != this.props.taskArrayElement.height &&
+      e.clientHeight != this.props.taskArrayElement.height &&
       !this.props.checkedList)
-      this.props.setHeight(e.target.clientHeight + 22);
+      this.props.setHeight(e.clientHeight + 22);
+    // console.log('hi')  
   }
   tickAnimation() {
     let animationDivs = (
@@ -138,6 +141,9 @@ export class TaskDiv extends React.Component {
           onClick={(_) => {
             if (!this.props.taskArrayElement.checked || this.props.checkedList)
               this.props.clickedTick();
+          }}
+          style={{
+            transform: this.props.taskArrayElement.subset!=-1 ?  'translate(2.3rem,-50%)': 'translate(0,-50%)'
           }}
         >
           <div
@@ -182,14 +188,14 @@ export class TaskDiv extends React.Component {
             className="textAreaTaskDiv"
             onFocusCapture={(e) => {
               this.props.changeElement(e.target.value, true);
-              this.setHeight(e);
+              this.setHeight(e.target);
             }}
             onBlurCapture={(e) => {
               this.props.changeElement(e.target.value, false);
-              this.setHeight(e);
+              this.setHeight(e.target,'blur');
             }}
             onInput={(e) => {
-              this.setHeight(e);
+              this.setHeight(e.target);
             }}
             style={{
               textDecoration:
@@ -199,6 +205,8 @@ export class TaskDiv extends React.Component {
               textDecoration:
                 this.props.checkedList == true ? "line-through" : "none",
               height: this.props ? this.props.taskArrayElement.height - 22 : "",
+              transform: this.props.taskArrayElement.subset!=-1 ?  'translate(2.3rem,-50%)': 'translate(0,-50%)',
+              width: this.props.taskArrayElement.subset!=-1 ? '12.7rem':'15rem'
             }}
           ></textarea>
         </div>
@@ -207,7 +215,7 @@ export class TaskDiv extends React.Component {
           style={{
             transform:
               this.props.taskArrayElement.focus &&
-              !this.props.taskArrayElement.newlyAdded
+              !(this.props.taskArrayElement.newlyAdded || this.props.taskArrayElement.remove)
                 ? "scaleX(1)"
                 : "scaleX(0)",
             top: this.props.taskArrayElement.height,
