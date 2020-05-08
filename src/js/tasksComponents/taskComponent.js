@@ -6,7 +6,10 @@ import { TaskListSelector } from "./taskListSelector/taskListSelector"
 import { ReactSortable } from "react-sortablejs"
 import "./taskComponent.css";
 
+
 // import _ from "../tasksComponents/dragTasks/dragTasks"
+import api from "../tasksComponents/tasks.api"
+
 
 export class TaskComponent extends React.Component {
   constructor() {
@@ -22,6 +25,14 @@ export class TaskComponent extends React.Component {
     };
   }
 
+  componentDidUpdate(){
+    console.log(this.props)
+    if(this.props.gapiAvailable) {
+      console.log(gapi)
+      api.listTaskLists()
+      
+    }
+  }
   addTask(i, value = "",isSubset = false,isBefore = true) {
     let taskList = this.state.taskList;
     let taskDivs = taskList[this.state.taskListIndex].taskDivs;

@@ -1,22 +1,30 @@
-import React,{useState} from "react";
-import {  render  } from "react-dom";
+import React, { useState } from "react";
+import { render } from "react-dom";
 
-import '../css/styles.css'
+import "../css/styles.css";
 
-import {TaskComponent} from "./tasksComponents/taskComponent"
+import { TaskComponent } from "./tasksComponents/taskComponent";
+import GoogleApi from "./tasksComponents/googleApi/googleApi";
 
-class App extends React.Component{
-    
-  render(){
-      return(
-          <div>
-              <div style={{display:'flex',justifyContent:"space-around",marginTop:'3rem'}}>
-                  <TaskComponent/>
-              </div>
-          </div>
-      )
+class App extends React.Component {
+
+
+  render() {
+    return (
+      <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-around",
+            marginTop: "3rem",
+          }}
+        >
+          <TaskComponent gapiAvailable={this.state?.loaded} />
+        </div>
+        <GoogleApi onUpdateSignIn={_ => this.setState({ loaded : true })} />
+      </div>
+    );
   }
-
 }
- 
-render(<App/>,document.getElementById("app"))
+
+render(<App />, document.getElementById("app"));
