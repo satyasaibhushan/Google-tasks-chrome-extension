@@ -11,7 +11,11 @@ export class TaskDiv extends React.Component {
     this.wholeDiv = React.createRef();
   }
   componentDidUpdate() {
-    // this.setHeight(this.input)
+    // console.log(this.input)
+    console.log(this.props.taskArrayElement.height)
+    if(this.props.taskArrayElement.height == 0) {
+      console.log('hii')
+      this.setHeight(this.input.current)}
     if (this.props.taskArrayElement.focus == true) {
       this.input.current.focus();
     }
@@ -35,6 +39,8 @@ export class TaskDiv extends React.Component {
       this.removeAfterAnimation(this.wholeDiv.current, "unchecked", 0.25, 0.1);
   }
   componentDidMount() {
+    console.log('hi')
+        this.setHeight(this.input.current)
     if (this.props.taskArrayElement.focus == true) {
       this.input.current.focus();
     }

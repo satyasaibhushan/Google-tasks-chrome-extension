@@ -22,15 +22,36 @@ export class TaskComponent extends React.Component {
         { name: "List listed", taskDivs: [], checkedDivs: [] },
       ],
       taskListIndex: 0,
+      count:0,
     };
   }
 
-  componentDidUpdate(){
-    console.log(this.props)
-    if(this.props.gapiAvailable) {
-      console.log(gapi)
+  componentDidMount(){
+    if(this.props.gapiAvailable){
       api.listTaskLists()
-      
+      .then(x=>{console.log(x)})
+    }
+  }
+  componentDidUpdate(){
+    if(this.props.gapiAvailable && this.state.count ==0) {
+      api.listTaskLists()
+      .then(x=> {x.forEach(ele=>{
+        let taskList = this.state.taskList;
+        let taskListElement = {name:ele.title,taskDivs:[],checkedDivs:[]}
+        api.listTasks(ele.id)
+        .then(task=>task.forEach(element=>{
+          taskListElement.taskDivs.push({checked: false,
+            value: element.title,
+            focus: false,
+            newlyAdded: false,
+            height: 0,
+            subset:-1})
+        }))
+        taskList.push(taskListElement)
+        this.setState({ taskList })
+        })})
+      this.setState({count:1})
+      console.log(this.state.taskList)
     }
   }
   addTask(i, value = "",isSubset = false,isBefore = true) {
@@ -40,7 +61,6 @@ export class TaskComponent extends React.Component {
       element.focus = false;
       element.newlyAdded = false;
     });
-    console.log(taskDivs[i-1])
     if(taskDivs[i-1] && taskDivs[i-1].subset!=-1) isSubset = true
     let taskDiv={
       checked: false,
@@ -58,7 +78,6 @@ export class TaskComponent extends React.Component {
       subset:-1})}
     taskDivs.splice(i, 0,taskDiv);
     this.setState({ taskList });
-     console.log(this.state.taskList)
   }
 
   checkKeyPress(e, i) {

@@ -6,7 +6,7 @@ export class TaskListSelector extends React.Component {
     super();
   }
 
-  componentDidMount() {
+  componentDidUpdate() {
     var x, i, j, selElmnt, a, b, c;
     let props = this.props;
     x = document.getElementsByClassName("taskListSelector");
@@ -73,6 +73,18 @@ export class TaskListSelector extends React.Component {
     }
 
     document.addEventListener("click", closeAllSelect);
+  }
+
+  componentWillReceiveProps(){
+   let x = document.getElementsByClassName("taskListSelector");
+    for (let i = 0; i < x.length; i++) {
+      if(x[i].childNodes.length >1){
+      x[i].removeChild(x[i].childNodes[1])
+      x[i].removeChild(x[i].childNodes[1])
+      }
+      console.log(x[i].childNodes)
+    }
+
   }
 
   render() {
