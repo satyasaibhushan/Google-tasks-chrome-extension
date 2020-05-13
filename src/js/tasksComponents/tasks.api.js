@@ -6,7 +6,6 @@ function listTaskLists() {
       if (taskLists && taskLists.length > 0) {
         for (var i = 0; i < taskLists.length; i++) {
           var taskList = taskLists[i];
-          console.log(taskList)
         }
         
       } else {
@@ -42,7 +41,7 @@ function listTaskLists() {
     },
   
     showTaskList(taskListId) {
-      const request = gapi.client.tasks.tasklists.get({ tasklist: taskListId });
+      const request = gapi.client.tasks.tasklists.get({ tasklist: taskListId});
   
       return this.makeRequest(request);
     },
@@ -73,7 +72,9 @@ function listTaskLists() {
   
     listTasks(taskListId) {
       const request = gapi.client.tasks.tasks.list({
-        tasklist: taskListId
+        tasklist: taskListId,
+        showHidden: true,
+        maxResults: 100
       });
   
       return this.makeRequest(request,true);

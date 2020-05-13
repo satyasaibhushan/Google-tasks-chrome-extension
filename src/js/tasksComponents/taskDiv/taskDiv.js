@@ -11,10 +11,8 @@ export class TaskDiv extends React.Component {
     this.wholeDiv = React.createRef();
   }
   componentDidUpdate() {
-    // console.log(this.input)
-    console.log(this.props.taskArrayElement.height)
-    if(this.props.taskArrayElement.height == 0) {
-      console.log('hii')
+    // console.log(this.props.taskArrayElement.height)
+    if(this.props.taskArrayElement.height == 0 ) {
       this.setHeight(this.input.current)}
     if (this.props.taskArrayElement.focus == true) {
       this.input.current.focus();
@@ -39,7 +37,6 @@ export class TaskDiv extends React.Component {
       this.removeAfterAnimation(this.wholeDiv.current, "unchecked", 0.25, 0.1);
   }
   componentDidMount() {
-    console.log('hi')
         this.setHeight(this.input.current)
     if (this.props.taskArrayElement.focus == true) {
       this.input.current.focus();
@@ -82,8 +79,8 @@ export class TaskDiv extends React.Component {
   removeAfterAnimation(element, keyName, duration, delay) {
     this.Animation(element, "backward", duration, delay);
     setTimeout(() => {
-      this.props.changeElementKey(keyName);
       if (element) this.Animation(element, "forward", 0.01);
+      this.props.changeElementKey(keyName);
     }, (duration + delay) * 1000);
   }
 
@@ -100,13 +97,12 @@ export class TaskDiv extends React.Component {
       return this.setState({ icon: "circle" });
   }
   setHeight(e) {
+    console.log(e.clientHeight,e.offsetHeight,e)
     e.style.height = "auto";
     e.style.height = e.scrollHeight + "px";
     if (
-      e.clientHeight != this.props.taskArrayElement.height &&
-      !this.props.checkedList)
-      this.props.setHeight(e.clientHeight + 22);
-    // console.log('hi')  
+      e.clientHeight != this.props.taskArrayElement.height && e.clientHeight >0)
+      this.props.setHeight(e.clientHeight + 22);  
   }
   tickAnimation() {
     let animationDivs = (

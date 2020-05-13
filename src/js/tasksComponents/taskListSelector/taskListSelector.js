@@ -82,7 +82,6 @@ export class TaskListSelector extends React.Component {
       x[i].removeChild(x[i].childNodes[1])
       x[i].removeChild(x[i].childNodes[1])
       }
-      console.log(x[i].childNodes)
     }
 
   }

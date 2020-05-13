@@ -17,21 +17,12 @@ export class TaskComponent extends React.Component {
     this.state = {
       taskList: [
         { name: "List 1", taskDivs: [], checkedDivs: [] },
-        { name: "List 2", taskDivs: [], checkedDivs: [] },
-        { name: "List 3", taskDivs: [], checkedDivs: [] },
-        { name: "List listed", taskDivs: [], checkedDivs: [] },
       ],
       taskListIndex: 0,
       count:0,
     };
   }
 
-  componentDidMount(){
-    if(this.props.gapiAvailable){
-      api.listTaskLists()
-      .then(x=>{console.log(x)})
-    }
-  }
   componentDidUpdate(){
     if(this.props.gapiAvailable && this.state.count ==0) {
       api.listTaskLists()
@@ -39,19 +30,28 @@ export class TaskComponent extends React.Component {
         let taskList = this.state.taskList;
         let taskListElement = {name:ele.title,taskDivs:[],checkedDivs:[]}
         api.listTasks(ele.id)
-        .then(task=>task.forEach(element=>{
+        .then(task=>{
+          console.log(task)
+          task.forEach(element=>{
+            if(element.status == 'needsAction')
           taskListElement.taskDivs.push({checked: false,
             value: element.title,
             focus: false,
             newlyAdded: false,
             height: 0,
             subset:-1})
-        }))
+            if(element.status == 'completed')
+          taskListElement.checkedDivs.push({checked: true,
+            value: element.title,
+            focus: false,
+            newlyAdded: false,
+            height: 0,
+            subset:-1})  
+        })})
         taskList.push(taskListElement)
         this.setState({ taskList })
         })})
       this.setState({count:1})
-      console.log(this.state.taskList)
     }
   }
   addTask(i, value = "",isSubset = false,isBefore = true) {
@@ -140,10 +140,8 @@ export class TaskComponent extends React.Component {
       if (i == 0 && taskDivs.length > 1) taskDivs[i + 1].focus = true;
       else if (i > 0) taskDivs[i - 1].focus = true;
       taskDivs.splice(i, 1);
-      // console.log(taskDivs)
     }
     if (KeyName == "checked" && taskDivs[i].checked == true ) {
-      // console.log(taskDivs[i])
       if (i == 0 && taskDivs.length > 1) taskDivs[i + 1].focus = true;
       else if (i > 0) taskDivs[i - 1].focus = true;
       taskDivs[i].newlyAdded = true;
@@ -154,10 +152,15 @@ export class TaskComponent extends React.Component {
 
     this.setState({ taskList });
   }
-  setHeight(value, i) {
+  setHeight(value, i,isFromCheckedList = false) {
+    // console.log(value)
     let taskList = this.state.taskList;
+    if(!isFromCheckedList){
     let taskDivs = taskList[this.state.taskListIndex].taskDivs;
-    taskDivs[i].height = value;
+    taskDivs[i].height = value;}
+    else{
+      let checkedDivs = taskList[this.state.taskListIndex].checkedDivs;
+      checkedDivs[i].height = value;}
     this.setState({ taskList });
   }
 
@@ -223,6 +226,7 @@ export class TaskComponent extends React.Component {
           checkedList={this.state.taskList[this.state.taskListIndex].checkedDivs}
           tasksList={this.state.taskList[this.state.taskListIndex].taskDivs}
           clickedTick={(i) => this.uncheckedTask(i)}
+          setHeight={(value,i) => this.setHeight(value, i,true)}
           changeCheckedArray={(array) => {
             let taskList = this.state.taskList;
             let checkedTaskDivs =
