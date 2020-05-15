@@ -97,7 +97,6 @@ export class TaskDiv extends React.Component {
       return this.setState({ icon: "circle" });
   }
   setHeight(e) {
-    console.log(e.clientHeight,e.offsetHeight,e)
     e.style.height = "auto";
     e.style.height = e.scrollHeight + "px";
     if (

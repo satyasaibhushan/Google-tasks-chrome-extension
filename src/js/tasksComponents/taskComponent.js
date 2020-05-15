@@ -32,52 +32,98 @@ export class TaskComponent extends React.Component {
         api.listTasks(ele.id)
         .then(task=>{
           console.log(task)
-          task.forEach(element=>{
-            if(element.status == 'needsAction')
+          let attachToParent= (parentId,title,id,i)=>  {
+           let  parentIndex = task.map(ele=> ele.id).indexOf(parentId)
+            taskListElement.taskDivs.push({checked: false,
+              value:title,
+              focus: false,
+              newlyAdded: false,
+              height: 0,
+              subset:parentIndex,
+              id:id,
+              parentId:this.setParentId(i,taskListElement.taskDivs)
+            })
+          }
+          task.forEach((element,i)=>{
+            if(element.status == 'needsAction' && !element.parent)
           taskListElement.taskDivs.push({checked: false,
             value: element.title,
             focus: false,
             newlyAdded: false,
             height: 0,
-            subset:-1})
+            subset:-1,
+            id:element.id
+          })
+            else if(element.parent){
+              console.log(i)
+              attachToParent(element.parent,element.title,element.id)}
             if(element.status == 'completed')
           taskListElement.checkedDivs.push({checked: true,
             value: element.title,
             focus: false,
             newlyAdded: false,
             height: 0,
-            subset:-1})  
+            subset:-1,
+            id:element.id
+          })  
         })})
         taskList.push(taskListElement)
         this.setState({ taskList })
+        console.log(taskList)
         })})
       this.setState({count:1})
     }
   }
-  addTask(i, value = "",isSubset = false,isBefore = true) {
+ setParentId(i,taskDivs){
+   let parentId;
+     for (let index = i-1 ; index >=0; index--) {
+       if(taskDivs[index].parentId) {parentId=taskDivs[index].parentId }
+       else break
+     }    
+     return parentId;
+  }
+
+  addTask(i, value = "",isSubset = false,isBefore = false) {
     let taskList = this.state.taskList;
     let taskDivs = taskList[this.state.taskListIndex].taskDivs;
     taskDivs.forEach((element) => {
       element.focus = false;
       element.newlyAdded = false;
     });
+    console.log(i)
     if(taskDivs[i-1] && taskDivs[i-1].subset!=-1) isSubset = true
+    if(taskDivs[i] && taskDivs[i].subset!=-1) isSubset = true
     let taskDiv={
       checked: false,
       value: value,
       focus: true,
       newlyAdded: true,
       height: 0,
-      subset:isSubset ? i-1 :-1
+      subset:isSubset ? i-1 :-1,
+      id:'',
     } 
-    if(!isBefore){taskDivs.splice(i-1,1,{checked: false,
+      if(isSubset) {
+        if(this.setParentId(i,taskDivs))
+        taskDiv.parentId = this.setParentId(i,taskDivs)
+        else taskDiv.parentId = i
+      }
+      if(isBefore) taskDiv.focus = false
+      console.log(this.setParentId(i,taskDivs))
+
+    if(isBefore){taskDivs.splice(i-1,1,{checked: false,
       value: '',
-      focus: false,
-      newlyAdded: false,
+      focus: true,
+      newlyAdded: true,
       height: 0,
-      subset:-1})}
+      id:'',
+      subset:-1,
+      // parentId:''
+    })
+    taskDiv.newlyAdded = false
+  } 
     taskDivs.splice(i, 0,taskDiv);
     this.setState({ taskList });
+    console.log(taskList)
   }
 
   checkKeyPress(e, i) {
@@ -89,7 +135,7 @@ export class TaskComponent extends React.Component {
         this.addTask(i,'',true)
       }
       else if(e.target.selectionEnd == 0 && e.target.value !=''){
-        this.addTask(i,e.target.value,false,false)
+        this.addTask(i,e.target.value,false,true)
       }
       else
       this.addTask(i);
