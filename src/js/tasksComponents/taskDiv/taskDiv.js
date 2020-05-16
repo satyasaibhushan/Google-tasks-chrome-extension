@@ -11,6 +11,7 @@ export class TaskDiv extends React.Component {
     this.wholeDiv = React.createRef();
   }
   componentDidUpdate() {
+    // console.log(this.props.taskArrayElement)
     // console.log(this.props.taskArrayElement.height)
     if(this.props.taskArrayElement.height == 0 ) {
       this.setHeight(this.input.current)}
