@@ -4,10 +4,11 @@ import { TaskDiv } from "./taskDiv/taskDiv";
 import { CheckedDivTotal } from "./checkedDivTotal/checkedDivContainer";
 import { TaskListSelector } from "./taskListSelector/taskListSelector";
 import { ReactSortable } from "react-sortablejs";
+import updateTaskList from './functionalities/taskListFunctionalities'
 import "./taskComponent.css";
 
 // import _ from "../tasksComponents/dragTasks/dragTasks"
-import api from "../tasksComponents/tasks.api";
+import api from "./functionalities/tasks.api";
 
 export class TaskComponent extends React.Component {
   constructor() {
@@ -87,191 +88,41 @@ export class TaskComponent extends React.Component {
     }
     return parentId;
   }
-
-  addTask(i, value = "", isMetaPressed = false, isBefore = false) {
-    let taskList = this.state.taskList;
-    let taskDivs = taskList[this.state.taskListIndex].taskDivs;
-    if (taskDivs[i - 1] && taskDivs[i - 1].subset != -1 )
-      isMetaPressed = isMetaPressed ? false : true;
-    else if (taskDivs[i] && taskDivs[i].subset != -1) isMetaPressed = true;
-    console.log(i);
-
-    let taskDiv = {
-      checked: false,
-      value: value,
-      focus: true,
-      newlyAdded: true,
-      height: 0,
-      subset: isMetaPressed ? i - 1 : -1,
-      id: "",
-    };
-    if (isBefore) taskDiv.focus = false;
-    console.log(this.setParentId(i, taskDivs));
-
-
-    if (isMetaPressed) {
-      if (this.setParentId(i, taskDivs))
-        taskDiv.parentId = this.setParentId(i, taskDivs);
-      else taskDiv.parentId = i;
-
-      taskDivs[i-1].children.push(taskDiv)
-    } else {
-      taskDiv.children = []
-      if (isBefore) {
-        taskDivs.splice(i - 1, 1, {
-          checked: false,
-          value: "",
-          focus: true,
-          newlyAdded: true,
-          height: 0,
-          id: "",
-          subset: -1,
-          // parentId:''
-        });
-        taskDiv.newlyAdded = false;
-      }
-      taskDivs.splice(i, 0, taskDiv);
-      this.setState({ taskList });
-      console.log(taskList);
-    }
-  }
-
-  checkKeyPress(e, i,j) {
-    let taskList = this.state.taskList;
-    let taskDivs = taskList[this.state.taskListIndex].taskDivs;
-
-    if (e.keyCode == 13) {
-      e.preventDefault();
-      if (e.metaKey) {
-        this.addTask(i, "", true);
-      } else if (e.target.selectionEnd == 0 && e.target.value != "") {
-        this.addTask(i, e.target.value, false, true);
-      } else this.addTask(i);
-    } else if (e.keyCode == 8 && e.target.value == "") {
-      taskDivs[i - 1].remove = true;
-      e.preventDefault();
-    } else if (e.keyCode == 38 && i != 1 && e.target.selectionEnd == 0)
-      taskDivs[i - 2].focus = true;
-    else if (
-      e.keyCode == 40 &&
-      i != taskDivs.length &&
-      e.target.selectionEnd == e.target.value.length
-    )
-      taskDivs[i].focus = true;
-    else return;
-
-    this.setState({ taskList });
-  }
-
-  checkedTask(i) {
-    let taskList = this.state.taskList;
-    let taskDivs = taskList[this.state.taskListIndex].taskDivs;
-    if (taskDivs[i].value == "") {
-      taskDivs[i].checked = true;
-      taskDivs[i].remove = true;
-
-      console.log("deleted empty task");
-    } else {
-      taskDivs[i].checked = taskDivs[i].checked == true ? false : true;
-      console.log("1 task Completed");
-    }
-    this.setState({ taskList });
-  }
-  uncheckedTask(i) {
-    let taskList = this.state.taskList;
-    let checkedTaskDivs = taskList[this.state.taskListIndex].checkedDivs;
-    checkedTaskDivs[i].unchecked =
-      checkedTaskDivs[i].unchecked == true ? false : true;
-    console.log("1 task marked incomplete");
-    this.setState({ taskList });
-  }
-  modifyTaskAfterAnimation(KeyName, i,j) {
-    console.log(j,'jj')
-    let taskList = this.state.taskList;
-    let taskDivs = taskList[this.state.taskListIndex].taskDivs;
-    let checkedTaskDivs = taskList[this.state.taskListIndex].checkedDivs;
-    if (KeyName == "newlyAdded"){ 
-      if(j==-1)taskDivs[i].newlyAdded = false;
-      else taskDivs[i].children[j].newlyAdded = false;
-    }
-    if (KeyName == "remove") {
-      if(j==-1){
-        console.log('i')
-        if (i == 0 && taskDivs.length > 1) taskDivs[i + 1].focus = true;
-        else if (i > 0) taskDivs[i - 1].focus = true;
-        taskDivs.splice(i, 1);}
-      else{
-        console.log('j')
-        if (j == 0 && taskDivs[i].children.length > 1) taskDivs[i].children[j+1].focus = true;
-        else if (j > 0) taskDivs[i].children[j-1].focus = true;
-        taskDivs[i].children.splice(j, 1);
-      }
-    }
-    if (KeyName == "checked"  ) {
-      if(j==-1 &&taskDivs[i].checked == true){
-        if (i == 0 && taskDivs.length > 1) taskDivs[i + 1].focus = true;
-        else if (i > 0) taskDivs[i - 1].focus = true;
-        taskDivs[i].newlyAdded = true;
-        if (taskDivs[i].value != "") checkedTaskDivs.unshift(taskDivs[i]);
-        taskDivs.splice(i, 1);
-      }
-      else if (j!=-1 && taskDivs[i].children[j].checked == true){
-        if (j == 0 &&taskDivs[i].children.length > 1) taskDivs[i].children[j+1].focus = true;
-        else if (j > 0) taskDivs[i].children[j-1].focus = true;
-        taskDivs[i].children[j].newlyAdded = true;
-        if (taskDivs[i].children[j].value != "") checkedTaskDivs.unshift(taskDivs[i].children[j]);
-        taskDivs[i].children.splice(j, 1);
-      }
-    }
-
-    this.setState({ taskList });
-    console.log(taskList)
-  }
-  setHeight(value, i,j, isFromCheckedList = false) {
-    // console.log(value)
-    let taskList = this.state.taskList;
-    if (!isFromCheckedList) {
-      let taskDivs = taskList[this.state.taskListIndex].taskDivs;
-      if(j==-1)taskDivs[i].height = value;
-      else taskDivs[i].children[j].height = value
-    } else {
-      let checkedDivs = taskList[this.state.taskListIndex].checkedDivs;
-      checkedDivs[i].height = value;
-    }
-    this.setState({ taskList });
-  }
-
+  
   render() {
-
-    let constructTaskDiv =(taskDiv,i,j)=>{
-    return (
+    let constructTaskDiv = (taskDiv, i, j) => {
+      return (
         <TaskDiv
           taskArrayElement={taskDiv}
-          key={j==-1 ? i:(i+1)*100+j}
+          key={j == -1 ? i : (i + 1) * 100 + j}
           changeElement={(value, isFocus) => {
-            if ((value || value === "") && !taskDiv.checked)taskDiv.value = value;
+            if ((value || value === "") && !taskDiv.checked)
+              taskDiv.value = value;
             taskDiv.focus = isFocus;
           }}
-          manageTasks={(e) => this.checkKeyPress(e, i + 1)}
-          clickedTick={() => this.checkedTask(i)}
-          setHeight={(value) => this.setHeight(value, i,j)}
+          manageTasks={(e) => updateTaskList.checkKeyPress(this,e, i + 1,j)}
+          clickedTick={() => updateTaskList.checkedTask(this,i)}
+          setHeight={(value) => updateTaskList.setHeight(this,value, i,j)}
           changeElementKey={(value) =>
-            this.modifyTaskAfterAnimation(value, i,j)
+            updateTaskList.modifyTaskAfterAnimation(this,value, i, j)
           }
           checkedList={false}
         ></TaskDiv>
       );
-    }
+    };
     let allTaskDivs = () => {
       if (this.state.taskListIndex != -1)
         return this.state.taskList[this.state.taskListIndex].taskDivs.map(
           (taskDiv, i) => {
-        return(
-            <div key ={i}>
-              {constructTaskDiv(taskDiv, i,-1)}
-              {/* {console.log(taskDiv.children)} */}
-              {taskDiv.children.map((element,j)=> constructTaskDiv(element, i,j))}
-            </div>)
+            return (
+              <div key={i}>
+                {constructTaskDiv(taskDiv, i, -1)}
+                {/* {console.log(taskDiv.children)} */}
+                {taskDiv.children.map((element, j) =>
+                  constructTaskDiv(element, i, j)
+                )}
+              </div>
+            );
           }
         );
     };
@@ -289,11 +140,11 @@ export class TaskComponent extends React.Component {
           enterNewTask={(e) => {
             if (e.keyCode == 13) {
               e.preventDefault();
-              this.addTask(0, e.target.value);
+              updateTaskList.addTask(this,0,-1, e.target.value);
               e.target.value = "";
             }
           }}
-          plusNewTask={(_) => this.addTask(0)}
+          plusNewTask={(_) => updateTaskList.addTask(this,0,-1)}
         />
         <div
           className="taskDivsContainer"
@@ -307,8 +158,8 @@ export class TaskComponent extends React.Component {
             this.state.taskList[this.state.taskListIndex].checkedDivs
           }
           tasksList={this.state.taskList[this.state.taskListIndex].taskDivs}
-          clickedTick={(i) => this.uncheckedTask(i)}
-          setHeight={(value, i) => this.setHeight(value, i,-1, true)}
+          clickedTick={(i) => updateTaskList.uncheckedTask(this,i)}
+          setHeight={(value, i) => updateTaskList.setHeight(this,value, i, -1, true)}
           changeCheckedArray={(array) => {
             let taskList = this.state.taskList;
             let checkedTaskDivs =
