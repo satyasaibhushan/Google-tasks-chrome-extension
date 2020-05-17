@@ -11,8 +11,21 @@ export class TaskDiv extends React.Component {
     this.wholeDiv = React.createRef();
   }
   componentDidUpdate() {
-    // console.log(this.props.taskArrayElement)
-    // console.log(this.props.taskArrayElement.height)
+    if (
+      this.props.taskArrayElement.subset != -1 &&
+      this.props.taskArrayElement.icon == "tick" &&
+      this.state.icon != "tick"
+    ) {
+      return this.setState({ icon: "tick" });
+    }
+    else if (
+      this.props.taskArrayElement.subset != -1 &&
+      this.props.taskArrayElement.icon == '' &&
+      this.state.icon != 'circle'
+    ) {
+      return this.setState({ icon: "circle" });
+    }
+
     if (this.props.taskArrayElement.height == 0) {
       this.setHeight(this.input.current);
     }
@@ -42,20 +55,6 @@ export class TaskDiv extends React.Component {
     this.setHeight(this.input.current);
     if (this.props.taskArrayElement.focus == true) {
       this.input.current.focus();
-    }
-  }
-  updateTaskIcon() {
-    if (this.state.icon == "circle") {
-      return <div className="taskDivCheck"></div>;
-    }
-    if (this.state.icon == "tick") {
-      return (
-        <img
-          src="../../images/tick.svg"
-          alt="tick sign"
-          className="taskDivTick"
-        />
-      );
     }
   }
   Animation(element, direction, time, delay) {
@@ -91,17 +90,20 @@ export class TaskDiv extends React.Component {
     if (
       this.props.taskArrayElement.checked == true &&
       this.props.checkedList == true
-    )
-      return this.setState({ icon: "tick" });
+    )  return this.setState({ icon: "tick" });
     if (
       this.props.taskArrayElement.unchecked ||
       this.props.taskArrayElement.checked
-    )
-      return;
-    else if (mouseEnter && this.state.icon == "circle")
+    )  return;
+    else if (mouseEnter && this.state.icon == "circle") {
+      if (this.props.taskArrayElement.subset == -1)
+        this.props.hoveredIcon(true);
       return this.setState({ icon: "tick" });
-    else if (!mouseEnter && this.state.icon == "tick")
+    } else if (!mouseEnter && this.state.icon == "tick") {
+      if (this.props.taskArrayElement.subset == -1)
+        this.props.hoveredIcon(false);
       return this.setState({ icon: "circle" });
+    }
   }
   setHeight(e) {
     e.style.height = "auto";
@@ -155,7 +157,7 @@ export class TaskDiv extends React.Component {
           style={{
             transform:
               this.props.taskArrayElement.subset != -1
-                ? !(this.props.checkedList)
+                ? !this.props.checkedList
                   ? "translate(2.3rem,-50%)"
                   : "translate(0,-50%)"
                 : "translate(0,-50%)",
@@ -222,15 +224,15 @@ export class TaskDiv extends React.Component {
               height: this.props ? this.props.taskArrayElement.height - 22 : "",
               transform:
                 this.props.taskArrayElement.subset != -1
-                  ? (!this.props.checkedList
+                  ? !this.props.checkedList
                     ? "translate(2.3rem,-50%)"
-                    : "translate(0,-50%)")
+                    : "translate(0,-50%)"
                   : "translate(0,-50%)",
               width:
                 this.props.taskArrayElement.subset != -1
-                  ? (!this.props.checkedList
+                  ? !this.props.checkedList
                     ? "12.7rem"
-                    : "15rem")
+                    : "15rem"
                   : "15rem",
             }}
           ></textarea>

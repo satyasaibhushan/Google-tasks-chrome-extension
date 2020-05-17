@@ -144,7 +144,7 @@ export default {
         taskDivs[i].newlyAdded = true;
         if (taskDivs[i].value != "") checkedTaskDivs.unshift(taskDivs[i]);
         taskDivs.splice(i, 1);
-      } else if (j != -1 && taskDivs[i].children[j].checked == true) {
+      } else if (j != -1 &&taskDivs[i]&&taskDivs[i].children&& taskDivs[i].children[j].checked == true) {
         if (j == 0 && taskDivs[i].children.length > 1)
           taskDivs[i].children[j + 1].focus = true;
         else if (j > 0) taskDivs[i].children[j - 1].focus = true;
@@ -162,7 +162,10 @@ export default {
     let taskList = taskComponent.state.taskList;
     let taskDivs = taskList[taskComponent.state.taskListIndex].taskDivs;
     if(j==-1){
-    if (taskDivs[i].value == "") {
+        if(taskDivs[i].children && taskDivs[i].children.length>0 ){
+            
+        }
+     if (taskDivs[i].value == "") {
       taskDivs[i].checked = true;
       taskDivs[i].remove = true;
       console.log("deleted empty task");

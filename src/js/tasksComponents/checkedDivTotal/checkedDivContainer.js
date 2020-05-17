@@ -22,7 +22,7 @@ export class CheckedDivTotal extends React.Component {
       checkedArray[i].unchecked = false;
       if(checkedArray[i].parentId){
        let index= tasksArray.map(item=>item.id).indexOf(checkedArray[i].parentId)
-        if(index !=-1) tasksArray[i].children.unshift(checkedArray[i])  
+        if(index !=-1) tasksArray[index].children.unshift(checkedArray[i])  
         else {delete checkedArray[i].parentId
           checkedArray[i].subset = -1
           tasksArray.unshift(checkedArray[i]);}
@@ -57,7 +57,7 @@ export class CheckedDivTotal extends React.Component {
           changeElement={(_) => this.removeClick(i)}
           manageTasks={(_) => console.log(2)}
           clickedTick={(_) => this.props.clickedTick(i)}
-          setHeight={console.log}
+          setHeight={(value)=>this.props.setHeight(value,i)}
           changeElementKey={(value) => this.changeElementKey(value, i)}
           checkedList={true}
         />

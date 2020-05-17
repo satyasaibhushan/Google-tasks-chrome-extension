@@ -106,6 +106,15 @@ export class TaskComponent extends React.Component {
           changeElementKey={(value) =>
             updateTaskList.modifyTaskAfterAnimation(this,value, i, j)
           }
+          hoveredIcon={(isTick)=>{
+            let taskList = this.state.taskList
+            let taskDivs=taskList[this.state.taskListIndex].taskDivs
+            taskDivs[i].icon = isTick ? 'tick' : ''
+            taskDivs[i].children ? taskDivs[i].children.forEach(element => {
+              element.icon = isTick ? 'tick' : ''
+            }): ''
+            this.setState({taskList})
+          }}
           checkedList={false}
         ></TaskDiv>
       );
@@ -118,7 +127,6 @@ export class TaskComponent extends React.Component {
               <div key={i}>
                 {constructTaskDiv(taskDiv, i, -1)}
                 {/* {console.log(taskDiv.children)} */}
-                {console.log(taskDiv.children)}
                 {taskDiv.children ? taskDiv.children.map((element, j) =>
                   constructTaskDiv(element, i, j)
                 ) : ''}
@@ -160,7 +168,7 @@ export class TaskComponent extends React.Component {
           }
           tasksList={this.state.taskList[this.state.taskListIndex].taskDivs}
           clickedTick={(i) => updateTaskList.uncheckedTask(this,i)}
-          // setHeight={(value, i) => updateTaskList.setHeight(this,value, i, -1, true)}
+          setHeight={(value, i) => updateTaskList.setHeight(this,value, i, -1, true)}
           changeCheckedArray={(array) => {
             let taskList = this.state.taskList;
             let checkedTaskDivs =
