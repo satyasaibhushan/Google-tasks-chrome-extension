@@ -101,7 +101,7 @@ export class TaskComponent extends React.Component {
             taskDiv.focus = isFocus;
           }}
           manageTasks={(e) => updateTaskList.checkKeyPress(this,e, i + 1,j)}
-          clickedTick={() => updateTaskList.checkedTask(this,i)}
+          clickedTick={() => updateTaskList.checkedTask(this,i,j)}
           setHeight={(value) => updateTaskList.setHeight(this,value, i,j)}
           changeElementKey={(value) =>
             updateTaskList.modifyTaskAfterAnimation(this,value, i, j)
@@ -118,9 +118,10 @@ export class TaskComponent extends React.Component {
               <div key={i}>
                 {constructTaskDiv(taskDiv, i, -1)}
                 {/* {console.log(taskDiv.children)} */}
-                {taskDiv.children.map((element, j) =>
+                {console.log(taskDiv.children)}
+                {taskDiv.children ? taskDiv.children.map((element, j) =>
                   constructTaskDiv(element, i, j)
-                )}
+                ) : ''}
               </div>
             );
           }
@@ -159,7 +160,7 @@ export class TaskComponent extends React.Component {
           }
           tasksList={this.state.taskList[this.state.taskListIndex].taskDivs}
           clickedTick={(i) => updateTaskList.uncheckedTask(this,i)}
-          setHeight={(value, i) => updateTaskList.setHeight(this,value, i, -1, true)}
+          // setHeight={(value, i) => updateTaskList.setHeight(this,value, i, -1, true)}
           changeCheckedArray={(array) => {
             let taskList = this.state.taskList;
             let checkedTaskDivs =
