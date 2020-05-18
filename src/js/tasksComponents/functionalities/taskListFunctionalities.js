@@ -1,3 +1,7 @@
+import apiManagement from "./apiManagement";
+import api from "./tasks.api";
+import { TaskDiv } from "../taskDiv/taskDiv";
+
 export default {
   //  setTaskList()
 
@@ -23,8 +27,8 @@ export default {
       if (e.metaKey) {
         this.addTask(taskComponent, i, j, "", true);
       } else if (e.target.selectionEnd == 0 && e.target.value != "") {
-        this.addTask(taskComponent, i,j, e.target.value, false, true);
-      } else this.addTask(taskComponent, i,j);
+        this.addTask(taskComponent, i, j, e.target.value, false, true);
+      } else this.addTask(taskComponent, i, j);
     } else if (e.keyCode == 8 && e.target.value == "") {
       if (j == -1) taskDivs[i - 1].remove = true;
       else taskDivs[i - 1].children[j].remove = true;
@@ -73,10 +77,14 @@ export default {
   ) {
     let taskList = taskComponent.state.taskList;
     let taskDivs = taskList[taskComponent.state.taskListIndex].taskDivs;
-    if (taskDivs[i-1]&&taskDivs[i-1].children[j] &&( taskDivs[i-1].children[j].subset != -1))
-        isMetaPressed = isMetaPressed ? false : true;
-    else if (taskDivs[i-1] && taskDivs[i-1].children.length>0)
-        isMetaPressed = isMetaPressed ? false : true;
+    if (
+      taskDivs[i - 1] &&
+      taskDivs[i - 1].children[j] &&
+      taskDivs[i - 1].children[j].subset != -1
+    )
+      isMetaPressed = isMetaPressed ? false : true;
+    else if (taskDivs[i - 1] && taskDivs[i - 1].children.length > 0)
+      isMetaPressed = isMetaPressed ? false : true;
 
     let taskDiv = {
       checked: false,
@@ -89,16 +97,23 @@ export default {
     };
     if (isBefore) taskDiv.focus = false;
 
-    if (isMetaPressed) {
+    if (isMetaPressed && !isBefore) {
       if (taskComponent.setParentId(i, taskDivs))
         taskDiv.parentId = taskComponent.setParentId(i, taskDivs);
       else taskDiv.parentId = i;
 
-      taskDivs[i - 1].children.splice(j+1,0,taskDiv);
+      // if (isBefore) {
+      //   taskDiv.value = "";
+      //   taskDivs[i - 1].children.splice(j, 0, taskDiv);
+      //   taskDivs[i - 1].children[j + 1].focus = false;
+      //   taskDivs[i - 1].children[j].focus = true;
+      // }
+      // api.insertTask({taskListId:taskList.id,title:})
+       taskDivs[i - 1].children.splice(j + 1, 0, taskDiv);
     } else {
       taskDiv.children = [];
       if (isBefore) {
-        taskDivs.splice(i - 1, 1, {
+        taskDiv = {
           checked: false,
           value: "",
           focus: true,
@@ -106,14 +121,24 @@ export default {
           height: 0,
           id: "",
           subset: -1,
+          children: [],
           // parentId:''
-        });
-        taskDiv.newlyAdded = false;
+        }
+        if(j!=-1){
+          taskDiv.subset = i-1,
+          delete taskDiv.children,
+          taskDiv.parentId = i-1
+           taskDivs[i-1].children[j].focus= false
+           taskDivs[i-1].children.splice(j,0,taskDiv)}
+        else {
+          taskDivs[i-1].focus = false
+          taskDivs.splice(i - 1, 0,taskDiv)}
+        // taskDiv.newlyAdded = false;
       }
-      taskDivs.splice(i, 0, taskDiv);
+      else taskDivs.splice(i, 0, taskDiv);
       taskComponent.setState({ taskList });
     }
-    console.log(taskList)
+    console.log(taskList);
   },
 
   modifyTaskAfterAnimation(taskComponent, KeyName, i, j) {
@@ -129,11 +154,19 @@ export default {
       if (j == -1) {
         if (i == 0 && taskDivs.length > 1) taskDivs[i + 1].focus = true;
         else if (i > 0) taskDivs[i - 1].focus = true;
+        api.deleteTask(
+          taskList[taskComponent.state.taskListIndex].id,
+          taskDivs[i].id
+        );
         taskDivs.splice(i, 1);
       } else {
         if (j == 0 && taskDivs[i].children.length > 1)
           taskDivs[i].children[j + 1].focus = true;
         else if (j > 0) taskDivs[i].children[j - 1].focus = true;
+        api.deleteTask(
+          taskList[taskComponent.state.taskListIndex].id,
+          taskDivs[i].children[j].id
+        );
         taskDivs[i].children.splice(j, 1);
       }
     }
@@ -144,7 +177,12 @@ export default {
         taskDivs[i].newlyAdded = true;
         if (taskDivs[i].value != "") checkedTaskDivs.unshift(taskDivs[i]);
         taskDivs.splice(i, 1);
-      } else if (j != -1 &&taskDivs[i]&&taskDivs[i].children&& taskDivs[i].children[j].checked == true) {
+      } else if (
+        j != -1 &&
+        taskDivs[i] &&
+        taskDivs[i].children &&
+        taskDivs[i].children[j].checked == true
+      ) {
         if (j == 0 && taskDivs[i].children.length > 1)
           taskDivs[i].children[j + 1].focus = true;
         else if (j > 0) taskDivs[i].children[j - 1].focus = true;
@@ -158,32 +196,30 @@ export default {
     taskComponent.setState({ taskList });
   },
 
-  checkedTask(taskComponent, i,j) {
+  checkedTask(taskComponent, i, j) {
     let taskList = taskComponent.state.taskList;
     let taskDivs = taskList[taskComponent.state.taskListIndex].taskDivs;
-    if(j==-1){
-        if(taskDivs[i].children && taskDivs[i].children.length>0 ){
-            
-        }
-     if (taskDivs[i].value == "") {
-      taskDivs[i].checked = true;
-      taskDivs[i].remove = true;
-      console.log("deleted empty task");
-    }
-     else {
-      taskDivs[i].checked = taskDivs[i].checked == true ? false : true;
-      console.log("1 task Completed");
-    }}
-    else {
-    if (taskDivs[i].children[j].value == "") {
+    if (j == -1) {
+      if (taskDivs[i].children && taskDivs[i].children.length > 0) {
+      }
+      if (taskDivs[i].value == "") {
+        taskDivs[i].checked = true;
+        taskDivs[i].remove = true;
+        console.log("deleted empty task");
+      } else {
+        taskDivs[i].checked = taskDivs[i].checked == true ? false : true;
+        console.log("1 task Completed");
+      }
+    } else {
+      if (taskDivs[i].children[j].value == "") {
         taskDivs[i].children[j].checked = true;
         taskDivs[i].children[j].remove = true;
         console.log("deleted empty task");
-        }
-    else {
-        taskDivs[i].children[j].checked = taskDivs[i].checked == true ? false : true;
+      } else {
+        taskDivs[i].children[j].checked =
+          taskDivs[i].checked == true ? false : true;
         console.log("1 task Completed");
-        }    
+      }
     }
     taskComponent.setState({ taskList });
   },

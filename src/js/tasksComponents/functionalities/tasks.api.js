@@ -1,20 +1,3 @@
-function listTaskLists() {
-    gapi.client.tasks.tasklists.list({
-        'maxResults': 10
-    }).then(function(response) {
-      var taskLists = response.result.items;
-      if (taskLists && taskLists.length > 0) {
-        for (var i = 0; i < taskLists.length; i++) {
-          var taskList = taskLists[i];
-        }
-        
-      } else {
-        appendPre('No task lists found.');
-      }
-    });
-  }
-
-  
   export default {
     authorize(params) {
       return new Promise((resolve, reject) => {

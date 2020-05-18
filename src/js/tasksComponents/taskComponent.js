@@ -41,8 +41,11 @@ export class TaskComponent extends React.Component {
           taskArrayElement={taskDiv}
           key={j == -1 ? i : (i + 1) * 100 + j}
           changeElement={(value, isFocus) => {
-            if ((value || value === "") && !taskDiv.checked)
-              taskDiv.value = value;
+            if ((value || value === "") && !taskDiv.checked){
+              let taskList = this.state.taskList[this.state.taskListIndex]
+             if(taskList.id) 
+             api.updateTask({taskListId:taskList.id,taskId:taskDiv.id,title:value})
+              taskDiv.value = value;}
             taskDiv.focus = isFocus;
           }}
           manageTasks={(e) => updateTaskList.checkKeyPress(this,e, i + 1,j)}
