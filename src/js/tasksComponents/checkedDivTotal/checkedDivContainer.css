@@ -17,6 +17,7 @@
     color: rgb(95,98,104);
     transition: all 0.5s;
     top: -1rem;
+    border-bottom: 1px solid rgb(224,224,224);
   }
   .chekedDivsWrapper.opened{
     top: 0;

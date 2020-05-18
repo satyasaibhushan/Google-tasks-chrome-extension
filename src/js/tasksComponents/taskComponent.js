@@ -5,6 +5,7 @@ import { CheckedDivTotal } from "./checkedDivTotal/checkedDivContainer";
 import { TaskListSelector } from "./taskListSelector/taskListSelector";
 import { ReactSortable } from "react-sortablejs";
 import updateTaskList from './functionalities/taskListFunctionalities'
+import manageApi from './functionalities/apiManagement'
 import "./taskComponent.css";
 
 // import _ from "../tasksComponents/dragTasks/dragTasks"
@@ -21,63 +22,7 @@ export class TaskComponent extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.props.gapiAvailable && this.state.count == 0) {
-      api.listTaskLists().then((x) => {
-        x.forEach((ele) => {
-          let taskList = this.state.taskList;
-          let taskListElement = {
-            name: ele.title,
-            taskDivs: [],
-            checkedDivs: [],
-          };
-          api.listTasks(ele.id).then((task) => {
-            console.log(task);
-            let attachToParent = (parentId, title, id, i) => {
-              let parentIndex = task.map((ele) => ele.id).indexOf(parentId);
-              taskListElement.taskDivs.push({
-                checked: false,
-                value: title,
-                focus: false,
-                newlyAdded: false,
-                height: 0,
-                subset: parentIndex,
-                id: id,
-                parentId: parentId,
-              });
-            };
-            task.forEach((element, i) => {
-              if (element.status == "needsAction" && !element.parent)
-                taskListElement.taskDivs.push({
-                  checked: false,
-                  value: element.title,
-                  focus: false,
-                  newlyAdded: false,
-                  height: 0,
-                  subset: -1,
-                  id: element.id,
-                });
-              else if (element.parent) {
-                attachToParent(element.parent, element.title, element.id);
-              }
-              if (element.status == "completed")
-                taskListElement.checkedDivs.push({
-                  checked: true,
-                  value: element.title,
-                  focus: false,
-                  newlyAdded: false,
-                  height: 0,
-                  subset: -1,
-                  id: element.id,
-                });
-            });
-          });
-          taskList.push(taskListElement);
-          this.setState({ taskList });
-          console.log(taskList);
-        });
-      });
-      this.setState({ count: 1 });
-    }
+    manageApi.showAll(this,api)
   }
   setParentId(i, taskDivs) {
     let parentId;
