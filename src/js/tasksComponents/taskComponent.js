@@ -24,15 +24,6 @@ export class TaskComponent extends React.Component {
   componentDidUpdate() {
     manageApi.showAll(this,api)
   }
-  setParentId(i, taskDivs) {
-    let parentId;
-    for (let index = i - 1; index >= 0; index--) {
-      if (taskDivs[index].parentId) {
-        parentId = taskDivs[index].parentId;
-      } else break;
-    }
-    return parentId;
-  }
   
   render() {
     let constructTaskDiv = (taskDiv, i, j) => {
@@ -44,7 +35,7 @@ export class TaskComponent extends React.Component {
             if ((value || value === "") && !taskDiv.checked){
               let taskList = this.state.taskList[this.state.taskListIndex]
              if(taskList.id) 
-             api.updateTask({taskListId:taskList.id,taskId:taskDiv.id,title:value})
+              if(taskDiv.id!='')api.updateTask({taskListId:taskList.id,taskId:taskDiv.id,title:value})
               taskDiv.value = value;}
             taskDiv.focus = isFocus;
           }}
@@ -74,7 +65,6 @@ export class TaskComponent extends React.Component {
             return (
               <div key={i}>
                 {constructTaskDiv(taskDiv, i, -1)}
-                {/* {console.log(taskDiv.children)} */}
                 {taskDiv.children ? taskDiv.children.map((element, j) =>
                   constructTaskDiv(element, i, j)
                 ) : ''}
@@ -107,7 +97,6 @@ export class TaskComponent extends React.Component {
           className="taskDivsContainer"
           style={{ paddingBottom: "1rem", flex: "1 0 auto" }}
         >
-          {/* {console.log(allTaskDivs())} */}
           {allTaskDivs()}
         </div>
         <CheckedDivTotal
@@ -115,6 +104,7 @@ export class TaskComponent extends React.Component {
             this.state.taskList[this.state.taskListIndex].checkedDivs
           }
           tasksList={this.state.taskList[this.state.taskListIndex].taskDivs}
+          taskList={this.state.taskList[this.state.taskListIndex]}
           clickedTick={(i) => updateTaskList.uncheckedTask(this,i)}
           setHeight={(value, i) => updateTaskList.setHeight(this,value, i, -1, true)}
           changeCheckedArray={(array) => {

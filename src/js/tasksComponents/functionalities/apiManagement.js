@@ -39,40 +39,47 @@ export default {
                 }
               });
               return task;
-            })
-            .then((task) => {
-              task.forEach((element, i) => {
+            }).then((task) => {
+                task.forEach((element, i) => {
                 if (element.parent && element.status != "completed") {
-                  {
-                    let parentIndex = taskListElement.taskDivs
-                      .map((ele) => ele.id)
-                      .indexOf(element.parent);
-                      taskListElement.taskDivs[parentIndex].children.push(
-                        this.newTask(
-                          false,
-                          element.title,
-                          parentIndex,
-                          element.id,
-                          element.parent
-                        )
-                      );
+                    {
+                      let parentIndex = taskListElement.taskDivs
+                        .map((ele) => ele.id)
+                        .indexOf(element.parent);
+                        taskListElement.taskDivs[parentIndex].children.push(
+                          this.newTask(
+                            false,
+                            element.title,
+                            parentIndex,
+                            element.id,
+                            element.parent
+                          )
+                        );
+                    }
                   }
-                } else if (element.status == "completed")
-                  taskListElement.checkedDivs.push(
-                    this.newTask(
-                      true,
-                      element.title,
-                      -1,
-                      element.id,
-                      element.parent ? element.parent : ""
-                    )
-                  );
+              })
+              return task;
+            }).then((task) => {
+                task = task.filter(ele=> {if(ele.completed) return true;
+                    else return false
+                }).sort(function(a, b){return new Date(b.completed).getTime() -new Date(a.completed).getTime()})
+                task.forEach((element, i) => {
+                  if (element.status == "completed")
+                    taskListElement.checkedDivs.push(
+                      this.newTask(
+                        true,
+                        element.title,
+                        -1,
+                        element.id,
+                        element.parent ? element.parent : ""
+                      )
+                    );
+                });
               });
-            });
           taskList.push(taskListElement);
           taskComponent.setState({ taskList });
         });
-      });
+      }).then();
       taskComponent.setState({ count: 1 });
     }
   },

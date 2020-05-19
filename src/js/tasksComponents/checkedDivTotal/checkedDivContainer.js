@@ -1,6 +1,7 @@
 import React from "react";
 import "./checkedDivContainer.css";
 import { TaskDiv } from "../taskDiv/taskDiv";
+import api from '../functionalities/tasks.api';
 
 export class CheckedDivTotal extends React.Component {
   constructor(props) {
@@ -14,14 +15,22 @@ export class CheckedDivTotal extends React.Component {
   changeElementKey(keyName, i) {
     let checkedArray = this.props.checkedList;
     let tasksArray = this.props.tasksList;
+    let taskList = this.props.taskList
     if (keyName == "newlyAdded" && checkedArray[i].newlyAdded == true)
       checkedArray[i].newlyAdded = false;
     if (keyName == "unchecked" && checkedArray[i].unchecked == true) {
       checkedArray[i].newlyAdded = true;
       checkedArray[i].checked = false;
       checkedArray[i].unchecked = false;
+      api.updateTask({
+        taskListId: taskList.id,
+        taskId:checkedArray[i].id,
+        title:checkedArray[i].value,
+        status:'needsAction',
+      })
       if(checkedArray[i].parentId){
        let index= tasksArray.map(item=>item.id).indexOf(checkedArray[i].parentId)
+       
         if(index !=-1) {
           checkedArray[i].subset =index
           tasksArray[index].children.unshift(checkedArray[i]) 
@@ -29,9 +38,8 @@ export class CheckedDivTotal extends React.Component {
         else {delete checkedArray[i].parentId
           checkedArray[i].subset = -1
           tasksArray.unshift(checkedArray[i]);}
-
       }
-     else  tasksArray.unshift(checkedArray[i]);
+     else tasksArray.unshift(checkedArray[i]);
       checkedArray.splice(i, 1);
     }
     this.props.changeCheckedArray(checkedArray);
@@ -90,7 +98,6 @@ export class CheckedDivTotal extends React.Component {
             display: this.state.opened ? "block" : "none",
          }}
         >
-          {/* {this.checkedDivs.current ? console.log(this.checkedDivs.current.clientHeight) : ''} */}
           {this.allCheckedDivs(this.props.checkedList)}
         </div>
       </div>

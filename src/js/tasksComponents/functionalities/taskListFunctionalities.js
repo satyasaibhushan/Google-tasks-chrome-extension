@@ -98,18 +98,21 @@ export default {
     if (isBefore) taskDiv.focus = false;
 
     if (isMetaPressed && !isBefore) {
-      if (taskComponent.setParentId(i, taskDivs))
-        taskDiv.parentId = taskComponent.setParentId(i, taskDivs);
-      else taskDiv.parentId = i;
-
-      // if (isBefore) {
-      //   taskDiv.value = "";
-      //   taskDivs[i - 1].children.splice(j, 0, taskDiv);
-      //   taskDivs[i - 1].children[j + 1].focus = false;
-      //   taskDivs[i - 1].children[j].focus = true;
-      // }
-      // api.insertTask({taskListId:taskList.id,title:})
-       taskDivs[i - 1].children.splice(j + 1, 0, taskDiv);
+      if (taskDivs[i - 1].id != "") {
+        taskDiv.parentId = taskDivs[i - 1].id;
+        if (taskList[taskComponent.state.taskListIndex].id)
+          api
+            .insertTask({
+              taskListId: taskList[taskComponent.state.taskListIndex].id,
+              title: "",
+              parent: taskDivs[i - 1].id,
+              previous: taskDivs[i - 1].children[j]
+                ? taskDivs[i - 1].children[j].id
+                : "",
+            })
+            .then((res) => (taskDiv.id = res.id));
+      } else taskDiv.parentId = i;
+      taskDivs[i - 1].children.splice(j + 1, 0, taskDiv);
     } else {
       taskDiv.children = [];
       if (isBefore) {
@@ -122,20 +125,46 @@ export default {
           id: "",
           subset: -1,
           children: [],
-          // parentId:''
+        };
+        if (j != -1) {
+          (taskDiv.subset = i - 1),
+            delete taskDiv.children,
+            (taskDiv.parentId = i - 1);
+          taskDivs[i - 1].children[j].focus = false;
+          api
+            .insertTask({
+              taskListId: taskList[taskComponent.state.taskListIndex].id,
+              title: "",
+              parent: taskDivs[i - 1].id,
+              previous: taskDivs[i - 1].children[j-1]
+                ? taskDivs[i - 1].children[j-1].id
+                : "",
+            })
+            .then((res) => (taskDiv.id = res.id));
+          taskDivs[i - 1].children.splice(j, 0, taskDiv);
+        } else {
+          taskDivs[i - 1].focus = false;
+          api
+            .insertTask({
+              taskListId: taskList[taskComponent.state.taskListIndex].id,
+              title: "",
+              previous: taskDivs[i - 2] ? taskDivs[i - 2].id : "",
+            })
+            .then((res) => (taskDiv.id = res.id));
+          taskDivs.splice(i - 1, 0, taskDiv);
         }
-        if(j!=-1){
-          taskDiv.subset = i-1,
-          delete taskDiv.children,
-          taskDiv.parentId = i-1
-           taskDivs[i-1].children[j].focus= false
-           taskDivs[i-1].children.splice(j,0,taskDiv)}
-        else {
-          taskDivs[i-1].focus = false
-          taskDivs.splice(i - 1, 0,taskDiv)}
-        // taskDiv.newlyAdded = false;
+      } else {
+        if (taskList[taskComponent.state.taskListIndex].id)
+          api
+            .insertTask({
+              taskListId: taskList[taskComponent.state.taskListIndex].id,
+              title: "",
+              previous: taskDivs[i - 1] ? taskDivs[i - 1].id : "",
+            })
+            .then((res) => (taskDiv.id = res.id));
+        taskDivs.splice(i, 0, taskDiv);
       }
-      else taskDivs.splice(i, 0, taskDiv);
+
       taskComponent.setState({ taskList });
     }
     console.log(taskList);
@@ -176,6 +205,12 @@ export default {
         else if (i > 0) taskDivs[i - 1].focus = true;
         taskDivs[i].newlyAdded = true;
         if (taskDivs[i].value != "") checkedTaskDivs.unshift(taskDivs[i]);
+        api.updateTask({
+          taskListId: taskList[taskComponent.state.taskListIndex].id,
+          taskId:taskDivs[i].id,
+          title:taskDivs[i].value,
+          status:'completed',
+        })
         taskDivs.splice(i, 1);
       } else if (
         j != -1 &&
@@ -187,8 +222,15 @@ export default {
           taskDivs[i].children[j + 1].focus = true;
         else if (j > 0) taskDivs[i].children[j - 1].focus = true;
         taskDivs[i].children[j].newlyAdded = true;
-        if (taskDivs[i].children[j].value != "")
-          checkedTaskDivs.unshift(taskDivs[i].children[j]);
+        if (taskDivs[i].children[j].value != ""){
+          
+          api.updateTask({
+            taskListId: taskList[taskComponent.state.taskListIndex].id,
+            taskId:taskDivs[i].children[j].id,
+            title:taskDivs[i].children[j].value,
+            status:'completed',
+          })
+          checkedTaskDivs.unshift(taskDivs[i].children[j]);}
         taskDivs[i].children.splice(j, 1);
       }
     }
