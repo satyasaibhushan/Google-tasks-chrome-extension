@@ -1,6 +1,7 @@
 .taskListSelector {
     position: relative;
     font-family: Arial;
+    display: flex;
   }
   
   .taskListSelector select {
@@ -8,10 +9,10 @@
   }
   
   .select-selected:after {
-    position: absolute;
+    position: relative;
     content: "";
-    top: 14px;
-    right: 60%;
+    top: 12px;
+    left:5%;
     /* transform: translate(40px,2px); */
     width: 0;
     height: 0;
@@ -21,8 +22,36 @@
   
   .select-selected.select-arrow-active:after {
     border-color: transparent transparent rgba(33,34,37,0.7) transparent;
-    top: 7px;
+    top: -10px;
   }
+  .taskListIcon{
+    height:2.5rem;
+    width:2.5rem;
+    position: absolute;
+    right:5%;
+    top:1%;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .taskListIcon:hover {
+    background-color: rgba(163, 159, 159, 0.171);
+  }
+  .taskListIcon:active{
+    background-color: rgba(163, 159, 159, 0.37);
+  }
+  .taskListIcon:after {
+    content: '\2807';
+    font-size: 1.8em;
+    color: #2e2e2e;
+    transform: translate(20%,7%);
+
+   }
+   .taskListSelector:after :hover{
+     background-color: rgb(43, 31, 15);
+   }
   
   .select-items div,.select-selected {
     width: 100%;
@@ -31,7 +60,7 @@
     cursor: pointer;
   }
   .select-selected {
-    width: 50%;  
+    width: 65%;  
     /* background-color: DodgerBlue; */
   }
   
@@ -46,6 +75,12 @@
     z-index: 99;
     border-radius: 10px;
     box-shadow: 0.1rem 0.1rem 0.2rem 0.05rem rgba(121, 119, 119, 0.384) ;
+  }
+  .selectedListIcon{
+    height:1rem;
+    vertical-align: middle;
+    position: absolute;
+    right:1.5rem;
   }
   
   .select-hide {

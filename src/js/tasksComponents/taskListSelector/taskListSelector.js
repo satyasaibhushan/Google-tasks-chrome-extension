@@ -41,6 +41,11 @@ export class TaskListSelector extends React.Component {
           h.click();
         });
         b.appendChild(c);
+        if(j==this.props.selectedList+1){
+          let tick = document.createElement('img')
+          tick.src = '../../images/tick.svg'
+          tick.className = 'selectedListIcon'
+          c.append(tick)}
       }
       x[i].appendChild(b);
       a.addEventListener("click", function (e) {
@@ -88,8 +93,8 @@ export class TaskListSelector extends React.Component {
 
   render() {
     return (
-      <div className="taskListSelector">
-        <div>
+      <div  style={{height:'2rem'}}>
+        <div className="taskListSelector">
           <select
             id="taskListFlow"
             onChange={(e) =>
@@ -108,6 +113,7 @@ export class TaskListSelector extends React.Component {
             ))}
           </select>
         </div>
+        <div className='taskListIcon'></div>
       </div>
     );
   }
