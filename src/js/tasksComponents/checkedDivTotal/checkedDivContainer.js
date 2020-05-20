@@ -59,6 +59,7 @@ export class CheckedDivTotal extends React.Component {
   }
 
   allCheckedDivs(checkedList) {
+    if(this.props.taskList!='')
     return checkedList.map((checkedItem, i) => {
       return (
         <TaskDiv

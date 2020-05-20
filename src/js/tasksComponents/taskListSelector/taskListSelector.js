@@ -24,8 +24,8 @@ export class TaskListSelector extends React.Component {
         c.addEventListener("click", function (e) {
           props.selectedOption(props.listNames.indexOf(this.innerHTML));
           var y, i, k, s, h;
-          s = this.parentNode.parentNode.getElementsByTagName("select")[0];
-          h = this.parentNode.previousSibling;
+          s = this.parentNode.getElementsByTagName("select");
+          h = this.parentNode;
           for (i = 0; i < s.length; i++) {
             if (s.options[i].innerHTML == this.innerHTML) {
               s.selectedIndex = i;

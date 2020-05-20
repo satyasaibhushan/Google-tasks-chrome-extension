@@ -15,8 +15,8 @@ export class TaskComponent extends React.Component {
   constructor() {
     super();
     this.state = {
-      taskList: [{ name: "List 1", taskDivs: [], checkedDivs: [] }],
-      taskListIndex: 0,
+      taskList: [],
+      taskListIndex: -1,
       count: 0,
     };
   }
@@ -101,10 +101,10 @@ export class TaskComponent extends React.Component {
         </div>
         <CheckedDivTotal
           checkedList={
-            this.state.taskList[this.state.taskListIndex].checkedDivs
+            this.state.taskListIndex==-1?'': this.state.taskList[this.state.taskListIndex].checkedDivs
           }
-          tasksList={this.state.taskList[this.state.taskListIndex].taskDivs}
-          taskList={this.state.taskList[this.state.taskListIndex]}
+          tasksList={this.state.taskListIndex==-1?'':this.state.taskList[this.state.taskListIndex].taskDivs}
+          taskList={this.state.taskListIndex==-1?'':this.state.taskList[this.state.taskListIndex]}
           clickedTick={(i) => updateTaskList.uncheckedTask(this,i)}
           setHeight={(value, i) => updateTaskList.setHeight(this,value, i, -1, true)}
           changeCheckedArray={(array) => {
