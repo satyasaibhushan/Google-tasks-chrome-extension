@@ -204,13 +204,17 @@ export default {
         if (i == 0 && taskDivs.length > 1) taskDivs[i + 1].focus = true;
         else if (i > 0) taskDivs[i - 1].focus = true;
         taskDivs[i].newlyAdded = true;
-        if (taskDivs[i].value != "") checkedTaskDivs.unshift(taskDivs[i]);
+        if (taskDivs[i].value != "") {
         api.updateTask({
           taskListId: taskList[taskComponent.state.taskListIndex].id,
           taskId:taskDivs[i].id,
           title:taskDivs[i].value,
           status:'completed',
         })
+        checkedTaskDivs.unshift(taskDivs[i]);
+      }
+      else if(taskDivs[i].value == "")
+       api.deleteTask(taskList[taskComponent.state.taskListIndex].id,taskDivs[i].id,)
         taskDivs.splice(i, 1);
       } else if (
         j != -1 &&

@@ -14,7 +14,10 @@ export class TaskListSelector extends React.Component {
       selElmnt = x[i].getElementsByTagName("select")[0];
       a = document.createElement("DIV");
       a.setAttribute("class", "select-selected");
-      a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+      let listSelectedText= document.createElement("span")
+      // listSelectedText.setAttribute('style','height')
+      listSelectedText.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+      a.appendChild(listSelectedText)
       x[i].appendChild(a);
       b = document.createElement("DIV");
       b.setAttribute("class", "select-items select-hide");

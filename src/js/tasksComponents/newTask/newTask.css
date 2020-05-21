@@ -11,6 +11,7 @@
     top: 50%;
     transform: translate(0,-50%);
     margin:0 1rem;
+    user-select: none;
 }
 .textAreaNewTask{
     position: relative;
@@ -24,9 +25,12 @@
     padding: 0 1rem 0 0.5rem;
     border-radius: 20px;
 }
+.textAreaNewTask::placeholder{
+    user-select: none;
+}
 .textAreaNewTask:hover::placeholder,.textAreaNewTask:focus::placeholder{
     /* background-color: rgba(212, 211, 211, 0.178); */
-    color:rgba(0, 0, 0, 0.719)
+    color:rgba(0, 0, 0, 0.719);
 }
 .newTaskImgContainer{
     transition: all 0.5s;

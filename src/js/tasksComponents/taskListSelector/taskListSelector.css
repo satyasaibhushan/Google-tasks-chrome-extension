@@ -2,6 +2,7 @@
     position: relative;
     font-family: Arial;
     display: flex;
+    user-select: none;
   }
   
   .taskListSelector select {
@@ -11,18 +12,19 @@
   .select-selected:after {
     position: relative;
     content: "";
-    top: 12px;
-    left:5%;
-    /* transform: translate(40px,2px); */
-    width: 0;
-    height: 0;
+    width: 8px;
+    height: 8px;
     border: 6px solid transparent;
     border-color: rgba(33,34,37,0.7) transparent transparent transparent;
+    cursor: pointer;
   }
   
   .select-selected.select-arrow-active:after {
     border-color: transparent transparent rgba(33,34,37,0.7) transparent;
-    top: -10px;
+    top: -22px;
+  }
+  .select-selected.select-arrow-active{
+    background-color:rgba(163, 159, 159, 0.171);
   }
   .taskListIcon{
     height:2.5rem;
@@ -53,15 +55,27 @@
      background-color: rgb(43, 31, 15);
    }
   
-  .select-items div,.select-selected {
-    width: 100%;
+  .select-items div,.select-selected span {
+    min-width: 0;
+    max-width: 100%;
     color: rgba(33,34,37,0.7);
     padding: 8px 16px;
     cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    padding-right: 2rem;
   }
   .select-selected {
-    width: 65%;  
-    /* background-color: DodgerBlue; */
+    position: relative;
+    max-width: 55%;  
+    margin:0 1rem;
+    padding: 0 1rem 0 0;
+    border-radius: 7px;
+  }
+  .select-selected span{
+        display: inline-block;
+        padding-right: 0.5rem;
   }
   
   
@@ -80,7 +94,7 @@
     height:1rem;
     vertical-align: middle;
     position: absolute;
-    right:1.5rem;
+    right:1rem;
   }
   
   .select-hide {
