@@ -99,6 +99,7 @@ textarea {
     overflow: hidden;
     min-height: 2rem;
     max-height: 4.4rem;
+    background-color:transparent;
 }
 
 

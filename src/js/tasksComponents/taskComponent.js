@@ -6,6 +6,7 @@ import { TaskListSelector } from "./taskListSelector/taskListSelector";
 import { ReactSortable } from "react-sortablejs";
 import updateTaskList from './functionalities/taskListFunctionalities'
 import manageApi from './functionalities/apiManagement'
+import Modal from './modal/modal'
 import "./taskComponent.css";
 
 // import _ from "../tasksComponents/dragTasks/dragTasks"
@@ -18,6 +19,7 @@ export class TaskComponent extends React.Component {
       taskList: [],
       taskListIndex: -1,
       count: 0,
+      isModalOpen:false
     };
   }
 
@@ -86,6 +88,7 @@ export class TaskComponent extends React.Component {
           selectedOption={(index) => {
             if (index != -1) this.setState({ taskListIndex: index });
           }}
+          clickedOptions={_=>this.setState({isModalOpen:!this.state.isModalOpen})}
         />
         <Newtask
           enterNewTask={(e) => {
@@ -96,6 +99,13 @@ export class TaskComponent extends React.Component {
             }
           }}
           plusNewTask={(_) => updateTaskList.addTask(this,0,-1)}
+        />
+        <Modal
+               text={'Hello there! Testing header'}
+               inputValue={"Can't change betterluck next time hi hello aklss asf tjhdgh"}
+               isInput={false}
+               isOpened={this.state.isModalOpen}
+               clickedClose={_=>this.setState({isModalOpen:!this.state.isModalOpen})}
         />
         <div
           className="taskDivsContainer"

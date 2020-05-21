@@ -116,7 +116,7 @@ export class TaskListSelector extends React.Component {
             ))}
           </select>
         </div>
-        <div className='taskListIcon'></div>
+        <div className='taskListIcon' onClick={_=>this.props.clickedOptions()}></div>
       </div>
     );
   }

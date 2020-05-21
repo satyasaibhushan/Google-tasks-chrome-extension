@@ -16,7 +16,6 @@ export class TaskDiv extends React.Component {
       this.props.taskArrayElement.icon == '' &&
       this.state.icon != 'circle'
     ) {
-      console.log(2,this.state.icon)
        this.setState({ icon: "circle" });
     }
     else if (
@@ -24,7 +23,6 @@ export class TaskDiv extends React.Component {
       this.props.taskArrayElement.icon == "tick" &&
       this.state.icon != "tick"
     ) {
-      console.log(1)
       this.setState({ icon: "tick" });
     }
 
@@ -44,7 +42,7 @@ export class TaskDiv extends React.Component {
       this.props.taskArrayElement.checked == true &&
       this.props.checkedList != true
     )
-      this.removeAfterAnimation(this.wholeDiv.current, "checked", 0.25, 0.2);
+      this.removeAfterAnimation(this.wholeDiv.current, "checked", 0.35, 0.2);
     else if (this.props.taskArrayElement.remove == true)
       this.removeAfterAnimation(this.wholeDiv.current, "remove", 0.3, 0.2);
     if (
