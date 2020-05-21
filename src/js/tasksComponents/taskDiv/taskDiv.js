@@ -13,17 +13,19 @@ export class TaskDiv extends React.Component {
   componentDidUpdate() {
     if (
       this.props.taskArrayElement.subset != -1 &&
-      this.props.taskArrayElement.icon == "tick" &&
-      this.state.icon != "tick"
-    ) {
-      return this.setState({ icon: "tick" });
-    }
-    else if (
-      this.props.taskArrayElement.subset != -1 &&
       this.props.taskArrayElement.icon == '' &&
       this.state.icon != 'circle'
     ) {
-      return this.setState({ icon: "circle" });
+      console.log(2,this.state.icon)
+       this.setState({ icon: "circle" });
+    }
+    else if (
+      this.props.taskArrayElement.subset != -1 &&
+      this.props.taskArrayElement.icon == "tick" &&
+      this.state.icon != "tick"
+    ) {
+      console.log(1)
+      this.setState({ icon: "tick" });
     }
 
     if (this.props.taskArrayElement.height == 0) {
@@ -95,12 +97,11 @@ export class TaskDiv extends React.Component {
       this.props.taskArrayElement.unchecked ||
       this.props.taskArrayElement.checked
     )  return;
-    else if (mouseEnter && this.state.icon == "circle") {
-      if (this.props.taskArrayElement.subset == -1)
+    else if (mouseEnter && this.state.icon == "circle" ) {
         this.props.hoveredIcon(true);
       return this.setState({ icon: "tick" });
-    } else if (!mouseEnter && this.state.icon == "tick") {
-      if (this.props.taskArrayElement.subset == -1)
+    } 
+    else if (!mouseEnter && this.state.icon == "tick") {
         this.props.hoveredIcon(false);
       return this.setState({ icon: "circle" });
     }

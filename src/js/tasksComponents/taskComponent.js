@@ -48,10 +48,14 @@ export class TaskComponent extends React.Component {
           hoveredIcon={(isTick)=>{
             let taskList = this.state.taskList
             let taskDivs=taskList[this.state.taskListIndex].taskDivs
+            if(j==-1){
             taskDivs[i].icon = isTick ? 'tick' : ''
             taskDivs[i].children ? taskDivs[i].children.forEach(element => {
               element.icon = isTick ? 'tick' : ''
-            }): ''
+            }): ''}
+            else{
+              taskDivs[i].children[j].icon = isTick ? 'tick' : ''
+            }
             this.setState({taskList})
           }}
           checkedList={false}
