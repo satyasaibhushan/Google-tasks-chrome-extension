@@ -102,8 +102,8 @@ export class TaskComponent extends React.Component {
         />
         <Modal
                text={'Hello there! Testing header'}
-               inputValue={"Can't change betterluck next time hi hello aklss asf tjhdgh"}
-               isInput={false}
+               inputValue={"Can't change betterdgh asdfjghsa  fjahsg sadf ldjkfhaskdfh "}
+               isInput={true}
                isOpened={this.state.isModalOpen}
                clickedClose={_=>this.setState({isModalOpen:!this.state.isModalOpen})}
         />
