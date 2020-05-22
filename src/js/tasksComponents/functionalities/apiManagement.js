@@ -1,5 +1,5 @@
 import Newtask from "../newTask/newTask";
-
+import api from './tasks.api'
 export default {
   newTask(checked, value, subset, id, parentId) {
     let task = {
@@ -15,7 +15,7 @@ export default {
     else task.parentId = parentId;
     return task;
   },
-  showAll(taskComponent, api) {
+  showAll(taskComponent) {
     if (taskComponent.props.gapiAvailable && taskComponent.state.count == 0) {
       api
         .listTaskLists()
