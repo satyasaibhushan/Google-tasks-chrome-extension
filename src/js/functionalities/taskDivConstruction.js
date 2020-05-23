@@ -1,5 +1,5 @@
 import React from "react";
-import { TaskDiv } from "../taskDiv/taskDiv";
+import { TaskDiv } from "../tasksComponents/taskDiv/taskDiv";
 import api from "./tasks.api";
 import updateTaskList from "./taskListFunctionalities";
 

@@ -1,6 +1,6 @@
 import apiManagement from "./apiManagement";
 import api from "./tasks.api";
-import { TaskDiv } from "../taskDiv/taskDiv";
+import { TaskDiv } from "../tasksComponents/taskDiv/taskDiv";
 
 export default {
   //  setTaskList()
@@ -191,7 +191,7 @@ export default {
         if (i == 0 && taskDivs.length > 1) taskDivs[i + 1].focus = true;
         else if (i > 0) taskDivs[i - 1].focus = true;
         taskDivs[i].newlyAdded = true;
-        if (taskDivs[i].value != "") {
+        if (taskDivs[i].value != "" || (j==-1 && taskDivs[i].children.length>0)) {
         api.updateTask({
           taskListId: taskListId,
           taskId:taskDivs[i].id,
@@ -235,10 +235,10 @@ export default {
     if (j == -1) {
       if (taskDivs[i].children && taskDivs[i].children.length > 0) {
       }
-      if (taskDivs[i].value == "") {
+      if (taskDivs[i].value == "" && taskDivs[i].children.length<1) {//*kajslhfaksdcfnkjsadfh/
         taskDivs[i].checked = true;
         taskDivs[i].remove = true;
-        console.log("deleted empty task");
+        console.log("deleted empty task",'hi');
       } else {
         taskDivs[i].checked = taskDivs[i].checked == true ? false : true;
         console.log("1 task Completed");

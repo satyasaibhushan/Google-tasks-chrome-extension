@@ -1,7 +1,7 @@
 import React from "react";
 import "./checkedDivContainer.css";
 import { TaskDiv } from "../taskDiv/taskDiv";
-import api from '../functionalities/tasks.api';
+import api from '../../functionalities/tasks.api';
 
 export class CheckedDivTotal extends React.Component {
   constructor(props) {

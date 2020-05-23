@@ -2,9 +2,9 @@ import React from "react";
 import Newtask from "./newTask/newTask";
 import { CheckedDivTotal } from "./checkedDivTotal/checkedDivContainer";
 import { TaskListSelector } from "./taskListSelector/taskListSelector";
-import updateTaskList from "./functionalities/taskListFunctionalities";
-import TotalTaskDivs from "./functionalities/taskDivConstruction";
-import manageApi from "./functionalities/apiManagement";
+import updateTaskList from "../functionalities/taskListFunctionalities";
+import TotalTaskDivs from "../functionalities/taskDivConstruction";
+import manageApi from "../functionalities/apiManagement";
 import Modal from "./modal/modal";
 import "./taskComponent.css";
 
@@ -102,19 +102,8 @@ export class TaskComponent extends React.Component {
           setHeight={(value, i) =>
             updateTaskList.setHeight(listTasks(true),(checkedDivs) => setTaskList(checkedDivs,true),value,i,-1,true)
           }
-          changeCheckedArray={(array) => {
-            let taskList = this.state.taskList;
-            let checkedTaskDivs =
-              taskList[this.state.taskListIndex].checkedDivs;
-            checkedTaskDivs = array;
-            this.setState({ taskList });
-          }}
-          changeTaskArray={(array) => {
-            let taskList = this.state.taskList;
-            let TaskDivs = taskList[this.state.taskListIndex].taskDivs;
-            TaskDivs = array;
-            this.setState({ taskList });
-          }}
+          changeCheckedArray={(array) => setTaskList(array,true)}
+          changeTaskArray={(array) => setTaskList(array)}
         />
       </div>
     );
