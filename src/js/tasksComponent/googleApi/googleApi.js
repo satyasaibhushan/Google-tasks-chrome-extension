@@ -1,17 +1,19 @@
 import React, { useEffect, useRef } from "react";
 
 export function listTaskLists() {
-    gapi.client.tasks.tasklists.list({
-        'maxResults': 10
-    }).then(function(response) {
+  gapi.client.tasks.tasklists
+    .list({
+      maxResults: 10,
+    })
+    .then(function (response) {
       var taskLists = response.result.items;
       if (taskLists && taskLists.length > 0) {
         for (var i = 0; i < taskLists.length; i++) {
           var taskList = taskLists[i];
-          console.log(taskList)
+          console.log(taskList);
         }
       } else {
-        appendPre('No task lists found.');
+        appendPre("No task lists found.");
       }
     });
 }
@@ -21,8 +23,8 @@ export default function GoogleApi(props) {
    *  On load, called to load the auth2 library and API client library.
    */
   //   function handleClientLoad() {
-let authorizeButton = useRef();
-let signoutButton = useRef();
+  let authorizeButton = useRef();
+  let signoutButton = useRef();
 
   useEffect(() => {
     function load(url) {
@@ -37,9 +39,7 @@ let signoutButton = useRef();
       });
     }
 
-    load("https://apis.google.com/js/api.js").then((_) =>
-      gapi.load("client:auth2", initClient)
-    );
+    load("https://apis.google.com/js/api.js").then(_ => gapi.load("client:auth2", initClient));
   }, []);
 
   //   }
@@ -79,7 +79,7 @@ let signoutButton = useRef();
       signoutButton.current.style.display = "none";
     }
 
-    props.onUpdateSignIn(isSignedIn)
+    props.onUpdateSignIn(isSignedIn);
   }
 
   /**
@@ -108,13 +108,10 @@ let signoutButton = useRef();
     pre.appendChild(textContent);
   }
 
-  var CLIENT_ID =
-    "236781244008-7vuna7fllcma1po5bf8ljt6e65o79hpf.apps.googleusercontent.com";
+  var CLIENT_ID = "236781244008-7vuna7fllcma1po5bf8ljt6e65o79hpf.apps.googleusercontent.com";
 
   // Array of API discovery doc URLs for APIs used by the quickstart
-  var DISCOVERY_DOCS = [
-    "https://www.googleapis.com/discovery/v1/apis/tasks/v1/rest",
-  ];
+  var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/tasks/v1/rest"];
 
   // Authorization scopes required by the API; multiple scopes can be
   // included, separated by spaces.

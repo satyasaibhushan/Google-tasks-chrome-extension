@@ -10,7 +10,7 @@ export default function TotalTaskDivs(props) {
         taskArrayElement={taskDiv}
         key={j == -1 ? i : (i + 1) * 100 + j}
         changeElement={(value, isFocus) => {
-          if ((value || value === "") && !taskDiv.checked && taskDiv.id!='') {
+          if ((value || value === "") && !taskDiv.checked && taskDiv.id != "") {
             api.updateTask({
               taskListId: props.taskListId,
               taskId: taskDiv.id,
@@ -20,29 +20,12 @@ export default function TotalTaskDivs(props) {
           }
           taskDiv.focus = isFocus;
         }}
-        manageTasks={(e) =>
-          updateTaskList.checkKeyPress(
-            props.taskDivs,
-            props.setTaskList,
-            props.taskListId,
-            e,
-            i + 1,
-            j
-          )
+        manageTasks={e =>
+          updateTaskList.checkKeyPress(props.taskDivs, props.setTaskList, props.taskListId, e, i + 1, j)
         }
-        clickedTick={() =>
-          updateTaskList.checkedTask(props.taskDivs, props.setTaskList, props.setMessage, i, j)
-        }
-        setHeight={(value) =>
-          updateTaskList.setHeight(
-            props.taskDivs,
-            props.setTaskList,
-            value,
-            i,
-            j
-          )
-        }
-        changeElementKey={(value) =>
+        clickedTick={() => updateTaskList.checkedTask(props.taskDivs, props.setTaskList, props.setMessage, i, j)}
+        setHeight={value => updateTaskList.setHeight(props.taskDivs, props.setTaskList, value, i, j)}
+        changeElementKey={value =>
           updateTaskList.modifyTaskAfterAnimation(
             props.taskDivs,
             props.checkedDivs,
@@ -54,12 +37,12 @@ export default function TotalTaskDivs(props) {
             j
           )
         }
-        hoveredIcon={(isTick) => {
+        hoveredIcon={isTick => {
           let taskDivs = props.taskDivs;
           if (j == -1) {
             taskDivs[i].icon = isTick ? "tick" : "";
             taskDivs[i].children
-              ? taskDivs[i].children.forEach((element) => {
+              ? taskDivs[i].children.forEach(element => {
                   element.icon = isTick ? "tick" : "";
                 })
               : "";
@@ -77,11 +60,7 @@ export default function TotalTaskDivs(props) {
     return (
       <div key={i}>
         {constructTaskDiv(taskDiv, i, -1)}
-        {taskDiv.children
-          ? taskDiv.children.map((element, j) =>
-              constructTaskDiv(element, i, j)
-            )
-          : ""}
+        {taskDiv.children ? taskDiv.children.map((element, j) => constructTaskDiv(element, i, j)) : ""}
       </div>
     );
   });

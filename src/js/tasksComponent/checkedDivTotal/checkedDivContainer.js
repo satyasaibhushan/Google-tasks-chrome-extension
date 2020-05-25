@@ -1,7 +1,7 @@
 import React from "react";
 import "./checkedDivContainer.css";
 import { TaskDiv } from "../taskDiv/taskDiv";
-import api from '../../functionalities/tasks.api';
+import api from "../../functionalities/tasks.api";
 
 export class CheckedDivTotal extends React.Component {
   constructor(props) {
@@ -15,31 +15,30 @@ export class CheckedDivTotal extends React.Component {
   changeElementKey(keyName, i) {
     let checkedArray = this.props.checkedList;
     let tasksArray = this.props.tasksList;
-    let taskList = this.props.taskList
-    if (keyName == "newlyAdded" && checkedArray[i].newlyAdded == true)
-      checkedArray[i].newlyAdded = false;
+    let taskList = this.props.taskList;
+    if (keyName == "newlyAdded" && checkedArray[i].newlyAdded == true) checkedArray[i].newlyAdded = false;
     if (keyName == "unchecked" && checkedArray[i].unchecked == true) {
       checkedArray[i].newlyAdded = true;
       checkedArray[i].checked = false;
       checkedArray[i].unchecked = false;
       api.updateTask({
         taskListId: taskList.id,
-        taskId:checkedArray[i].id,
-        title:checkedArray[i].value,
-        status:'needsAction',
-      })
-      if(checkedArray[i].parentId){
-       let index= tasksArray.map(item=>item.id).indexOf(checkedArray[i].parentId)
-       
-        if(index !=-1) {
-          checkedArray[i].subset =index
-          tasksArray[index].children.unshift(checkedArray[i]) 
+        taskId: checkedArray[i].id,
+        title: checkedArray[i].value,
+        status: "needsAction",
+      });
+      if (checkedArray[i].parentId) {
+        let index = tasksArray.map(item => item.id).indexOf(checkedArray[i].parentId);
+
+        if (index != -1) {
+          checkedArray[i].subset = index;
+          tasksArray[index].children.unshift(checkedArray[i]);
+        } else {
+          delete checkedArray[i].parentId;
+          checkedArray[i].subset = -1;
+          tasksArray.unshift(checkedArray[i]);
         }
-        else {delete checkedArray[i].parentId
-          checkedArray[i].subset = -1
-          tasksArray.unshift(checkedArray[i]);}
-      }
-     else tasksArray.unshift(checkedArray[i]);
+      } else tasksArray.unshift(checkedArray[i]);
       checkedArray.splice(i, 1);
     }
     this.props.changeCheckedArray(checkedArray);
@@ -50,54 +49,45 @@ export class CheckedDivTotal extends React.Component {
     checkedArray[i].focus = false;
     this.props.changeCheckedArray(checkedArray);
   }
-  openingAnimaton(){
-    TweenMax.fromTo(
-      this.checkedDivs.current,
-      {scaleY:1, opacity: 0 },
-      { duration: 0.5,opacity: 1}
-    );
+  openingAnimaton() {
+    TweenMax.fromTo(this.checkedDivs.current, { scaleY: 1, opacity: 0 }, { duration: 0.5, opacity: 1 });
   }
 
   allCheckedDivs(checkedList) {
-    if(this.props.taskList!='')
-    return checkedList.map((checkedItem, i) => {
-      return (
-        <TaskDiv
-          taskArrayElement={checkedItem}
-          key={i}
-          changeElement={(_) => this.removeClick(i)}
-          manageTasks={(_) => console.log(2)}
-          clickedTick={(_) => this.props.clickedTick(i)}
-          setHeight={(value)=>this.props.setHeight(value,i)}
-          changeElementKey={(value) => this.changeElementKey(value, i)}
-          checkedList={true}
-        />
-      );
-    });
+    if (this.props.taskList != "")
+      return checkedList.map((checkedItem, i) => {
+        return (
+          <TaskDiv
+            taskArrayElement={checkedItem}
+            key={i}
+            changeElement={_ => this.removeClick(i)}
+            manageTasks={_ => console.log(2)}
+            clickedTick={_ => this.props.clickedTick(i)}
+            setHeight={value => this.props.setHeight(value, i)}
+            changeElementKey={value => this.changeElementKey(value, i)}
+            checkedList={true}
+          />
+        );
+      });
   }
   render() {
     return (
       <div className="chekedDivContainer">
         <div
-          className={
-            this.props.checkedList.length == 0
-              ? "chekedDivsWrapper "
-              : "chekedDivsWrapper opened"
-          }
-          onClick={(_) =>{
-            this.setState({ opened: this.state.opened ? false : true })
-            this.openingAnimaton()}
-          }
+          className={this.props.checkedList.length == 0 ? "chekedDivsWrapper " : "chekedDivsWrapper opened"}
+          onClick={_ => {
+            this.setState({ opened: this.state.opened ? false : true });
+            this.openingAnimaton();
+          }}
         >
-          Completed ({this.props.checkedList.length})
-          <i className={this.state.opened ? "down" : "up"}></i>
+          Completed ({this.props.checkedList.length})<i className={this.state.opened ? "down" : "up"}></i>
         </div>
         <div
           ref={this.checkedDivs}
-          className={this.state.opened ?"chekedDivs opened" :'chekedDivs'}
+          className={this.state.opened ? "chekedDivs opened" : "chekedDivs"}
           style={{
             display: this.state.opened ? "block" : "none",
-         }}
+          }}
         >
           {this.allCheckedDivs(this.props.checkedList)}
         </div>

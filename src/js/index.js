@@ -7,8 +7,6 @@ import { TaskComponent } from "./tasksComponent/taskComponent";
 import GoogleApi from "./tasksComponent/googleApi/googleApi";
 
 class App extends React.Component {
-
-
   render() {
     return (
       <div>
@@ -21,7 +19,7 @@ class App extends React.Component {
         >
           <TaskComponent gapiAvailable={this.state?.loaded} />
         </div>
-        <GoogleApi onUpdateSignIn={_ => this.setState({ loaded : true })} />
+        <GoogleApi onUpdateSignIn={_ => this.setState({ loaded: true })} />
       </div>
     );
   }
