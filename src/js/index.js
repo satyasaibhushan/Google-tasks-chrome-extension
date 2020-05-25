@@ -3,8 +3,8 @@ import { render } from "react-dom";
 
 import "../css/styles.css";
 
-import { TaskComponent } from "./tasksComponents/taskComponent";
-import GoogleApi from "./tasksComponents/googleApi/googleApi";
+import { TaskComponent } from "./tasksComponent/taskComponent";
+import GoogleApi from "./tasksComponent/googleApi/googleApi";
 
 class App extends React.Component {
 

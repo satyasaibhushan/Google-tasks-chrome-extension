@@ -1,9 +1,14 @@
 import React from "react";
 import "./taskListSelector.css";
+import Modal from "../modal/modal";
+import OptionsPanel from '../optionsPanel/optionsPanel'
 
 export class TaskListSelector extends React.Component {
   constructor() {
     super();
+    this.state={
+      isModalOpen: false,
+    }
   }
 
   componentDidUpdate() {
@@ -83,7 +88,7 @@ export class TaskListSelector extends React.Component {
     document.addEventListener("click", closeAllSelect);
   }
 
-  componentWillReceiveProps(){
+  componentWillUpdate(){
    let x = document.getElementsByClassName("taskListSelector");
     for (let i = 0; i < x.length; i++) {
       if(x[i].childNodes.length >1){
@@ -116,7 +121,19 @@ export class TaskListSelector extends React.Component {
             ))}
           </select>
         </div>
-        <div className='taskListIcon' onClick={_=>this.props.clickedOptions()}></div>
+        <div className='taskListIcon' onClick={_=>this.setState({isModalOpen:true})}></div>
+        <Modal
+          text={"Hello there! Testing header"}
+          inputValue={
+            "Can't change betterdgh asdfjghsa  fjahsg sadf ldjkfhaskdfh "
+          }
+          isInput={true}
+          isOpened={this.state.isModalOpen}
+          clickedClose={(_) =>
+            this.setState({ isModalOpen: false })
+          }
+        />
+        
       </div>
     );
   }

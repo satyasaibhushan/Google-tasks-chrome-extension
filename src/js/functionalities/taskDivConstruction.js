@@ -1,5 +1,5 @@
 import React from "react";
-import { TaskDiv } from "../tasksComponents/taskDiv/taskDiv";
+import { TaskDiv } from "../tasksComponent/taskDiv/taskDiv";
 import api from "./tasks.api";
 import updateTaskList from "./taskListFunctionalities";
 
@@ -31,7 +31,7 @@ export default function TotalTaskDivs(props) {
           )
         }
         clickedTick={() =>
-          updateTaskList.checkedTask(props.taskDivs, props.setTaskList, i, j)
+          updateTaskList.checkedTask(props.taskDivs, props.setTaskList, props.setMessage, i, j)
         }
         setHeight={(value) =>
           updateTaskList.setHeight(

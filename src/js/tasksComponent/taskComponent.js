@@ -5,7 +5,7 @@ import { TaskListSelector } from "./taskListSelector/taskListSelector";
 import updateTaskList from "../functionalities/taskListFunctionalities";
 import TotalTaskDivs from "../functionalities/taskDivConstruction";
 import manageApi from "../functionalities/apiManagement";
-import Modal from "./modal/modal";
+import MessageBox from './messageBox/messageBox';
 import "./taskComponent.css";
 
 
@@ -16,7 +16,7 @@ export class TaskComponent extends React.Component {
       taskList: [],
       taskListIndex: -1,
       count: 0,
-      isModalOpen: false,
+      message:{showMessage:false,message:'hi there How are you',msgChange:false},
     };
   }
 
@@ -43,9 +43,7 @@ export class TaskComponent extends React.Component {
           selectedOption={(index) => {
             if (index != -1) this.setState({ taskListIndex: index });
           }}
-          clickedOptions={(_) =>
-            this.setState({ isModalOpen: !this.state.isModalOpen })
-          }
+          clickedOptions={(_) => {}}
         />
         <Newtask
           enterNewTask={(e) => {
@@ -56,17 +54,6 @@ export class TaskComponent extends React.Component {
             }
           }}
           plusNewTask={(_) => updateTaskList.addTask(listTasks(),(taskDivs) => setTaskList(taskDivs),this.state.taskList[this.state.taskListIndex].id, 0, -1)}
-        />
-        <Modal
-          text={"Hello there! Testing header"}
-          inputValue={
-            "Can't change betterdgh asdfjghsa  fjahsg sadf ldjkfhaskdfh "
-          }
-          isInput={true}
-          isOpened={this.state.isModalOpen}
-          clickedClose={(_) =>
-            this.setState({ isModalOpen: !this.state.isModalOpen })
-          }
         />
         <div
           className="taskDivsContainer"
@@ -80,11 +67,20 @@ export class TaskComponent extends React.Component {
               checkedDivs = {this.state.taskList[this.state.taskListIndex].checkedDivs}
               setTaskList={(taskDivs) => setTaskList(taskDivs)}
               setCheckedDivs={(checkedDivs) => setTaskList(checkedDivs,true)}
+              setMessage={(message)=>{console.log('hig');
+              this.setState({message:{showMessage:true,message:message,msgChange:!this.state.message.msgChange}}) }}
             />
           ) : (
             ""
           )}
         </div>
+        {this.state.message.showMessage ?
+           <MessageBox
+             isVisible={this.state.message.showMessage}
+             message={this.state.message.message}
+             msgChange={this.state.message.msgChange}
+             clickedUndo={_=>console.log('undo to be done')}
+          /> : ''}
         <CheckedDivTotal
           checkedList={this.state.taskListIndex == -1
               ? ""

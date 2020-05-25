@@ -1,6 +1,6 @@
 import apiManagement from "./apiManagement";
 import api from "./tasks.api";
-import { TaskDiv } from "../tasksComponents/taskDiv/taskDiv";
+import { TaskDiv } from "../tasksComponent/taskDiv/taskDiv";
 
 export default {
   //  setTaskList()
@@ -231,27 +231,27 @@ export default {
     setCheckedDivs(checkedDivs)
   },
 
-  checkedTask(taskDivs,setTaskList, i, j) {
+  checkedTask(taskDivs,setTaskList,setMessage, i, j) {
     if (j == -1) {
       if (taskDivs[i].children && taskDivs[i].children.length > 0) {
       }
       if (taskDivs[i].value == "" && taskDivs[i].children.length<1) {//*kajslhfaksdcfnkjsadfh/
         taskDivs[i].checked = true;
         taskDivs[i].remove = true;
-        console.log("deleted empty task",'hi');
+        setMessage("deleted empty task");
       } else {
         taskDivs[i].checked = taskDivs[i].checked == true ? false : true;
-        console.log("1 task Completed");
+        setMessage("1 task Completed");
       }
     } else {
       if (taskDivs[i].children[j].value == "") {
         taskDivs[i].children[j].checked = true;
         taskDivs[i].children[j].remove = true;
-        console.log("deleted empty task");
+        setMessage("deleted empty task");
       } else {
         taskDivs[i].children[j].checked =
           taskDivs[i].checked == true ? false : true;
-        console.log("1 task Completed");
+        setMessage("1 task Completed");
       }
     }
     setTaskList(taskDivs)
@@ -263,4 +263,7 @@ export default {
     console.log("1 task marked incomplete");
     setCheckedDivs(checkedDivs)
   },
+  showMessage(message){
+
+  }
 };

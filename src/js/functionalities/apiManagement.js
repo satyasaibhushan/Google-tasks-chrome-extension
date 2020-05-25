@@ -1,4 +1,4 @@
-import Newtask from "../tasksComponents/newTask/newTask";
+import Newtask from "../tasksComponent/newTask/newTask";
 import api from './tasks.api'
 export default {
   newTask(checked, value, subset, id, parentId) {

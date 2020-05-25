@@ -76,7 +76,6 @@
     },
   
     updateTask({ taskListId, taskId,title,notes,parent, ...params }) {
-      console.log(taskListId)
       const request = gapi.client.tasks.tasks.update({
         tasklist: taskListId,
         task: taskId,
