@@ -7,7 +7,7 @@ export class TaskListSelector extends React.Component {
   constructor() {
     super();
     this.state = {
-      isModalOpen: false,
+      isOptionsOpen: false,
     };
   }
 
@@ -114,13 +114,30 @@ export class TaskListSelector extends React.Component {
             ))}
           </select>
         </div>
-        <div className="taskListIcon" onClick={_ => this.setState({ isModalOpen: true })}></div>
-        <Modal
+        <div className="taskListIcon" onClick={_ => this.setState({ isOptionsOpen: !this.state.isOptionsOpen })}></div>
+        {/* <Modal
           text={"Hello there! Testing header"}
           inputValue={"Can't change betterdgh asdfjghsa  fjahsg sadf ldjkfhaskdfh "}
           isInput={true}
           isOpened={this.state.isModalOpen}
           clickedClose={_ => this.setState({ isModalOpen: false })}
+        /> */}
+        <OptionsPanel
+          displayOptionNames={[
+            { title: "Sort By", type: "selection", options: ["Date", "My Order"] },
+            {
+              title: "",
+              type: "options",
+              options: ["Rename List", "Delete List", "Delete all Completed tasks"],
+            },
+            {
+              title: "",
+              type: "shortcuts",
+              options: ["KeyBoard shortcuts", "Copy remainders to tasks"],
+            },
+          ]}
+          isOpened={this.state.isOptionsOpen}
+          clickedClose={_ => this.setState({ isOptionsOpen: false })}
         />
       </div>
     );

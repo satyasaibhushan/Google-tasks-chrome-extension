@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import "./messageBox.css";
+
 var t;
 export default function MessageBox(props) {
   const messageDiv = useRef(null);
@@ -7,7 +7,7 @@ export default function MessageBox(props) {
     if (t) clearTimeout(t);
     if (props.isVisible) {
       var tl = gsap.timeline();
-      tl.to(messageDiv.current, { duration: 0, display: "flex", y: 0 });
+      tl.to(messageDiv.current, { duration: 0, display: "flex",opacity:0, y: 0 });
       tl.to(messageDiv.current, { duration: 0.5, ease: "easeInOut", opacity: 1, y: "-=3rem" });
       t = setTimeout(() => {
         tl.to(messageDiv.current, { duration: 0.5, ease: "easeInOut", opacity: 0, y: "+=3rem" });

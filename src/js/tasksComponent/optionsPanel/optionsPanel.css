@@ -1,0 +1,42 @@
+.optionsPanelContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(190, 190, 190, 0.1);
+  z-index: 99;
+}
+.optionsPanel.open {
+  animation: slideOut 0.2s ease-in-out 1;
+}
+@keyframes slideOut {
+  0% {
+    width: 5rem;
+    opacity: 0;
+    height: 10rem;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  75% {
+    height: 20rem;
+  }
+  100% {
+    width: 15rem;
+    height: 20rem;
+    opacity: 1;
+  }
+}
+.optionsPanel {
+  width: 15rem;
+  position: absolute;
+  height: 20rem;
+  top: 8px;
+  right: 16px;
+  box-shadow: 1px 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12),
+    0 5px 5px -3px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background-color: rgb(181, 181, 245);
+  z-index: 9;
+}
