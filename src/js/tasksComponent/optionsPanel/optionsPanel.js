@@ -2,18 +2,27 @@ import React, { useEffect, useRef, useState } from "react";
 import "./optionsPanel.css";
 
 export default function OptionsPanel(props) {
-
   useEffect(() => {
     let optionsPanelContainer = document.getElementsByClassName("optionsPanelContainer")[0];
     document.addEventListener("click", e => {
-      if (e.target == optionsPanelContainer ) props.clickedClose();
+      if (e.target == optionsPanelContainer) props.clickedClose();
     });
-  },[]);
-  return (
-    <div className='optionsPanelContainer' style={{display:props.isOpened ? 'block':'none'}}>
-       <div className={props.isOpened ?'optionsPanel open':'optionsPanel close'}>
+  }, []);
 
-       </div>
+  return (
+    <div className="optionsPanelContainer" style={{ display: props.isOpened ? "block" : "none" }}>
+      <span className='closeIcon' onClick={props.clickedClose}></span>
+      <div className={props.isOpened ? "optionsPanel open" : "optionsPanel close"}>
+        {props.displayOptionNames.map((element, i) => {
+          return [
+            element.title ? <p className='optionsTitle' key={i}>{element.title}</p> : "",
+            element.options.map((element, j) => {
+              return <div className='options' key={i * 10 + j}> {element}</div>;
+            }),
+            i!=props.displayOptionNames.length-1 ?<div key={i+10} className='seperator'></div>:''
+          ];
+        })}
+      </div>
     </div>
-  )
+  );
 }
