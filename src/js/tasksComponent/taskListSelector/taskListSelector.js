@@ -16,7 +16,7 @@ export class TaskListSelector extends React.Component {
       {
         title: "",
         type: "options",
-        options: ["Rename List", "Delete List", "Delete all Completed tasks"],
+        options: ["Create new list", "Rename List", "Delete List", "Delete all Completed tasks"],
       },
       {
         title: "",
@@ -24,26 +24,50 @@ export class TaskListSelector extends React.Component {
         options: ["KeyBoard shortcuts", "Copy remainders to tasks"],
       },
     ];
-
-    this.modalTemplates = [
+   this.modalTemplates = []
+    this.modalFunctions = [
       [
-        { text: "Rename list", inputValue: "", isInput: true },
-        {
-          text: "Delete this list?",
-          inputValue: "deleting this list will also delete __ tasks",
-          isInput: false,
-        },
-        {
-          text: "Delete all completed tasks?",
-          inputValue: "__ completed tasks will be permanently removed",
-          isInput: false,
-        },
+        updateTaskLists.addTaskList,
+        updateTaskLists.updateTaskList,
+        updateTaskLists.deleteTaskList,
+        updateTaskLists.deleteCompletedTasks,
       ],
     ];
-    this.modalFunctions = [[updateTaskLists.updateTaskList,updateTaskLists.deleteTaskList , {}]];
   }
 
+  componentDidUpdate(){
+    console.log('ohye')
+    
+  }
   componentDidUpdate() {
+
+    let noOfTasks, noOfCheckedTasks;
+    if (this.props.selectedList != -1) {
+      noOfTasks = this.props.taskLists[this.props.selectedList].taskDivs.length;
+      noOfCheckedTasks = this.props.taskLists[this.props.selectedList].checkedDivs.length;
+
+        console.log("helooooo");
+        this.modalTemplates = [
+          [
+            { text: "Create new list", inputValue: "", isInput: true },
+            { text: "Rename list", inputValue: "", isInput: true },
+            {
+              text: "Delete this list?",
+              inputValue: "deleting this list will also delete " + noOfTasks + " tasks",
+              isInput: false,
+              // inactive: this.props.selectedList!=0 ? true:false 
+            },
+            {
+              text: "Delete all completed tasks?",
+              inputValue: noOfCheckedTasks + " completed tasks will be permanently removed",
+              isInput: false,
+              // inactive: noOfCheckedTasks==0 ? true:false 
+            },
+          ],
+        ];
+
+    }
+
     var x, i, j, selElmnt, a, b, c;
     let props = this.props;
     x = document.getElementsByClassName("taskListSelector");
@@ -168,6 +192,7 @@ export class TaskListSelector extends React.Component {
               this.props.setTaskLists,
               this.props.selectedList,
               this.props.setTaskListIndex,
+              this.props.setMessage
             );
           }}
         />
@@ -180,7 +205,7 @@ export class TaskListSelector extends React.Component {
             modal.text = this.modalTemplates[0][j].text;
             modal.inputValue = this.modalTemplates[0][j].inputValue;
             modal.isInput = this.modalTemplates[0][j].isInput;
-            if (modal.isInput) modal.inputValue = this.props.listNames[this.props.selectedList];
+            if (modal.isInput && j == 1) modal.inputValue = this.props.listNames[this.props.selectedList];
             modal.selectedSectionIndex = i;
             modal.selectedOptionIndex = j;
             modal.isOpened = true;

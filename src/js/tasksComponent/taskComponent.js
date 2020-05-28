@@ -34,6 +34,15 @@ export class TaskComponent extends React.Component {
       else taskList[this.state.taskListIndex].taskDivs = divs;
       this.setState({ taskList });
     };
+    let setMessage = (message) =>{
+      this.setState({
+        message: {
+          showMessage: true,
+          message: message,
+          msgChange: !this.state.message.msgChange,
+        },
+      });
+    }
     return (
       <div className="tasksComponentContainer">
         <TaskListSelector
@@ -43,9 +52,10 @@ export class TaskComponent extends React.Component {
             if (index != -1) this.setState({ taskListIndex: index });
           }}
           taskLists={this.state.taskList}
-          setTaskLists={(Lists)=>this.setState({taskList:Lists})}
-          setTaskListIndex={index=> this.setState({taskListIndex : index})}
+          setTaskLists={Lists => this.setState({ taskList: Lists })}
+          setTaskListIndex={index => this.setState({ taskListIndex: index })}
           clickedOptions={_ => {}}
+          setMessage={setMessage}
         />
         <Newtask
           enterNewTask={e => {
@@ -81,15 +91,7 @@ export class TaskComponent extends React.Component {
               checkedDivs={this.state.taskList[this.state.taskListIndex].checkedDivs}
               setTaskList={taskDivs => setTaskDivs(taskDivs)}
               setCheckedDivs={checkedDivs => setTaskDivs(checkedDivs, true)}
-              setMessage={message => {
-                this.setState({
-                  message: {
-                    showMessage: true,
-                    message: message,
-                    msgChange: !this.state.message.msgChange,
-                  },
-                });
-              }}
+              setMessage={setMessage }
             />
           ) : (
             ""
