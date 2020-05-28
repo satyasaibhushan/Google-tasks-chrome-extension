@@ -26,6 +26,97 @@
   .select-selected.select-arrow-active{
     background-color:rgba(163, 159, 159, 0.171);
   }
+
+   .taskListSelector:after :hover{
+     background-color: rgb(43, 31, 15);
+   }
+  
+  .select-items div,.select-selected span {
+    min-width: 0;
+    max-width: 100%;
+    color: rgba(33,34,37,0.7);
+    padding: 8px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    padding-right: 2rem;
+    height: 34px;
+  }
+  .select-selected {
+    position: relative;
+    max-width: 65%;  
+    margin:0 1rem;
+    padding: 0 1rem 0 0;
+    border-radius: 7px;
+  }
+  .select-selected span{
+        display: inline-block;
+        padding-right: 0.5rem;
+  }
+  
+  
+  .select-items {
+    width: 70%;
+    position: absolute;
+    background-color: white;
+    top: 120%;
+    left: 3%;
+    right: 0;
+    z-index: 99;
+    border-radius: 10px;
+    box-shadow: 0.1rem 0.1rem 0.2rem 0.05rem rgba(121, 119, 119, 0.384) ;
+    max-height: 192px;
+    white-space: nowrap;
+    overflow-y: scroll;
+    text-overflow: ellipsis; 
+  }
+
+  ::-webkit-scrollbar {
+    background: transparent;
+    height: 8px;
+    width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  border: none;
+  box-shadow: none;
+  background: #ddd;
+  border-radius: 4px;
+  min-height: 40px;
+}
+  .select-items.open{
+    animation: rollOut 0.3s ease-in-out 1;
+  }
+  @keyframes rollOut {
+    0% {
+      width: 40%;
+      opacity: 0.2;
+      max-height: 0;
+    }
+    50% {
+      opacity: 0.7;
+      max-height: auto ;
+    }
+    100% {
+      width: 70%;
+      opacity: 1;
+    }
+  }
+  .selectedListIcon{
+    height:1rem;
+    vertical-align: middle;
+    position: absolute;
+    right:1rem;
+  }
+  
+  .select-hide {
+    display: none;
+  }
+  
+  .select-items div:hover, .same-as-selected {
+    background-color: whitesmoke;
+  }
+
   .taskListIcon{
     height:2.5rem;
     width:2.5rem;
@@ -51,56 +142,3 @@
     transform: translate(20%,7%);
 
    }
-   .taskListSelector:after :hover{
-     background-color: rgb(43, 31, 15);
-   }
-  
-  .select-items div,.select-selected span {
-    min-width: 0;
-    max-width: 100%;
-    color: rgba(33,34,37,0.7);
-    padding: 8px 16px;
-    cursor: pointer;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    padding-right: 2rem;
-  }
-  .select-selected {
-    position: relative;
-    max-width: 65%;  
-    margin:0 1rem;
-    padding: 0 1rem 0 0;
-    border-radius: 7px;
-  }
-  .select-selected span{
-        display: inline-block;
-        padding-right: 0.5rem;
-  }
-  
-  
-  .select-items {
-    width: 70%;
-    position: absolute;
-    background-color: white;
-    top: 120%;
-    left: 3%;
-    right: 0;
-    z-index: 99;
-    border-radius: 10px;
-    box-shadow: 0.1rem 0.1rem 0.2rem 0.05rem rgba(121, 119, 119, 0.384) ;
-  }
-  .selectedListIcon{
-    height:1rem;
-    vertical-align: middle;
-    position: absolute;
-    right:1rem;
-  }
-  
-  .select-hide {
-    display: none;
-  }
-  
-  .select-items div:hover, .same-as-selected {
-    background-color: whitesmoke;
-  }
