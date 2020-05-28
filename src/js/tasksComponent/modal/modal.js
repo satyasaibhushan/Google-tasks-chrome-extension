@@ -41,16 +41,22 @@ export default function Modal(props) {
         });
         tl2.to(div.current, { duration: 0.3, opacity: 1 });
       }
-      if (
-        !props.isInput &&
-        isOpened &&
-        textArea.current.style.height != textArea.current.scrollHeight + "px"
-      ) {
-        textArea.current.style.height = "auto";
-        textArea.current.style.height = textArea.current.scrollHeight + "px";
-      }
+      if( 
+        props.isOpened &&
+        textArea.current.style.height != textArea.current.scrollHeight + "px" 
+        )
+      setHeight()
     }
   });
+  useEffect(()=>{setValue(props.inputValue)
+ 
+  },[props.inputValue])
+
+  let setHeight = ()=>{
+        textArea.current.style.height = "auto";
+        textArea.current.style.height = textArea.current.scrollHeight + "px";
+  }
+
   return (
     <div
       ref={container}
@@ -75,17 +81,19 @@ export default function Modal(props) {
               name=""
               value={inputValue}
               onChange={e => setValue(e.target.value)}
+              onKeyDown={e=>{if(props.isInput && e.keyCode == 13){ e.preventDefault();props.submitted(inputValue);props.clickedClose()}}}
               readOnly={!props.isInput}
               style={{
                 whiteSpace: props.isInput ? "nowrap" : "",
-                lineHeight: props.isInput ? "10px" : "18px",
+                lineHeight: props.isInput ? "10px" : "19px",
+                height : props.isInput ? '24px':''
               }}
             ></textarea>
           </div>
         </div>
         <div className="modalButtonsContainer">
-          <button onClick={props.clickedClose}>Cancel</button>
-          <button>Done</button>
+          <button onClick={_=>{props.clickedClose()}}>Cancel</button>
+          <button onClick={_=>{props.submitted(inputValue);props.clickedClose()}}>Done</button>
         </div>
       </section>
     </div>

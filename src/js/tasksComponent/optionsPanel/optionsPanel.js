@@ -16,8 +16,8 @@ export default function OptionsPanel(props) {
         {props.displayOptionNames.map((element, i) => {
           return [
             element.title ? <p className='optionsTitle' key={i}>{element.title}</p> : "",
-            element.options.map((element, j) => {
-              return <div className='options' key={i * 10 + j}> {element}</div>;
+            element.options.map((ele, j) => {
+              return <div onClick={e=>{element.type == "options" ? props.clickedOption(i,j) : {}}} className='options' key={i * 10 + j}> {ele}</div>;
             }),
             i!=props.displayOptionNames.length-1 ?<div key={i+10} className='seperator'></div>:''
           ];

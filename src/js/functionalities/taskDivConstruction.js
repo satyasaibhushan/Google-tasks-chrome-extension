@@ -1,7 +1,7 @@
 import React from "react";
 import { TaskDiv } from "../tasksComponent/taskDiv/taskDiv";
 import api from "./tasks.api";
-import updateTaskList from "./taskListFunctionalities";
+import updateTasks from "./taskFunctionalities";
 
 export default function TotalTaskDivs(props) {
   let constructTaskDiv = (taskDiv, i, j) => {
@@ -21,12 +21,12 @@ export default function TotalTaskDivs(props) {
           taskDiv.focus = isFocus;
         }}
         manageTasks={e =>
-          updateTaskList.checkKeyPress(props.taskDivs, props.setTaskList, props.taskListId, e, i + 1, j)
+          updateTasks.checkKeyPress(props.taskDivs, props.setTaskList, props.taskListId, e, i + 1, j)
         }
-        clickedTick={() => updateTaskList.checkedTask(props.taskDivs, props.setTaskList, props.setMessage, i, j)}
-        setHeight={value => updateTaskList.setHeight(props.taskDivs, props.setTaskList, value, i, j)}
+        clickedTick={() => updateTasks.checkedTask(props.taskDivs, props.setTaskList, props.setMessage, i, j)}
+        setHeight={value => updateTasks.setHeight(props.taskDivs, props.setTaskList, value, i, j)}
         changeElementKey={value =>
-          updateTaskList.modifyTaskAfterAnimation(
+          updateTasks.modifyTaskAfterAnimation(
             props.taskDivs,
             props.checkedDivs,
             props.taskListId,

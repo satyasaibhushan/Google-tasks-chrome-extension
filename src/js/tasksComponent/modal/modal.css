@@ -23,9 +23,9 @@
     margin-right: auto;
 }
 .modalText{
-    font-size: 16px;
-    font-weight: 500;
-    height: 1.5rem;
+    font-size: 15px;
+    font-weight: 400;
+    /* height: 1.5rem; */
     cursor: default;
 }
 .modalContent{
@@ -38,7 +38,7 @@
     overflow: hidden;
     padding: 2px;
     min-height: 1rem;
-    max-height: 4rem;
+    max-height: 58px;
     background-color:transparent;
     border: none; 
     outline: none;
@@ -46,6 +46,7 @@
     vertical-align: middle;
     font-size: 16px;
     overflow-x: scroll;
+    font-weight: 300;
 }
 .modalContent textarea::-webkit-scrollbar {
     display: none;

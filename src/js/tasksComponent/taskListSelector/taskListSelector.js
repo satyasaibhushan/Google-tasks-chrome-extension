@@ -2,13 +2,45 @@ import React from "react";
 import "./taskListSelector.css";
 import Modal from "../modal/modal";
 import OptionsPanel from "../optionsPanel/optionsPanel";
+import updateTaskLists from "../../functionalities/taskListFunctionalities";
 
 export class TaskListSelector extends React.Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
       isOptionsOpen: false,
+      modal: { text: "", inputValue: "", isInput: false, isOpened: false, selectedOptionIndex: "-1,-1" },
     };
+    this.displayOptionNames = [
+      { title: "Sort By", type: "selection", options: ["Date", "My Order"] },
+      {
+        title: "",
+        type: "options",
+        options: ["Rename List", "Delete List", "Delete all Completed tasks"],
+      },
+      {
+        title: "",
+        type: "shortcuts",
+        options: ["KeyBoard shortcuts", "Copy remainders to tasks"],
+      },
+    ];
+
+    this.modalTemplates = [
+      [
+        { text: "Rename list", inputValue: "", isInput: true },
+        {
+          text: "Delete this list?",
+          inputValue: "deleting this list will also delete __ tasks",
+          isInput: false,
+        },
+        {
+          text: "Delete all completed tasks?",
+          inputValue: "__ completed tasks will be permanently removed",
+          isInput: false,
+        },
+      ],
+    ];
+    this.modalFunctions = [[updateTaskLists.updateTaskList,updateTaskLists.deleteTaskList , {}]];
   }
 
   componentDidUpdate() {
@@ -114,30 +146,47 @@ export class TaskListSelector extends React.Component {
             ))}
           </select>
         </div>
-        <div className="taskListIcon" onClick={_ => this.setState({ isOptionsOpen: !this.state.isOptionsOpen })}></div>
-        {/* <Modal
-          text={"Hello there! Testing header"}
-          inputValue={"Can't change betterdgh asdfjghsa  fjahsg sadf ldjkfhaskdfh "}
-          isInput={true}
-          isOpened={this.state.isModalOpen}
-          clickedClose={_ => this.setState({ isModalOpen: false })}
-        /> */}
+        <div
+          className="taskListIcon"
+          onClick={_ => this.setState({ isOptionsOpen: !this.state.isOptionsOpen })}
+        ></div>
+        <Modal
+          text={this.state.modal.text}
+          inputValue={this.state.modal.inputValue}
+          isInput={this.state.modal.isInput}
+          isOpened={this.state.modal.isOpened}
+          clickedClose={_ => {
+            let modal = this.state.modal;
+            modal.isOpened = false;
+            this.setState({ modal: modal });
+          }}
+          submitted={value => {
+            console.log(this.props);
+            this.modalFunctions[0][this.state.modal.selectedOptionIndex](
+              value,
+              this.props.taskLists,
+              this.props.setTaskLists,
+              this.props.selectedList,
+              this.props.setTaskListIndex,
+            );
+          }}
+        />
         <OptionsPanel
-          displayOptionNames={[
-            { title: "Sort By", type: "selection", options: ["Date", "My Order"] },
-            {
-              title: "",
-              type: "options",
-              options: ["Rename List", "Delete List", "Delete all Completed tasks"],
-            },
-            {
-              title: "",
-              type: "shortcuts",
-              options: ["KeyBoard shortcuts", "Copy remainders to tasks"],
-            },
-          ]}
+          displayOptionNames={this.displayOptionNames}
           isOpened={this.state.isOptionsOpen}
           clickedClose={_ => this.setState({ isOptionsOpen: false })}
+          clickedOption={(i, j) => {
+            let modal = this.state.modal;
+            modal.text = this.modalTemplates[0][j].text;
+            modal.inputValue = this.modalTemplates[0][j].inputValue;
+            modal.isInput = this.modalTemplates[0][j].isInput;
+            if (modal.isInput) modal.inputValue = this.props.listNames[this.props.selectedList];
+            modal.selectedSectionIndex = i;
+            modal.selectedOptionIndex = j;
+            modal.isOpened = true;
+            this.setState({ modal: modal });
+            this.setState({ isOptionsOpen: false });
+          }}
         />
       </div>
     );
