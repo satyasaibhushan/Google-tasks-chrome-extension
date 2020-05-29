@@ -31,7 +31,7 @@ export default {
             api
               .listTasks(ele.id)
               .then(task => {
-                task.sort(function (a, b) {
+               if(task&& task.length>0){ task.sort(function (a, b) {
                   return a.position - b.position;
                 });
                 console.log(task);
@@ -39,11 +39,11 @@ export default {
                   if (element.status == "needsAction" && !element.parent) {
                     taskListElement.taskDivs.push(this.newTask(false, element.title, -1, element.id));
                   }
-                });
+                });}
                 return task;
               })
               .then(task => {
-                task.forEach((element, i) => {
+                if(task&& task.length>0)task.forEach((element, i) => {
                   if (element.parent && element.status != "completed") {
                     {
                       let parentIndex = taskListElement.taskDivs.map(ele => ele.id).indexOf(element.parent);
@@ -56,7 +56,7 @@ export default {
                 return task;
               })
               .then(task => {
-                task = task
+                if(task&& task.length>0){task = task
                   .filter(ele => {
                     if (ele.completed) return true;
                     else return false;
@@ -69,7 +69,7 @@ export default {
                     taskListElement.checkedDivs.push(
                       this.newTask(true, element.title, -1, element.id, element.parent ? element.parent : "")
                     );
-                });
+                });}
               })
               .then(task => {
                 if (

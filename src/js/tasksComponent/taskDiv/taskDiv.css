@@ -6,6 +6,21 @@
     position: relative;
     /* opacity: 1; */
 }
+.taskDiv.checked::after{
+  content: ' ';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: black;
+  animation:strikeThrough 2s linear 1 forwards ;
+}
+
+@keyframes strikeThrough{
+  0%   { width : 0; }
+  100% { width: 100%; }
+}
 .bottomBorder {
     content: '';
     display: block;

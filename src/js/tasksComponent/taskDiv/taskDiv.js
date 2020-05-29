@@ -186,7 +186,6 @@ export class TaskDiv extends React.Component {
             }}
             style={{
               textDecoration: this.props.taskArrayElement.checked == true ? "line-through" : "none",
-              textDecoration: this.props.checkedList == true ? "line-through" : "none",
               height: this.props ? this.props.taskArrayElement.height - 22 : "",
               transform:
                 this.props.taskArrayElement.subset != -1

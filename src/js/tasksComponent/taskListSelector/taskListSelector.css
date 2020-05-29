@@ -90,12 +90,12 @@
   @keyframes rollOut {
     0% {
       width: 40%;
-      opacity: 0.2;
+      opacity: 0.5;
       max-height: 0;
     }
     50% {
-      opacity: 0.7;
-      max-height: auto ;
+      opacity: 0.9;
+      max-height:auto ;
     }
     100% {
       width: 70%;

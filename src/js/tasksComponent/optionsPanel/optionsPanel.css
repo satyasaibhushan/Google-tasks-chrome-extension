@@ -59,6 +59,7 @@
  }
 .options.inactive{
    pointer-events: none;
+   color: rgb(184,184,184);
 }
 .optionsTitle{
     height: 20px;

@@ -13,16 +13,18 @@ export class TaskListSelector extends React.Component {
       modal: { text: "", inputValue: "", isInput: false, isOpened: false, selectedOptionIndex: "-1,-1" },
     };
     this.displayOptionNames = [
-      { title: "Sort By", type: "selection", options: ["Date", "My Order"] },
+      { title: "Sort By", type: "selection", options: ["Date", "My Order"], inactive: [0, 1] },
       {
         title: "",
         type: "options",
         options: ["Create new list", "Rename List", "Delete List", "Delete all Completed tasks"],
+        inactive: [],
       },
       {
         title: "",
         type: "shortcuts",
         options: ["KeyBoard shortcuts", "Copy remainders to tasks"],
+        inactive: [0, 1],
       },
     ];
     this.modalTemplates = [];
@@ -50,16 +52,25 @@ export class TaskListSelector extends React.Component {
             text: "Delete this list?",
             inputValue: "deleting this list will also delete " + noOfTasks + " tasks",
             isInput: false,
-            // inactive: this.props.selectedList!=0 ? true:false
           },
           {
             text: "Delete all completed tasks?",
             inputValue: noOfCheckedTasks + " completed tasks will be permanently removed",
             isInput: false,
-            // inactive: noOfCheckedTasks==0 ? true:false
           },
         ],
       ];
+      let inactiveArray = this.displayOptionNames[1].inactive;
+      if (this.props.selectedList == 0) {
+        if (inactiveArray.indexOf(2) == -1) inactiveArray.push(2);
+      } else {
+        if (inactiveArray.indexOf(2) != -1) inactiveArray.splice(inactiveArray.indexOf(2), 1);
+      }
+      if (noOfCheckedTasks == 0) {
+        if (inactiveArray.indexOf(3) == -1) inactiveArray.push(3);
+      } else {
+        if (inactiveArray.indexOf(3) != -1) inactiveArray.splice(inactiveArray.indexOf(3), 1);
+      }
     }
   }
 
