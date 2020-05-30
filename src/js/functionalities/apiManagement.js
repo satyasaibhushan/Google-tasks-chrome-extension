@@ -37,7 +37,7 @@ export default {
                 console.log(task);
                 task.forEach((element, i) => {
                   if (element.status == "needsAction" && !element.parent) {
-                    taskListElement.taskDivs.push(this.newTask(false, element.title, -1, element.id));
+                    taskListElement.taskDivs.push(this.newTask(false, element.title, -1, element.id));    
                   }
                 });}
                 return task;
@@ -50,6 +50,7 @@ export default {
                       taskListElement.taskDivs[parentIndex].children.push(
                         this.newTask(false, element.title, parentIndex, element.id, element.parent)
                       );
+                      taskListElement.taskDivs[parentIndex].collapsed = -1
                     }
                   }
                 });

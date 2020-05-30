@@ -1,204 +1,240 @@
-.taskDiv{
-    /* height: 3rem; */
-    display: -webkit-box;
-    /* transition: all 1s; */
-    transition: border-bottom 0s;
-    position: relative;
-    /* opacity: 1; */
+.taskDiv {
+  /* height: 3rem; */
+  display: -webkit-box;
+  /* transition: all 1s; */
+  transition: border-bottom 0s;
+  position: relative;
+  /* opacity: 1; */
 }
-.taskDiv.checked::after{
-  content: ' ';
+.taskDiv.checked::after {
+  content: " ";
   position: absolute;
   top: 50%;
   left: 0;
   width: 100%;
   height: 1px;
   background: black;
-  animation:strikeThrough 2s linear 1 forwards ;
+  animation: strikeThrough 2s linear 1 forwards;
 }
 
-@keyframes strikeThrough{
-  0%   { width : 0; }
-  100% { width: 100%; }
+@keyframes strikeThrough {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
 }
 .bottomBorder {
-    content: '';
-    display: block;
-    position: relative;
-    right: 96%;
-    /* bottom: 00%; */
-    /* top:48; */
-    width: 100%;
-    height: 2px;
-    background:rgb(66,133,244);
-    transition: transform 250ms ease-in-out;
+  content: "";
+  display: block;
+  position: relative;
+  right: 96%;
+  /* bottom: 00%; */
+  /* top:48; */
+  width: 100%;
+  height: 2px;
+  background: rgb(66, 133, 244);
+  transition: transform 250ms ease-in-out;
+}
+.taskDivCheck {
+  position: relative;
+  height: 1.2rem;
+  width: 1.2rem;
+  /* border: 0.5rem solid #ffffff; */
+  box-shadow: 0 0 0.1rem 0.1rem rgba(136, 136, 136, 0.534);
+  border-radius: 50%;
+  top: 50%;
+  transform: translate(0, -50%);
+  margin: 0 1rem;
+  vertical-align: middle;
+  transition: all 0.3s;
+}
+.taskDivTick {
+  position: relative;
+  height: 1.2rem;
+  /* top: 50%; */
+  /* transform: translate(0,-50%); */
+  vertical-align: middle;
+  margin: 1rem;
+  transition: all 0.3s;
+}
+.textAreaTaskDiv {
+  position: relative;
+  /* height:1.6rem; */
+  /* top: 0rem; */
+  /* transform: translate(0,10%); */
+  width: 15rem;
+  line-height: 1.2rem;
+  font-size: 1.2rem;
+  border: none;
+  outline: none;
+  resize: none;
+  vertical-align: middle;
+  top: 50%;
+  transform: translate(0rem, -50%);
+  padding: 0.4rem 2rem 0.4rem 0.5rem;
+  /* margin: 0.5rem 0; */
+  font-weight: 300;
+  cursor: default;
+}
 
+.textAreaTaskDiv:focus {
+  background-color: rgba(212, 211, 211, 0.034);
+  cursor: auto;
 }
-.taskDivCheck{
-    position: relative;
-    height:1.2rem;
-    width: 1.2rem;
-    /* border: 0.5rem solid #ffffff; */
-    box-shadow: 0 0 0.1rem 0.1rem rgba(136, 136, 136, 0.534);
-    border-radius: 50%;
-    top: 50%;
-    transform: translate(0,-50%);
-    margin:0 1rem;
-    vertical-align: middle;
-    transition: all 0.3s;
+.taskIconContainer {
+  /* transition: all 0.5s; */
+  /* height: 1vh; */
+  /* border:0.1rem ; */
+  border-radius: 50%;
+  height: 3rem;
+  width: 3rem;
+  position: relative;
+  top: 50%;
+  margin-left: 11px;
+  justify-self: center;
+  cursor: pointer;
+  user-select: none;
 }
-.taskDivTick{
-    position: relative;
-    height:1.2rem;
-    /* top: 50%; */
-    /* transform: translate(0,-50%); */
-    vertical-align: middle;
-    margin: 1rem;
-    transition: all 0.3s;
+.taskIconContainer:hover {
+  background-color: rgba(212, 211, 211, 0.171);
 }
-.textAreaTaskDiv{
-    position: relative;
-    /* height:1.6rem; */
-    /* top: 0rem; */
-    /* transform: translate(0,10%); */
-    width:15rem;
-    line-height: 1.2rem;
-    font-size: 1.2rem;
-    border: none; 
-    outline: none;
-    resize: none;
-    vertical-align: middle;
-    top: 50%;
-    transform: translate(0rem,-50%);
-    padding: 0.4rem 2rem 0.4rem 0.5rem;
-    /* margin: 0.5rem 0; */
-    font-weight: 300;
-    cursor: default;
+.taskDiv:hover {
+  transition: all 0.2s;
+  box-shadow: 0px 0px 0.2rem 0.08rem rgba(121, 119, 119, 0.384);
+  /* box-shadow: 0 2rem 0 grey; */
 }
-
-.textAreaTaskDiv:focus{
-    background-color:rgba(212, 211, 211, 0.034);
-    cursor: auto;
-}
-.taskIconContainer{
-    /* transition: all 0.5s; */
-    /* height: 1vh; */
-    /* border:0.1rem ; */
-    border-radius: 50%;
-    height: 3rem;
-    width: 3rem;
-    position: relative;
-    top: 50%;
-    margin-left:7px ;
-    justify-self: center;
-    cursor: pointer;
-    user-select: none;
-}
-.taskIconContainer:hover{
-    background-color: rgba(212, 211, 211, 0.171);
-}
-.taskDiv:hover{
-    transition: all 0.2s;
-    box-shadow: 0px 0px 0.2rem 0.08rem  rgba(121, 119, 119, 0.384);
-    /* box-shadow: 0 2rem 0 grey; */
-}
-.taskInputContainer{
-    width:15rem;
-    border-bottom: 1px solid rgb(224,224,224) ;
+.taskInputContainer {
+  width: 15rem;
+  border-bottom: 1px solid rgb(224, 224, 224);
 }
 /* .taskDiv:focus  {
     border-bottom: 1px ridge rgb(101, 231, 107) ;
 } */
 textarea {
-    resize: none;
-    overflow: hidden;
-    min-height: 2rem;
-    max-height: 4.4rem;
-    background-color:transparent;
+  resize: none;
+  overflow: hidden;
+  min-height: 2rem;
+  max-height: 4.4rem;
+  background-color: transparent;
+}
+.collapseIcon {
+  border: solid #626366;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3.5px;
+  position: absolute;
+  left: 1px;
+  cursor: pointer;
+  transition: transform 0.4s;
 }
 
+.collapseIcon.unCollapsed {
+  transform: rotate(45deg)  translate(-50%,-50%);
+  -webkit-transform: rotate(45deg)  translate(-50%,-50%);
+  top: 50%;
+}
+.collapseIcon.collapsed {
+  transform: rotate(-45deg)  translate(50%,-50%);
+  -webkit-transform: rotate(-45deg)  translate(50%,-50%);
+  top: 50%;
+}
+.collapseIcon:hover{
+  border: solid black;
+  border-width: 0 2px 2px 0;
+}
 
 .tickAnimtionDivs {
-    color: official;
-    display: inline-block;
-    position: relative;
-    width: 3rem;
-    height: 3rem;
-    top: -3rem;
-    left:1px
-  }
-  .tickAnimtionDivs div {
-    transform-origin: 1.5rem 1.5rem;
-  }
-  .tickAnimtionDivs div:after {
-    content: " ";
-    display: block;
-    position: absolute;
-    /* top: 0px; */
+  color: official;
+  display: inline-block;
+  position: relative;
+  width: 3rem;
+  height: 3rem;
+  top: -3rem;
+  left: 1px;
+}
+.tickAnimtionDivs div {
+  transform-origin: 1.5rem 1.5rem;
+}
+.tickAnimtionDivs div:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  /* top: 0px; */
+  opacity: 0;
+  left: 23px;
+  width: 2px;
+  height: 10px;
+  border-radius: 20%;
+  background: black;
+  animation: go-out 0.3s linear 1;
+}
+
+.tickAnimtionDivs div:nth-child(1) {
+  transform: rotate(0deg);
+}
+.tickAnimtionDivs div:nth-child(1)::after {
+  background-color: #2980b9;
+}
+
+.tickAnimtionDivs div:nth-child(2) {
+  transform: rotate(60deg);
+}
+.tickAnimtionDivs div:nth-child(2)::after {
+  background-color: #f1c40f;
+}
+
+.tickAnimtionDivs div:nth-child(3) {
+  transform: rotate(120deg);
+}
+.tickAnimtionDivs div:nth-child(3)::after {
+  background-color: #e74c3c;
+}
+
+.tickAnimtionDivs div:nth-child(4) {
+  transform: rotate(180deg);
+}
+.tickAnimtionDivs div:nth-child(4)::after {
+  background-color: #2ecc71;
+}
+
+.tickAnimtionDivs div:nth-child(5) {
+  transform: rotate(240deg);
+}
+.tickAnimtionDivs div:nth-child(5)::after {
+  background-color: #9b59b6;
+}
+
+.tickAnimtionDivs div:nth-child(6) {
+  transform: rotate(300deg);
+}
+.tickAnimtionDivs div:nth-child(6)::after {
+  background-color: #e67e22;
+}
+@keyframes go-out {
+  0% {
     opacity: 0;
-    left: 23px;
-    width: 2px;
+    top: 4px;
     height: 10px;
-    border-radius: 20%;
-    background: black;
-    animation: go-out 0.3s linear 1;
   }
-
-  .tickAnimtionDivs div:nth-child(1) {
-    transform: rotate(0deg);
+  50% {
+    opacity: 0.5;
+    top: 2px;
+    height: 7px;
   }
-  .tickAnimtionDivs div:nth-child(1)::after{
-      background-color: #2980b9;
+  100% {
+    opacity: 1;
+    top: -4px;
+    height: 0px;
   }
-
-  .tickAnimtionDivs div:nth-child(2) {
-    transform: rotate(60deg);
-  }
-  .tickAnimtionDivs div:nth-child(2)::after{
-    background-color: #f1c40f;
 }
 
-  .tickAnimtionDivs div:nth-child(3) {
-    transform: rotate(120deg);
+@keyframes tasks-slide-out{
+  0%{
+    opacity: 0;
   }
-  .tickAnimtionDivs div:nth-child(3)::after{
-    background-color: #e74c3c;
+  100%{
+    opacity: 1;
+  }
 }
-
-  .tickAnimtionDivs div:nth-child(4) {
-    transform: rotate(180deg);
-  }
-  .tickAnimtionDivs div:nth-child(4)::after{
-    background-color:#2ecc71;
-}
-
-  .tickAnimtionDivs div:nth-child(5) {
-    transform: rotate(240deg);
-  }
-  .tickAnimtionDivs div:nth-child(5)::after{
-    background-color: #9b59b6;
-}
-
-  .tickAnimtionDivs div:nth-child(6) {
-    transform: rotate(300deg);
-  }
-  .tickAnimtionDivs div:nth-child(6)::after{
-    background-color: #e67e22;
-}
-  @keyframes go-out {
-    0% {
-      opacity: 0;
-      top:4px;
-      height:10px
-    }
-    50%{
-        opacity: 0.5;
-        top:2px;
-        height:7px
-    }
-    100% {
-      opacity: 1;
-      top:-4px;
-      height: 0px;
-    }
-  }

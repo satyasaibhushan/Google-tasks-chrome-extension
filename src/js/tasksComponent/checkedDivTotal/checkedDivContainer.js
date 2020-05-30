@@ -21,6 +21,7 @@ export class CheckedDivTotal extends React.Component {
       checkedArray[i].newlyAdded = true;
       checkedArray[i].checked = false;
       checkedArray[i].unchecked = false;
+      checkedArray[i].icon = '';
       api.updateTask({
         taskListId: taskList.id,
         taskId: checkedArray[i].id,
@@ -32,6 +33,7 @@ export class CheckedDivTotal extends React.Component {
 
         if (index != -1) {
           checkedArray[i].subset = index;
+          tasksArray[index].collapsed = -1
           tasksArray[index].children.unshift(checkedArray[i]);
         } else {
           delete checkedArray[i].parentId;

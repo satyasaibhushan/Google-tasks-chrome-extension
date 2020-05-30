@@ -51,6 +51,9 @@ export default function TotalTaskDivs(props) {
           }
           props.setTaskList(taskDivs);
         }}
+        clickedCollapseIcon={_ => {
+          updateTasks.clickedCollapseIcon(props.taskDivs, props.setTaskList, i);
+        }}
         checkedList={false}
       ></TaskDiv>
     );
@@ -60,7 +63,15 @@ export default function TotalTaskDivs(props) {
     return (
       <div key={i}>
         {constructTaskDiv(taskDiv, i, -1)}
-        {taskDiv.children ? taskDiv.children.map((element, j) => constructTaskDiv(element, i, j)) : ""}
+        <div
+          className={taskDiv.collapsed == 1 ? "taskChildren collapsed" : "taskChildren"}
+          style={{ display: taskDiv.collapsed == 1 ? "none" : "",
+           animation:'tasks-slide-out 0.3s ease-in-out 1'
+          
+         }}
+        >
+          {taskDiv.children ? taskDiv.children.map((element, j) => constructTaskDiv(element, i, j)) : ""}
+        </div>
       </div>
     );
   });

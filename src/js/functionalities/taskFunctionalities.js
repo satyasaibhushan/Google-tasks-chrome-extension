@@ -65,6 +65,7 @@ export default {
       height: 0,
       subset: isMetaPressed ? i - 1 : -1,
       id: "",
+      collapsed:0
     };
     if (isBefore) taskDiv.focus = false;
 
@@ -130,6 +131,7 @@ export default {
         taskDivs.splice(i, 0, taskDiv);
       }
     }
+    if(taskDivs[i-1]&&taskDivs[i-1].children && taskDivs[i-1].children.length>0) taskDivs[i-1].collapsed = -1
     setTaskList(taskDivs);
   },
 
@@ -146,6 +148,7 @@ export default {
         taskDivs.splice(i, 1);
       } else {
         if (j == 0 && taskDivs[i].children.length > 1) taskDivs[i].children[j + 1].focus = true;
+        else if(j==0 ) {taskDivs[i].focus =true;taskDivs[i].collapsed =0}
         else if (j > 0) taskDivs[i].children[j - 1].focus = true;
         api.deleteTask(taskListId, taskDivs[i].children[j].id);
         taskDivs[i].children.splice(j, 1);
@@ -153,8 +156,6 @@ export default {
     }
     if (KeyName == "checked") {
       if (j == -1 && taskDivs[i].checked == true) {
-        if (i == 0 && taskDivs.length > 1) taskDivs[i + 1].focus = true;
-        else if (i > 0) taskDivs[i - 1].focus = true;
         taskDivs[i].newlyAdded = true;
         if (taskDivs[i].value != "" || (j == -1 && taskDivs[i].children.length > 0)) {
           api.updateTask({
@@ -167,8 +168,7 @@ export default {
         } else if (taskDivs[i].value == "") api.deleteTask(taskListId, taskDivs[i].id);
         taskDivs.splice(i, 1);
       } else if (j != -1 && taskDivs[i] && taskDivs[i].children && taskDivs[i].children[j].checked == true) {
-        if (j == 0 && taskDivs[i].children.length > 1) taskDivs[i].children[j + 1].focus = true;
-        else if (j > 0) taskDivs[i].children[j - 1].focus = true;
+        if(taskDivs[i].children.length == 1) taskDivs[i].collapsed = 0
         taskDivs[i].children[j].newlyAdded = true;
         if (taskDivs[i].children[j].value != "") {
           api.updateTask({
@@ -217,5 +217,11 @@ export default {
     setMessage("1 task marked incomplete");
     setCheckedDivs(checkedDivs);
   },
-  showMessage(message) {},
+  clickedCollapseIcon(taskDivs,setTaskList,i){
+    if(taskDivs[i].collapsed == 1) taskDivs[i].collapsed = -1
+    else if(taskDivs[i].collapsed == -1) taskDivs[i].collapsed = 1
+    // else if(taskDivs[i].collapsed == 0 ) 
+    setTaskList(taskDivs)
+    console.log(taskDivs)
+  }
 };

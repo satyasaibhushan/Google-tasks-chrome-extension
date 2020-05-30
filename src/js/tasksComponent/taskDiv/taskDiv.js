@@ -122,6 +122,9 @@ export class TaskDiv extends React.Component {
           height: this.props.taskArrayElement.height,
         }}
       >
+        {(this.props.taskArrayElement.collapsed == -1 || this.props.taskArrayElement.collapsed== 1)&& !this.props.checkedList ? (
+          <div onClick={this.props.clickedCollapseIcon} className={this.props.taskArrayElement.collapsed == -1 ?"collapseIcon unCollapsed":"collapseIcon collapsed"}></div>
+        ) : ( "" )}
         <div
           className="taskIconContainer"
           onMouseOver={_ => this.setIcon(true)}

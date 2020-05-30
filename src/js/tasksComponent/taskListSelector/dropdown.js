@@ -23,7 +23,7 @@ class Dropdown extends React.Component {
     return (
       <div className="taskListSelector">
         <div
-          className="select-selected"
+          className= {this.state.displayLists? "select-selected select-arrow-active":"select-selected"}
           onClick={_ => this.setState({ displayLists: !this.state.displayLists })}
         >
           <span> {this.props.selectedList}</span>
