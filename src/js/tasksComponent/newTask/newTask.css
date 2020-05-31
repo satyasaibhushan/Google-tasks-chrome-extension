@@ -1,7 +1,7 @@
 .newTaskContainer{
     height: 3rem;
     display: flex;
-    border: 0.01px solid;
+    /* border: 0.01px solid; */
     border-radius: 3rem;
     margin: 7px;
 }

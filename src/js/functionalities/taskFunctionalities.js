@@ -60,7 +60,7 @@ export default {
     let taskDiv = {
       checked: false,
       value: value,
-      focus: true,
+      focus: false,
       newlyAdded: true,
       height: 0,
       subset: isMetaPressed ? i - 1 : -1,
@@ -137,8 +137,9 @@ export default {
 
   modifyTaskAfterAnimation(taskDivs, checkedDivs, taskListId, setTaskList, setCheckedDivs, KeyName, i, j) {
     if (KeyName == "newlyAdded") {
-      if (j == -1) taskDivs[i].newlyAdded = false;
-      else taskDivs[i].children[j].newlyAdded = false;
+      if (j == -1) {taskDivs[i].newlyAdded = false;taskDivs[i].focus = true}
+      else {taskDivs[i].children[j].newlyAdded = false;taskDivs[i].children[j].focus = true}
+      console.log(taskDivs[i])
     }
     if (KeyName == "remove") {
       if (j == -1) {

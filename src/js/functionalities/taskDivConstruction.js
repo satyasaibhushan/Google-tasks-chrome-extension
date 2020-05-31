@@ -2,6 +2,7 @@ import React from "react";
 import { TaskDiv } from "../tasksComponent/taskDiv/taskDiv";
 import api from "./tasks.api";
 import updateTasks from "./taskFunctionalities";
+import drag from "../tasksComponent/dragSorting/dragSorting";
 
 export default function TotalTaskDivs(props) {
   let constructTaskDiv = (taskDiv, i, j) => {
@@ -60,19 +61,28 @@ export default function TotalTaskDivs(props) {
   };
 
   return props.taskDivs.map((taskDiv, i) => {
-    return (
-      <div key={i}>
+    return [
+      <div key={i} draggable onDragStart={e => drag.dragStart(e)} onDragEnter={e => drag.dragEnter(e)}>
         {constructTaskDiv(taskDiv, i, -1)}
-        <div
-          className={taskDiv.collapsed == 1 ? "taskChildren collapsed" : "taskChildren"}
-          style={{ display: taskDiv.collapsed == 1 ? "none" : "",
-           animation:'tasks-slide-out 0.3s ease-in-out 1'
-          
-         }}
-        >
-          {taskDiv.children ? taskDiv.children.map((element, j) => constructTaskDiv(element, i, j)) : ""}
-        </div>
-      </div>
-    );
+      </div>,
+      taskDiv.children.length > 0
+        ? taskDiv.children
+          ? taskDiv.children.map((element, j) => [
+              <div
+                key={i * 100}
+                style={{
+                  display: taskDiv.collapsed == 1 ? "none" : "",
+                  animation:taskDiv.collapsed == -1 ? "tasks-slide-out 0.3s ease-in-out 1":'',
+                }}
+                draggable
+                onDragStart={e => drag.dragStart(e)}
+                onDragEnter={e => drag.dragEnter(e)}
+              >
+                {constructTaskDiv(element, i, j)}
+              </div>,
+            ])
+          : ""
+        : "",
+    ];
   });
 }

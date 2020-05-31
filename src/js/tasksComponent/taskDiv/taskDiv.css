@@ -60,6 +60,7 @@
   transition: all 0.3s;
 }
 .textAreaTaskDiv {
+  font-family: sans-serif;
   position: relative;
   /* height:1.6rem; */
   /* top: 0rem; */

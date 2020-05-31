@@ -120,11 +120,28 @@ export class TaskDiv extends React.Component {
           backgroundColor:
             this.props.taskArrayElement.focus == true ? " rgba(212, 211, 211, 0.1)" : "transparent",
           height: this.props.taskArrayElement.height,
+          zIndex:1,
         }}
+        onClick={e=>{ 
+           this.input.current.focus()
+           if(!this.props.taskArrayElement.focus)
+           this.input.current.setSelectionRange(this.input.current.value.length, this.input.current.value.length);
+           this.props.changeElement(false, true)
+          }}
       >
-        {(this.props.taskArrayElement.collapsed == -1 || this.props.taskArrayElement.collapsed== 1)&& !this.props.checkedList ? (
-          <div onClick={this.props.clickedCollapseIcon} className={this.props.taskArrayElement.collapsed == -1 ?"collapseIcon unCollapsed":"collapseIcon collapsed"}></div>
-        ) : ( "" )}
+        {(this.props.taskArrayElement.collapsed == -1 || this.props.taskArrayElement.collapsed == 1) &&
+        !this.props.checkedList ? (
+          <div
+            onClick={this.props.clickedCollapseIcon}
+            className={
+              this.props.taskArrayElement.collapsed == -1
+                ? "collapseIcon unCollapsed"
+                : "collapseIcon collapsed"
+            }
+          ></div>
+        ) : (
+          ""
+        )}
         <div
           className="taskIconContainer"
           onMouseOver={_ => this.setIcon(true)}
@@ -159,7 +176,7 @@ export class TaskDiv extends React.Component {
           />
           {this.tickAnimation()}
         </div>
-        <div className="taskInputContainer" onClick={e => this.props.changeElement(false, true)}>
+        <div className="taskInputContainer">
           <textarea
             rows="1"
             type="text"
@@ -176,9 +193,15 @@ export class TaskDiv extends React.Component {
               else this.props.manageTasks(e);
             }}
             className="textAreaTaskDiv"
-            onFocusCapture={e => {
-              this.props.changeElement(e.target.value, true);
+            onFocus={e => {
+              if(!this.props.taskArrayElement.focus) e.target.blur()
               this.setHeight(e.target);
+            }}
+            onMouseUp={e => {
+              e.target.focus();
+              if(!this.props.taskArrayElement.focus)
+              e.target.setSelectionRange(e.target.value.length, e.target.value.length);
+              this.props.changeElement(e.target.value, true);
             }}
             onBlurCapture={e => {
               this.props.changeElement(e.target.value, false);
@@ -202,6 +225,7 @@ export class TaskDiv extends React.Component {
                     ? "12.7rem"
                     : "15rem"
                   : "15rem",
+              zIndex:this.props.taskArrayElement.focus?0:-2,    
             }}
           ></textarea>
         </div>
