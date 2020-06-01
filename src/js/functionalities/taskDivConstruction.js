@@ -3,6 +3,7 @@ import { TaskDiv } from "../tasksComponent/taskDiv/taskDiv";
 import api from "./tasks.api";
 import updateTasks from "./taskFunctionalities";
 import drag from "../tasksComponent/dragSorting/dragSorting";
+import DragSorting from "../tasksComponent/dragSorting/dragSorting";
 
 export default function TotalTaskDivs(props) {
   let constructTaskDiv = (taskDiv, i, j) => {
@@ -60,29 +61,6 @@ export default function TotalTaskDivs(props) {
     );
   };
 
-  return props.taskDivs.map((taskDiv, i) => {
-    return [
-      <div key={i} draggable onDragStart={e => drag.dragStart(e)} onDragEnter={e => drag.dragEnter(e)}>
-        {constructTaskDiv(taskDiv, i, -1)}
-      </div>,
-      taskDiv.children.length > 0
-        ? taskDiv.children
-          ? taskDiv.children.map((element, j) => [
-              <div
-                key={i * 100}
-                style={{
-                  display: taskDiv.collapsed == 1 ? "none" : "",
-                  animation:taskDiv.collapsed == -1 ? "tasks-slide-out 0.3s ease-in-out 1":'',
-                }}
-                draggable
-                onDragStart={e => drag.dragStart(e)}
-                onDragEnter={e => drag.dragEnter(e)}
-              >
-                {constructTaskDiv(element, i, j)}
-              </div>,
-            ])
-          : ""
-        : "",
-    ];
-  });
+  
+  return <DragSorting taskDivs={props.taskDivs} constructTaskDiv={constructTaskDiv} setTaskList={props.setTaskList}/>
 }

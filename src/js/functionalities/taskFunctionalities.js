@@ -139,7 +139,6 @@ export default {
     if (KeyName == "newlyAdded") {
       if (j == -1) {taskDivs[i].newlyAdded = false;taskDivs[i].focus = true}
       else {taskDivs[i].children[j].newlyAdded = false;taskDivs[i].children[j].focus = true}
-      console.log(taskDivs[i])
     }
     if (KeyName == "remove") {
       if (j == -1) {
@@ -223,6 +222,5 @@ export default {
     else if(taskDivs[i].collapsed == -1) taskDivs[i].collapsed = 1
     // else if(taskDivs[i].collapsed == 0 ) 
     setTaskList(taskDivs)
-    console.log(taskDivs)
   }
 };
