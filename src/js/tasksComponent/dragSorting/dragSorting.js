@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import updateTasks from "../../functionalities/taskFunctionalities";
+import api from "../../functionalities/tasks.api";
 
 export default function DragSorting(props) {
   const [dragging, setDragging] = useState(false);
@@ -34,18 +35,49 @@ export default function DragSorting(props) {
         taskDiv.parentId = taskDivs[dragOverItem.current[0]].id;
         taskDiv.newlyAdded = true;
         taskDiv.subset = dragOverItem.current[0];
+        api.moveTask({
+          taskListId: props.taskListId,
+          taskId: taskDiv.id,
+          parent: taskDivs[dragOverItem.current[0]].id,
+          previous:
+            dragOverItem.current[1] == 0
+              ? ""
+              : taskDivs[dragOverItem.current[0]].children[dragOverItem.current[1] - 1].id,
+        });
         taskDivs[dragOverItem.current[0]].children.splice(dragOverItem.current[1], 0, taskDiv);
       } else {
         if (taskDivs[dragItem.current].children.length > 0) return null;
         else {
           let taskDiv = taskDivs.splice(dragItem.current, 1)[0];
           taskDiv.newlyAdded = true;
-          taskDiv.parentId = taskDivs[dragOverItem.current[0]].id;
           taskDiv.newlyAdded = true;
           taskDiv.subset = dragOverItem.current[0];
-          if (dragItem.current > dragOverItem.current[0])
+          if (dragItem.current > dragOverItem.current[0]) {
+            taskDiv.parentId = taskDivs[dragOverItem.current[0]].id;
+            console.log(taskDiv, taskDiv.id);
+            api.moveTask({
+              taskListId: props.taskListId,
+              taskId: taskDiv.id,
+              parent: taskDivs[dragOverItem.current[0]].id,
+              previous:
+                dragOverItem.current[1] == 0
+                  ? ""
+                  : taskDivs[dragOverItem.current[0]].children[dragOverItem.current[1] - 1].id,
+            });
             taskDivs[dragOverItem.current[0]].children.splice(dragOverItem.current[1], 0, taskDiv);
-          else taskDivs[dragOverItem.current[0] - 1].children.splice(dragOverItem.current[1], 0, taskDiv);
+          } else {
+            taskDiv.parentId = taskDivs[dragOverItem.current[0] - 1].id;
+            api.moveTask({
+              taskListId: props.taskListId,
+              taskId: taskDiv.id,
+              parent: taskDivs[dragOverItem.current[0] - 1].id,
+              previous:
+                dragOverItem.current[1] == 0
+                  ? ""
+                  : taskDivs[dragOverItem.current[0] - 1].children[dragOverItem.current[1] - 1].id,
+            });
+            taskDivs[dragOverItem.current[0] - 1].children.splice(dragOverItem.current[1], 0, taskDiv);
+          }
         }
       }
     } else {
@@ -56,10 +88,20 @@ export default function DragSorting(props) {
         taskDiv.subset = -1;
         delete taskDiv.parentId;
         taskDiv.newlyAdded = true;
+        api.moveTask({
+            taskListId: props.taskListId,
+            taskId: taskDiv.id,
+            previous: dragOverItem.current == 0 ? "" : taskDivs[dragOverItem.current - 1].id,
+          });
         taskDivs.splice(dragOverItem.current, 0, taskDiv);
       } else {
         let taskDiv = taskDivs.splice(dragItem.current, 1)[0];
         taskDiv.newlyAdded = true;
+        api.moveTask({
+          taskListId: props.taskListId,
+          taskId: taskDiv.id,
+          previous: dragOverItem.current == 0 ? "" : taskDivs[dragOverItem.current - 1].id,
+        });
         taskDivs.splice(dragOverItem.current, 0, taskDiv);
       }
     }

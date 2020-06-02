@@ -62,5 +62,5 @@ export default function TotalTaskDivs(props) {
   };
 
   
-  return <DragSorting taskDivs={props.taskDivs} constructTaskDiv={constructTaskDiv} setTaskList={props.setTaskList}/>
+  return <DragSorting taskDivs={props.taskDivs} constructTaskDiv={constructTaskDiv} taskListId= {props.taskListId} setTaskList={props.setTaskList}/>
 }

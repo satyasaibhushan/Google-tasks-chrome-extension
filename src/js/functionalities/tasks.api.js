@@ -99,6 +99,17 @@ export default {
 
     return this.makeRequest(request);
   },
+  moveTask({taskListId, taskId,parent,previous,...params}){
+    const request = gapi.client.tasks.tasks.move({
+      tasklist: taskListId,
+      task: taskId,
+      parent: parent,
+      previous:previous,
+      ...params,
+    });
+
+    return this.makeRequest(request);
+  },
 
   makeRequest(requestObj, isItems = false) {
     return new Promise((resolve, reject) => {
