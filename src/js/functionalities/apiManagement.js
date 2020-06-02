@@ -37,7 +37,8 @@ export default {
                 console.log(task);
                 task.forEach((element, i) => {
                   if (element.status == "needsAction" && !element.parent) {
-                    taskListElement.taskDivs.push(this.newTask(false, element.title, -1, element.id));    
+                    taskListElement.taskDivs.push(this.newTask(false, element.title, -1, element.id)); 
+                    taskListElement.taskDivs[taskListElement.taskDivs.length-1].collapsed = 0   
                   }
                 });}
                 return task;
