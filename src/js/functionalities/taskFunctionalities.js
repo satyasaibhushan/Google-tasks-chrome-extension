@@ -136,6 +136,7 @@ export default {
   },
 
   modifyTaskAfterAnimation(taskDivs, checkedDivs, taskListId, setTaskList, setCheckedDivs, KeyName, i, j) {
+    console.log('hhiii')
     if (KeyName == "newlyAdded") {
       if (j == -1) {taskDivs[i].newlyAdded = false;taskDivs[i].focus = true}
       else {taskDivs[i].children[j].newlyAdded = false;taskDivs[i].children[j].focus = true}
@@ -155,7 +156,7 @@ export default {
       }
     }
     if (KeyName == "checked") {
-      if (j == -1 && taskDivs[i].checked == true) {
+      if (j == -1 && taskDivs[i] &&  taskDivs[i].checked == true) {
         taskDivs[i].newlyAdded = true;
         if (taskDivs[i].value != "" || (j == -1 && taskDivs[i].children.length > 0)) {
           api.updateTask({
@@ -167,7 +168,7 @@ export default {
           checkedDivs.unshift(taskDivs[i]);
         } else if (taskDivs[i].value == "") api.deleteTask(taskListId, taskDivs[i].id);
         taskDivs.splice(i, 1);
-      } else if (j != -1 && taskDivs[i] && taskDivs[i].children && taskDivs[i].children[j].checked == true) {
+      } else if (j != -1 && taskDivs[i] && taskDivs[i].children&& taskDivs[i].children[j] && taskDivs[i].children[j].checked == true) {
         if(taskDivs[i].children.length == 1) taskDivs[i].collapsed = 0
         taskDivs[i].children[j].newlyAdded = true;
         if (taskDivs[i].children[j].value != "") {
