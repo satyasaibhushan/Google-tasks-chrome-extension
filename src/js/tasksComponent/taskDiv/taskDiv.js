@@ -24,8 +24,18 @@ export class TaskDiv extends React.Component {
     ) {
       this.setState({ icon: "tick" });
     }
+    if (
+      this.props.taskArrayElement.dragging &&
+      this.props.taskArrayElement.height != 0 &&
+      this.wholeDiv.current.style.height != 0 + "px"
+    ) {
+      this.props.setHeight(0);
+    }
 
-    if (this.props.taskArrayElement.height == 0) {
+    if (
+      this.props.taskArrayElement.height == 0 &&
+      (!this.props.taskArrayElement.dragging || this.props.taskArrayElement.dragging === false)
+    ) {
       this.setHeight(this.input.current);
     }
     if (this.props.taskArrayElement.focus == true) {
@@ -120,14 +130,18 @@ export class TaskDiv extends React.Component {
           backgroundColor:
             this.props.taskArrayElement.focus == true ? " rgba(212, 211, 211, 0.1)" : "transparent",
           height: this.props.taskArrayElement.height,
-          zIndex:1,
+          opacity: this.props.taskArrayElement.height == 0 ? 0 : "",
+          zIndex: 1,
         }}
-        onClick={e=>{ 
-           this.input.current.focus()
-           if(!this.props.taskArrayElement.focus)
-           this.input.current.setSelectionRange(this.input.current.value.length, this.input.current.value.length);
-           this.props.changeElement(false, true)
-          }}
+        onClick={e => {
+          this.input.current.focus();
+          if (!this.props.taskArrayElement.focus)
+            this.input.current.setSelectionRange(
+              this.input.current.value.length,
+              this.input.current.value.length
+            );
+          this.props.changeElement(false, true);
+        }}
       >
         {(this.props.taskArrayElement.collapsed == -1 || this.props.taskArrayElement.collapsed == 1) &&
         !this.props.checkedList ? (
@@ -194,13 +208,13 @@ export class TaskDiv extends React.Component {
             }}
             className="textAreaTaskDiv"
             onFocus={e => {
-              if(!this.props.taskArrayElement.focus) e.target.blur()
+              if (!this.props.taskArrayElement.focus) e.target.blur();
               this.setHeight(e.target);
             }}
             onMouseUp={e => {
               e.target.focus();
-              if(!this.props.taskArrayElement.focus)
-              e.target.setSelectionRange(e.target.value.length, e.target.value.length);
+              if (!this.props.taskArrayElement.focus)
+                e.target.setSelectionRange(e.target.value.length, e.target.value.length);
               this.props.changeElement(e.target.value, true);
             }}
             onBlurCapture={e => {
@@ -225,7 +239,7 @@ export class TaskDiv extends React.Component {
                     ? "12.7rem"
                     : "15rem"
                   : "15rem",
-              zIndex:this.props.taskArrayElement.focus?0:-2,    
+              zIndex: this.props.taskArrayElement.focus ? 0 : -2,
             }}
           ></textarea>
         </div>
@@ -233,8 +247,9 @@ export class TaskDiv extends React.Component {
           className="bottomBorder"
           style={{
             transform:
-              this.props.taskArrayElement.focus &&
-              !(this.props.taskArrayElement.newlyAdded || this.props.taskArrayElement.remove)
+              (this.props.taskArrayElement.focus &&
+                !(this.props.taskArrayElement.newlyAdded || this.props.taskArrayElement.remove)) ||
+              this.props.taskArrayElement.draggingOver
                 ? "scaleX(1)"
                 : "scaleX(0)",
             top: this.props.taskArrayElement.height,

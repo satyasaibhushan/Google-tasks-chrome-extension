@@ -10,6 +10,7 @@ export default function DragSorting(props) {
   let taskDragStart = (item, i, j) => {
     dragItemNode.current = item;
     j == -1 ? (dragItem.current = i) : (dragItem.current = [i, j]);
+    j == -1 ? (props.taskDivs[i].dragging = true) : (props.taskDivs[i].children[j].dragging = true);
     dragItemNode.current.addEventListener("dragend", taskDragEnd);
     setTimeout(() => {
       setDragging(true);
@@ -17,14 +18,35 @@ export default function DragSorting(props) {
   };
 
   let taskDragEnter = (item, i, j) => {
-    if (dragItemNode.current !== item) {
-      j == -1 ? (dragOverItem.current = i) : (dragOverItem.current = [i, j]);
+    let taskDivs = props.taskDivs;
+    if (dragItemNode.current !== item && (dragOverItem.current != i || dragOverItem.current != [i, j])) {
+      new Promise((resolve, reject) => {
+        resolve();
+      })
+        .then(() => {
+          if (dragOverItem.current) {
+            // if(dragOverItem.current.length != 2)
+            dragOverItem.current.length != 2
+              ? (taskDivs[dragOverItem.current].draggingOver = false)
+              : taskDivs[dragOverItem.current[0]].children[dragOverItem.current[1]]
+              ? (taskDivs[dragOverItem.current[0]].children[dragOverItem.current[1]].draggingOver = false)
+              : "";
+          }
+        })
+        .then(() => (j == -1 ? (dragOverItem.current = i) : (dragOverItem.current = [i, j])))
+        .then(() =>
+          j == -1 ? (taskDivs[i].draggingOver = true) : (taskDivs[i].children[j].draggingOver = true)
+        )
+        .then(() => props.setTaskList(taskDivs));
     }
   };
 
   let taskDragEnd = () => {
     let taskDivs = props.taskDivs;
     let taskDiv, isBefore;
+    dragOverItem.current.length != 2
+      ? (taskDivs[dragOverItem.current].draggingOver = false)
+      : (taskDivs[dragOverItem.current[0]].children[dragOverItem.current[1]].draggingOver = false);
     if (dragOverItem.current.length == 2) {
       if (dragItem.current.length == 2) {
         taskDiv = taskDivs[dragItem.current[0]].children.splice(dragItem.current[1], 1)[0];
@@ -42,6 +64,7 @@ export default function DragSorting(props) {
       }
       if (taskDiv) {
         taskDiv.newlyAdded = true;
+        taskDiv.dragging = false;
         taskDiv.subset = dragOverItem.current[0];
         let parentTask = isBefore ? taskDivs[dragOverItem.current[0] - 1] : taskDivs[dragOverItem.current[0]];
         taskDiv.parentId = parentTask.id;
@@ -54,7 +77,6 @@ export default function DragSorting(props) {
         parentTask.children.splice(dragOverItem.current[1], 0, taskDiv);
       }
     } else {
-      let taskDiv;
       if (dragItem.current.length == 2) {
         taskDiv = taskDivs[dragItem.current[0]].children.splice(dragItem.current[1], 1)[0];
         if (taskDivs[dragItem.current[0]].children.length == 0) taskDivs[dragItem.current[0]].collapsed = 0;
@@ -63,6 +85,7 @@ export default function DragSorting(props) {
         delete taskDiv.parentId;
       } else taskDiv = taskDivs.splice(dragItem.current, 1)[0];
       taskDiv.newlyAdded = true;
+      taskDiv.dragging = false;
       api.moveTask({
         taskListId: props.taskListId,
         taskId: taskDiv.id,
