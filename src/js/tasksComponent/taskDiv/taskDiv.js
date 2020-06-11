@@ -249,10 +249,10 @@ export class TaskDiv extends React.Component {
             transform:
               (this.props.taskArrayElement.focus &&
                 !(this.props.taskArrayElement.newlyAdded || this.props.taskArrayElement.remove)) ||
-              this.props.taskArrayElement.draggingOver
+              this.props.taskArrayElement.draggingOver==1||this.props.taskArrayElement.draggingOver==-1
                 ? "scaleX(1)"
                 : "scaleX(0)",
-            top: this.props.taskArrayElement.height,
+            top:this.props.taskArrayElement.draggingOver ==1 ?0: this.props.taskArrayElement.height,
           }}
         ></span>
       </div>

@@ -107,6 +107,7 @@
   /* box-shadow: 0 2rem 0 grey; */
 }
 .taskInputContainer {
+  padding: 14px 0px;
   width: 15rem;
   border-bottom: 1px solid rgb(224, 224, 224);
 }

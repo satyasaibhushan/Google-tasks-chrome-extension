@@ -6,6 +6,20 @@ export default function DragSorting(props) {
   const dragItem = useRef();
   const dragItemNode = useRef();
   const dragOverItem = useRef();
+  const draggingOverDivHeight = useRef();
+  const [draggingOverHighlightPosition, setHighlight] = useState(0);
+
+  useEffect(() => {
+    let taskDivs = props.taskDivs;
+    if (draggingOverHighlightPosition != 0 && (dragOverItem.current || dragOverItem.current == 0)) {
+      dragOverItem.current.length != 2
+        ? (taskDivs[dragOverItem.current].draggingOver = draggingOverHighlightPosition)
+        : (taskDivs[dragOverItem.current[0]].children[
+            dragOverItem.current[1]
+          ].draggingOver = draggingOverHighlightPosition);
+    }
+    props.setTaskList(taskDivs);
+  }, [dragOverItem.current, draggingOverHighlightPosition]);
 
   let taskDragStart = (item, i, j) => {
     dragItemNode.current = item;
@@ -24,19 +38,21 @@ export default function DragSorting(props) {
         resolve();
       })
         .then(() => {
-          if (dragOverItem.current) {
+          if (dragOverItem.current || dragOverItem.current == 0) {
             // if(dragOverItem.current.length != 2)
             dragOverItem.current.length != 2
-              ? (taskDivs[dragOverItem.current].draggingOver = false)
-              : taskDivs[dragOverItem.current[0]].children[dragOverItem.current[1]]
-              ? (taskDivs[dragOverItem.current[0]].children[dragOverItem.current[1]].draggingOver = false)
+              ? taskDivs[dragOverItem.current]
+                ? (taskDivs[dragOverItem.current].draggingOver = 0)
+                : ""
+              : taskDivs[dragOverItem.current[0]] &&
+                taskDivs[dragOverItem.current[0]].children &&
+                taskDivs[dragOverItem.current[0]].children[dragOverItem.current[1]]
+              ? (taskDivs[dragOverItem.current[0]].children[dragOverItem.current[1]].draggingOver = 0)
               : "";
           }
+          else return
         })
         .then(() => (j == -1 ? (dragOverItem.current = i) : (dragOverItem.current = [i, j])))
-        .then(() =>
-          j == -1 ? (taskDivs[i].draggingOver = true) : (taskDivs[i].children[j].draggingOver = true)
-        )
         .then(() => props.setTaskList(taskDivs));
     }
   };
@@ -72,9 +88,21 @@ export default function DragSorting(props) {
           taskListId: props.taskListId,
           taskId: taskDiv.id,
           parent: parentTask.id,
-          previous: dragOverItem.current[1] == 0 ? "" : parentTask.children[dragOverItem.current[1] - 1].id,
+          previous:
+            dragItem.current.length == 2 &&
+            dragItem.current[0] == dragOverItem.current[0] &&
+            dragItem.current[1] < dragOverItem.current[1] &&
+            dragOverItem.current[1] > 1
+              ? parentTask.children[dragOverItem.current[1] - 2].id
+              : dragOverItem.current[1] == 0
+              ? ""
+              : parentTask.children[dragOverItem.current[1] - 1].id,
         });
-        parentTask.children.splice(dragOverItem.current[1], 0, taskDiv);
+        dragItem.current.length == 2 &&
+        dragItem.current[0] == dragOverItem.current[0] &&
+        dragItem.current[1] < dragOverItem.current[1]
+          ? parentTask.children.splice(dragOverItem.current[1] - 1, 0, taskDiv)
+          : parentTask.children.splice(dragOverItem.current[1], 0, taskDiv);
       }
     } else {
       if (dragItem.current.length == 2) {
@@ -100,12 +128,24 @@ export default function DragSorting(props) {
     dragItemNode.current = null;
   };
 
+  let taskDragOver = (e, i, j) => {
+    if (draggingOverDivHeight.current) {
+      (e.pageY - e.currentTarget.offsetTop) * 2 - draggingOverDivHeight.current * 3 > 0
+        ? setHighlight(-1)
+        : setHighlight(1);
+          }
+  };
+
   return props.taskDivs.map((taskDiv, i) => {
     return [
       <div
         key={i}
         draggable
         onDragStart={e => taskDragStart(e.target, i, -1)}
+        onDragOver={e => {
+          dragging ? taskDragOver(e, i, -1) : "";
+          draggingOverDivHeight.current = e.currentTarget.offsetHeight;
+        }}
         onDragEnter={dragging ? e => taskDragEnter(e.target, i, -1) : null}
       >
         {props.constructTaskDiv(taskDiv, i, -1)}
