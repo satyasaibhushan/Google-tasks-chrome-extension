@@ -29,6 +29,7 @@ export class TaskDiv extends React.Component {
       this.props.taskArrayElement.height != 0 &&
       this.wholeDiv.current.style.height != 0 + "px"
     ) {
+      this.Animation(this.wholeDiv.current,"backward",0.3,0)
       this.props.setHeight(0);
     }
 
@@ -73,7 +74,7 @@ export class TaskDiv extends React.Component {
         }
       );
     else if (direction == "backward") {
-      element.blur();
+     if(element.blur) element.blur();
       return TweenMax.fromTo(
         element,
         { height: this.props.taskArrayElement.height, opacity: 1 },
