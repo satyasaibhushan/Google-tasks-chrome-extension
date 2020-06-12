@@ -40,7 +40,6 @@ export default function DragSorting(props) {
       })
         .then(() => {
           if (dragOverItem.current || dragOverItem.current == 0) {
-            // if(dragOverItem.current.length != 2)
             dragOverItem.current.length != 2
               ? taskDivs[dragOverItem.current]
                 ? (taskDivs[dragOverItem.current].draggingOver = 0)
@@ -61,7 +60,8 @@ export default function DragSorting(props) {
     e.preventDefault();
     let taskDivs = props.taskDivs;
     let taskDiv,
-      draggedTaskDisplacement = 0;
+      draggedTaskDisplacement = 0,
+      isBefore = 0;
     dragOverItem.current.length != 2
       ? (taskDivs[dragOverItem.current].draggingOver = false)
       : (taskDivs[dragOverItem.current[0]].children[dragOverItem.current[1]].draggingOver = false);
@@ -73,41 +73,33 @@ export default function DragSorting(props) {
           dragItem.current[0] != dragOverItem.current[0]
         )
           taskDivs[dragItem.current[0]].collapsed = 0;
+        draggedTaskDisplacement =
+          dragItem.current[0] == dragOverItem.current[0] && dragItem.current[1] < dragOverItem.current[1]
+            ? -1
+            : 0;
       } else {
         if (taskDivs[dragItem.current].children.length > 0) {
           taskDivs[dragItem.current].dragging = false;
         } else {
           taskDiv = taskDivs.splice(dragItem.current, 1)[0];
-          if (dragItem.current < dragOverItem.current[0]) draggedTaskDisplacement = 1;
+          if (dragItem.current < dragOverItem.current[0]) isBefore = 1;
         }
       }
       if (taskDiv) {
-        taskDiv.newlyAdded = true;
-        taskDiv.dragging = false;
-        taskDiv.subset = dragOverItem.current[0];
-        let parentTask = draggedTaskDisplacement
-          ? taskDivs[dragOverItem.current[0] - 1]
-          : taskDivs[dragOverItem.current[0]];
-        taskDiv.parentId = parentTask.id;
-        // api.moveTask({
-        //   taskListId: props.taskListId,
-        //   taskId: taskDiv.id,
-        //   parent: parentTask.id,
-        //   previous:
-        //     dragItem.current.length == 2 &&
-        //     dragItem.current[0] == dragOverItem.current[0] &&
-        //     dragItem.current[1] < dragOverItem.current[1] &&
-        //     dragOverItem.current[1] > 1
-        //       ? parentTask.children[dragOverItem.current[1] - 2].id
-        //       : dragOverItem.current[1] == 0
-        //       ? ""
-        //       : parentTask.children[dragOverItem.current[1] - 1].id,
-        // });
-        dragItem.current.length == 2 &&
-        dragItem.current[0] == dragOverItem.current[0] &&
-        dragItem.current[1] < dragOverItem.current[1]
-          ? parentTask.children.splice(dragOverItem.current[1] - 1, 0, taskDiv)
-          : parentTask.children.splice(dragOverItem.current[1], 0, taskDiv);
+        if (draggingOverHighlightPositionRef.current == -1) draggedTaskDisplacement++;
+        let parentTask = isBefore ? taskDivs[dragOverItem.current[0] - 1] : taskDivs[dragOverItem.current[0]];
+        let prev =
+          dragOverItem.current[1] == 0 && draggingOverHighlightPositionRef.current == 1
+            ? ""
+            : parentTask.children[dragOverItem.current[1] + draggedTaskDisplacement - 1].id;
+        moveTaskElement(
+          parentTask.children,
+          props.taskListId,
+          taskDiv,
+          prev,
+          draggedTaskDisplacement,
+          parentTask
+        );
       }
     } else {
       if (dragItem.current.length == 2) {
@@ -116,22 +108,17 @@ export default function DragSorting(props) {
         taskDiv.children = [];
         taskDiv.subset = -1;
         delete taskDiv.parentId;
-        console.log(draggingOverHighlightPositionRef.current, dragOverItem.current);
         if (draggingOverHighlightPositionRef.current == -1) draggedTaskDisplacement++;
-        // moveTaskElement(taskDiv,previous,parentTask)
       } else {
         taskDiv = taskDivs.splice(dragItem.current, 1)[0];
         draggedTaskDisplacement = dragOverItem.current > dragItem.current ? 0 : 1;
         if (draggingOverHighlightPositionRef.current == 1) draggedTaskDisplacement--;
       }
-      taskDiv.newlyAdded = true;
-      taskDiv.dragging = false;
-      // api.moveTask({
-      //   taskListId: props.taskListId,
-      //   taskId: taskDiv.id,
-      //   previous: dragOverItem.current == 0 ? "" : taskDivs[dragOverItem.current - 1].id,
-      // });
-      taskDivs.splice(dragOverItem.current + draggedTaskDisplacement, 0, taskDiv);
+      let prev =
+        dragOverItem.current == 0 && draggingOverHighlightPositionRef.current == 1
+          ? ""
+          : taskDivs[dragOverItem.current + draggedTaskDisplacement - 1].id;
+      moveTaskElement(taskDivs, props.taskListId, taskDiv, prev, draggedTaskDisplacement);
     }
     // props.setTaskList(taskDivs)
     setDragging(false);
@@ -139,16 +126,28 @@ export default function DragSorting(props) {
     dragItemNode.current.removeEventListener("dragend", taskDragEnd);
     dragItemNode.current = null;
   };
+  let moveTaskElement = (tasksArray, taskArrayId, task, prevId, displacement, parent = undefined) => {
+    task.newlyAdded = true;
+    task.dragging = false;
+    if (parent) {
+      task.subset = dragOverItem.current[0];
+      task.parentId = parent.id;
+    }
+    api.moveTask({
+      taskListId: taskArrayId,
+      taskId: task.id,
+      previous: prevId,
+      parent: parent ? parent.id : "",
+    });
+    tasksArray.splice((!parent ? dragOverItem.current : dragOverItem.current[1]) + displacement, 0, task);
+  };
 
   let taskDragOver = (e, i, j) => {
     e.preventDefault();
     if (draggingOverDivHeight.current && dragging) {
       let scrollDist = document.getElementsByClassName("tasksComponentContainer")[0].scrollTop;
 
-      if (
-        (e.pageY - e.currentTarget.offsetTop) - draggingOverDivHeight.current * 1.5 + scrollDist >
-        0
-      ) {
+      if (e.pageY - e.currentTarget.offsetTop - draggingOverDivHeight.current * 1.5 + scrollDist > 0) {
         setHighlight(-1);
         draggingOverHighlightPositionRef.current = -1;
       } else {
