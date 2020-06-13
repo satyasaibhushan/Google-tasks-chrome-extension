@@ -207,7 +207,7 @@ export default function DragSorting(props) {
     return [
       <div
         key={i}
-        draggable
+        draggable={props.taskDivs[i].focus ? false :true}
         onDragStart={e => taskDragStart(e, i, -1)}
         onDragOver={e => {
           taskDragOver(e, i, -1);
@@ -217,8 +217,8 @@ export default function DragSorting(props) {
       >
         {props.constructTaskDiv(taskDiv, i, -1)}
       </div>,
-      taskDiv.children.length > 0
-        ? taskDiv.children
+      taskDiv.children
+        ? taskDiv.children.length > 0
           ? taskDiv.children.map((element, j) => [
               <div
                 key={i * 100}
@@ -226,7 +226,7 @@ export default function DragSorting(props) {
                   display: taskDiv.collapsed == 1 ? "none" : "",
                   animation: taskDiv.collapsed == -1 ? "tasks-slide-out 0.3s ease-in-out 1" : "",
                 }}
-                draggable
+                draggable={props.taskDivs[i].children[j].focus ? false :true}
                 onDragStart={e => taskDragStart(e, i, j)}
                 onDragOver={e => {
                   taskDragOver(e, i, j);

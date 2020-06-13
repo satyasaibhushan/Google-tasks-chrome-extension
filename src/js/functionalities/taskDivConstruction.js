@@ -34,6 +34,7 @@ export default function TotalTaskDivs(props) {
             props.taskListId,
             props.setTaskList,
             props.setCheckedDivs,
+            props.setMessage,
             value,
             i,
             j

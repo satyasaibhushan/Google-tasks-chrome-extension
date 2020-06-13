@@ -29,7 +29,7 @@
   content: "";
   display: block;
   position: relative;
-  right: 96%;
+  right: 98%;
   /* bottom: 00%; */
   /* top:48; */
   width: 100%;
@@ -67,7 +67,7 @@
   /* transform: translate(0,10%); */
   width: 15rem;
   line-height: 1.2rem;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   border: none;
   outline: none;
   resize: none;

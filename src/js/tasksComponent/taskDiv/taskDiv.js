@@ -93,11 +93,11 @@ export class TaskDiv extends React.Component {
   setIcon(mouseEnter) {
     if (this.props.taskArrayElement.checked == true && this.props.checkedList == true)
       return this.setState({ icon: "tick" });
-    if (this.props.taskArrayElement.unchecked || this.props.taskArrayElement.checked) return;
-    else if (mouseEnter && this.state.icon == "circle") {
+    else if (this.props.taskArrayElement.unchecked || this.props.taskArrayElement.checked) return;
+    else if (mouseEnter && this.state.icon == "circle"&& this.props.checkedList != true ) {
       this.props.hoveredIcon(true);
       return this.setState({ icon: "tick" });
-    } else if (!mouseEnter && this.state.icon == "tick") {
+    } else if (!mouseEnter && this.state.icon == "tick" && this.props.checkedList != true) {
       this.props.hoveredIcon(false);
       return this.setState({ icon: "circle" });
     }

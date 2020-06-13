@@ -135,8 +135,7 @@ export default {
     setTaskList(taskDivs);
   },
 
-  modifyTaskAfterAnimation(taskDivs, checkedDivs, taskListId, setTaskList, setCheckedDivs, KeyName, i, j) {
-    console.log('hhiii')
+  modifyTaskAfterAnimation(taskDivs, checkedDivs, taskListId, setTaskList, setCheckedDivs,setMessage, KeyName, i, j) {
     if (KeyName == "newlyAdded") {
       if (j == -1) {taskDivs[i].newlyAdded = false;taskDivs[i].focus = true}
       else {taskDivs[i].children[j].newlyAdded = false;taskDivs[i].children[j].focus = true}
@@ -145,14 +144,20 @@ export default {
       if (j == -1) {
         if (i == 0 && taskDivs.length > 1) taskDivs[i + 1].focus = true;
         else if (i > 0) taskDivs[i - 1].focus = true;
+
+       let  message = "deleted 1 task ";
+       taskDivs[i]&&taskDivs[i].children&&taskDivs[i].children.length>0 ? message+='with '+taskDivs[i].children.length+' subtasks' :''
         api.deleteTask(taskListId, taskDivs[i].id);
         taskDivs.splice(i, 1);
+       
+        setMessage(message);
       } else {
         if (j == 0 && taskDivs[i].children.length > 1) taskDivs[i].children[j + 1].focus = true;
         else if(j==0 ) {taskDivs[i].focus =true;taskDivs[i].collapsed =0}
         else if (j > 0) taskDivs[i].children[j - 1].focus = true;
         api.deleteTask(taskListId, taskDivs[i].children[j].id);
         taskDivs[i].children.splice(j, 1);
+        setMessage("deleted 1 subtask");
       }
     }
     if (KeyName == "checked") {
@@ -165,6 +170,10 @@ export default {
             title: taskDivs[i].value,
             status: "completed",
           });
+          taskDivs[i].children.forEach((ele,i)=>{
+            checkedDivs.unshift(ele)
+          })
+          taskDivs[i].children=[]          
           checkedDivs.unshift(taskDivs[i]);
         } else if (taskDivs[i].value == "") api.deleteTask(taskListId, taskDivs[i].id);
         taskDivs.splice(i, 1);
@@ -197,6 +206,7 @@ export default {
         taskDivs[i].remove = true;
         setMessage("deleted empty task");
       } else {
+        taskDivs[i].children.forEach(ele=>{ele.checked == true })
         taskDivs[i].checked = taskDivs[i].checked == true ? false : true;
         setMessage("1 task Completed");
       }
