@@ -1,5 +1,6 @@
 import React from "react";
 import "./taskListSelector.css";
+import {setCookie} from "../../functionalities/cookies"
 
 class Dropdown extends React.Component {
   constructor() {
@@ -39,6 +40,7 @@ class Dropdown extends React.Component {
                 onClick={_ => {
                   this.props.clickedList(i);
                   this.setState({ displayLists: false });
+                  setCookie("taskListIndex",i,2)
                 }}
               >
                 {list}

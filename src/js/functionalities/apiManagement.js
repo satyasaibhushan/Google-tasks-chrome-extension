@@ -1,5 +1,6 @@
 import Newtask from "../tasksComponent/newTask/newTask";
 import api from "./tasks.api";
+import {getCookie} from "../functionalities/cookies"
 export default {
   newTask(checked, value, subset, id, parentId) {
     let task = {
@@ -16,6 +17,8 @@ export default {
     return task;
   },
   showAll(taskComponent) {
+    let cookieTaskListIndex=getCookie("taskListIndex") ;
+    if(cookieTaskListIndex=='' || !cookieTaskListIndex) cookieTaskListIndex =0
     if (taskComponent.props.gapiAvailable && taskComponent.state.count == 0) {
       api
         .listTaskLists()
@@ -77,9 +80,9 @@ export default {
                 if (
                   taskComponent.state.taskList.length > 1 &&
                   taskComponent.state.taskListIndex == -1 &&
-                  i == 0
+                  i == cookieTaskListIndex
                 ) {
-                  taskComponent.setState({ taskListIndex: 0, count: 1 });
+                  taskComponent.setState({ taskListIndex: i, count: 1 });
                 }
               });
             taskList.push(taskListElement);
