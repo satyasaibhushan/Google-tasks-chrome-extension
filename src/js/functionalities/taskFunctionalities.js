@@ -1,6 +1,7 @@
 import apiManagement from "./apiManagement";
 import api from "./tasks.api";
 import { TaskDiv } from "../tasksComponent/taskDiv/taskDiv";
+import { moveTaskUp, moveTaskDown,intendTask,unintendTask } from "../functionalities/shortcuts";
 
 export default {
   //  setTaskList()
@@ -16,7 +17,11 @@ export default {
   },
 
   checkKeyPress(taskDivs, setTaskList, taskListId, e, i, j) {
-    if (e.keyCode == 13) {
+    if (e.keyCode == 38 && e.getModifierState("Alt")) moveTaskUp(taskDivs, setTaskList, taskListId, i - 1, j);
+    else if (e.keyCode == 40 && e.getModifierState("Alt")) moveTaskDown(taskDivs, setTaskList, taskListId, i - 1, j);
+    else if(e.metaKey && e.keyCode ==221) {e.preventDefault();intendTask(taskDivs, setTaskList, taskListId, i - 1, j)}
+    else if(e.metaKey && e.keyCode ==219) {e.preventDefault();unintendTask(taskDivs, setTaskList, taskListId, i - 1, j)}
+    else if (e.keyCode == 13) {
       e.preventDefault();
       if (e.metaKey) {
         this.addTask(taskDivs, setTaskList, taskListId, i, j, "", true);
