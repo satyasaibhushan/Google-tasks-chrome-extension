@@ -34,7 +34,7 @@ export class TaskComponent extends React.Component {
       else taskList[this.state.taskListIndex].taskDivs = divs;
       this.setState({ taskList });
     };
-    let setMessage = (message) =>{
+    let setMessage = message => {
       this.setState({
         message: {
           showMessage: true,
@@ -42,7 +42,7 @@ export class TaskComponent extends React.Component {
           msgChange: !this.state.message.msgChange,
         },
       });
-    }
+    };
     return (
       <div className="tasksComponentContainer">
         <TaskListSelector
@@ -91,7 +91,7 @@ export class TaskComponent extends React.Component {
               checkedDivs={this.state.taskList[this.state.taskListIndex].checkedDivs}
               setTaskList={taskDivs => setTaskDivs(taskDivs)}
               setCheckedDivs={checkedDivs => setTaskDivs(checkedDivs, true)}
-              setMessage={setMessage }
+              setMessage={setMessage}
             />
           ) : (
             ""
@@ -108,12 +108,8 @@ export class TaskComponent extends React.Component {
           ""
         )}
         <CheckedDivTotal
-          checkedList={
-            this.state.taskListIndex == -1 ? "" : this.state.taskList[this.state.taskListIndex].checkedDivs
-          }
-          tasksList={
-            this.state.taskListIndex == -1 ? "" : this.state.taskList[this.state.taskListIndex].taskDivs
-          }
+          checkedList={this.state.taskListIndex == -1 ? "" : this.state.taskList[this.state.taskListIndex].checkedDivs}
+          tasksList={this.state.taskListIndex == -1 ? "" : this.state.taskList[this.state.taskListIndex].taskDivs}
           taskList={this.state.taskListIndex == -1 ? "" : this.state.taskList[this.state.taskListIndex]}
           clickedTick={i =>
             updateTasks.uncheckedTask(
@@ -132,14 +128,7 @@ export class TaskComponent extends React.Component {
             )
           }
           setHeight={(value, i) =>
-            updateTasks.setHeight(
-              listTasks(true),
-              checkedDivs => setTaskDivs(checkedDivs, true),
-              value,
-              i,
-              -1,
-              true
-            )
+            updateTasks.setHeight(listTasks(true), checkedDivs => setTaskDivs(checkedDivs, true), value, i, -1, true)
           }
           changeCheckedArray={array => setTaskDivs(array, true)}
           changeTaskArray={array => setTaskDivs(array)}

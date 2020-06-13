@@ -28,7 +28,7 @@ export default function OptionsPanel(props) {
                   onClick={e => {
                     element.type == "options" ? props.clickedOption(i, j) : {};
                   }}
-                  className={element.inactive.indexOf(j)!=-1 ? "options inactive" : "options"}
+                  className={element.inactive.indexOf(j) != -1 ? "options inactive" : "options"}
                   key={i * 10 + j}>
                   {ele}
                 </div>

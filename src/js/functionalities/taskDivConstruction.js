@@ -22,9 +22,7 @@ export default function TotalTaskDivs(props) {
           }
           taskDiv.focus = isFocus;
         }}
-        manageTasks={e =>
-          updateTasks.checkKeyPress(props.taskDivs, props.setTaskList, props.taskListId, e, i + 1, j)
-        }
+        manageTasks={e => updateTasks.checkKeyPress(props.taskDivs, props.setTaskList, props.taskListId, e, i + 1, j)}
         clickedTick={() => updateTasks.checkedTask(props.taskDivs, props.setTaskList, props.setMessage, i, j)}
         setHeight={value => updateTasks.setHeight(props.taskDivs, props.setTaskList, value, i, j)}
         changeElementKey={value =>
@@ -57,11 +55,16 @@ export default function TotalTaskDivs(props) {
         clickedCollapseIcon={_ => {
           updateTasks.clickedCollapseIcon(props.taskDivs, props.setTaskList, i);
         }}
-        checkedList={false}
-      ></TaskDiv>
+        checkedList={false}></TaskDiv>
     );
   };
 
-  
-  return <DragSorting taskDivs={props.taskDivs} constructTaskDiv={constructTaskDiv} taskListId= {props.taskListId} setTaskList={props.setTaskList}/>
+  return (
+    <DragSorting
+      taskDivs={props.taskDivs}
+      constructTaskDiv={constructTaskDiv}
+      taskListId={props.taskListId}
+      setTaskList={props.setTaskList}
+    />
+  );
 }

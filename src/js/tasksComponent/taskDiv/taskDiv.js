@@ -29,7 +29,7 @@ export class TaskDiv extends React.Component {
       this.props.taskArrayElement.height != 0 &&
       this.wholeDiv.current.style.height != 0 + "px"
     ) {
-      this.Animation(this.wholeDiv.current,"backward",0.2,0)
+      this.Animation(this.wholeDiv.current, "backward", 0.2, 0);
       this.props.setHeight(0);
     }
 
@@ -74,7 +74,7 @@ export class TaskDiv extends React.Component {
         }
       );
     else if (direction == "backward") {
-     if(element.blur) element.blur();
+      if (element.blur) element.blur();
       return TweenMax.fromTo(
         element,
         { height: this.props.taskArrayElement.height, opacity: 1 },
@@ -94,7 +94,7 @@ export class TaskDiv extends React.Component {
     if (this.props.taskArrayElement.checked == true && this.props.checkedList == true)
       return this.setState({ icon: "tick" });
     else if (this.props.taskArrayElement.unchecked || this.props.taskArrayElement.checked) return;
-    else if (mouseEnter && this.state.icon == "circle"&& this.props.checkedList != true ) {
+    else if (mouseEnter && this.state.icon == "circle" && this.props.checkedList != true) {
       this.props.hoveredIcon(true);
       return this.setState({ icon: "tick" });
     } else if (!mouseEnter && this.state.icon == "tick" && this.props.checkedList != true) {
@@ -128,8 +128,7 @@ export class TaskDiv extends React.Component {
         ref={this.wholeDiv}
         className={this.props.taskArrayElement.newlyAdded == true ? "taskDiv newElement" : "taskDiv"}
         style={{
-          backgroundColor:
-            this.props.taskArrayElement.focus == true ? " rgba(212, 211, 211, 0.1)" : "transparent",
+          backgroundColor: this.props.taskArrayElement.focus == true ? " rgba(212, 211, 211, 0.1)" : "transparent",
           height: this.props.taskArrayElement.height,
           opacity: this.props.taskArrayElement.height == 0 ? 0 : "",
           zIndex: 1,
@@ -137,23 +136,16 @@ export class TaskDiv extends React.Component {
         onClick={e => {
           this.input.current.focus();
           if (!this.props.taskArrayElement.focus)
-            this.input.current.setSelectionRange(
-              this.input.current.value.length,
-              this.input.current.value.length
-            );
+            this.input.current.setSelectionRange(this.input.current.value.length, this.input.current.value.length);
           this.props.changeElement(false, true);
-        }}
-      >
+        }}>
         {(this.props.taskArrayElement.collapsed == -1 || this.props.taskArrayElement.collapsed == 1) &&
         !this.props.checkedList ? (
           <div
             onClick={this.props.clickedCollapseIcon}
             className={
-              this.props.taskArrayElement.collapsed == -1
-                ? "collapseIcon unCollapsed"
-                : "collapseIcon collapsed"
-            }
-          ></div>
+              this.props.taskArrayElement.collapsed == -1 ? "collapseIcon unCollapsed" : "collapseIcon collapsed"
+            }></div>
         ) : (
           ""
         )}
@@ -171,15 +163,13 @@ export class TaskDiv extends React.Component {
                   ? "translate(2.3rem,-50%)"
                   : "translate(0,-50%)"
                 : "translate(0,-50%)",
-          }}
-        >
+          }}>
           <div
             className="taskDivCheck"
             style={{
               opacity: this.state.icon == "circle" ? 1 : 0,
               height: this.state.icon == "circle" ? "1.2rem" : 0,
-            }}
-          ></div>
+            }}></div>
           <img
             src="../../images/tick.svg"
             alt="tick sign"
@@ -235,14 +225,9 @@ export class TaskDiv extends React.Component {
                     : "translate(0,-50%)"
                   : "translate(0,-50%)",
               width:
-                this.props.taskArrayElement.subset != -1
-                  ? !this.props.checkedList
-                    ? "12.7rem"
-                    : "15rem"
-                  : "15rem",
+                this.props.taskArrayElement.subset != -1 ? (!this.props.checkedList ? "12.7rem" : "15rem") : "15rem",
               zIndex: this.props.taskArrayElement.focus ? 0 : -2,
-            }}
-          ></textarea>
+            }}></textarea>
         </div>
         <span
           className="bottomBorder"
@@ -250,12 +235,12 @@ export class TaskDiv extends React.Component {
             transform:
               (this.props.taskArrayElement.focus &&
                 !(this.props.taskArrayElement.newlyAdded || this.props.taskArrayElement.remove)) ||
-              this.props.taskArrayElement.draggingOver==1||this.props.taskArrayElement.draggingOver==-1
+              this.props.taskArrayElement.draggingOver == 1 ||
+              this.props.taskArrayElement.draggingOver == -1
                 ? "scaleX(1)"
                 : "scaleX(0)",
-            top:this.props.taskArrayElement.draggingOver ==1 ?0: this.props.taskArrayElement.height,
-          }}
-        ></span>
+            top: this.props.taskArrayElement.draggingOver == 1 ? 0 : this.props.taskArrayElement.height,
+          }}></span>
       </div>
     );
   }

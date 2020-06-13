@@ -21,7 +21,7 @@ export class CheckedDivTotal extends React.Component {
       checkedArray[i].newlyAdded = true;
       checkedArray[i].checked = false;
       checkedArray[i].unchecked = false;
-      checkedArray[i].icon = '';
+      checkedArray[i].icon = "";
       api.updateTask({
         taskListId: taskList.id,
         taskId: checkedArray[i].id,
@@ -33,7 +33,7 @@ export class CheckedDivTotal extends React.Component {
 
         if (index != -1) {
           checkedArray[i].subset = index;
-          tasksArray[index].collapsed = -1
+          tasksArray[index].collapsed = -1;
           tasksArray[index].children.unshift(checkedArray[i]);
         } else {
           delete checkedArray[i].parentId;
@@ -80,8 +80,7 @@ export class CheckedDivTotal extends React.Component {
           onClick={_ => {
             this.setState({ opened: this.state.opened ? false : true });
             this.openingAnimaton();
-          }}
-        >
+          }}>
           Completed ({this.props.checkedList.length})<i className={this.state.opened ? "down" : "up"}></i>
         </div>
         <div
@@ -89,8 +88,7 @@ export class CheckedDivTotal extends React.Component {
           className={this.state.opened ? "chekedDivs opened" : "chekedDivs"}
           style={{
             display: this.state.opened ? "block" : "none",
-          }}
-        >
+          }}>
           {this.allCheckedDivs(this.props.checkedList)}
         </div>
       </div>

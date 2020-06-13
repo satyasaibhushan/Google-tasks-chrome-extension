@@ -106,15 +106,10 @@ export default function DragSorting(props) {
     if (dragOverItem.current.length == 2) {
       if (dragItem.current.length == 2) {
         taskDiv = taskDivs[dragItem.current[0]].children.splice(dragItem.current[1], 1)[0];
-        if (
-          taskDivs[dragItem.current[0]].children.length == 0 &&
-          dragItem.current[0] != dragOverItem.current[0]
-        )
+        if (taskDivs[dragItem.current[0]].children.length == 0 && dragItem.current[0] != dragOverItem.current[0])
           taskDivs[dragItem.current[0]].collapsed = 0;
         draggedTaskDisplacement =
-          dragItem.current[0] == dragOverItem.current[0] && dragItem.current[1] < dragOverItem.current[1]
-            ? -1
-            : 0;
+          dragItem.current[0] == dragOverItem.current[0] && dragItem.current[1] < dragOverItem.current[1] ? -1 : 0;
       } else {
         if (taskDivs[dragItem.current].children.length > 0) {
           taskDivs[dragItem.current].dragging = false;
@@ -135,14 +130,7 @@ export default function DragSorting(props) {
             : parentTask.children[dragOverItem.current[1] + draggedTaskDisplacement - 1]
             ? parentTask.children[dragOverItem.current[1] + draggedTaskDisplacement - 1].id
             : "";
-        moveTaskElement(
-          parentTask.children,
-          props.taskListId,
-          taskDiv,
-          prev,
-          draggedTaskDisplacement,
-          parentTask
-        );
+        moveTaskElement(parentTask.children, props.taskListId, taskDiv, prev, draggedTaskDisplacement, parentTask);
       }
     } else {
       if (dragItem.current.length == 2) {
@@ -207,14 +195,13 @@ export default function DragSorting(props) {
     return [
       <div
         key={i}
-        draggable={props.taskDivs[i].focus ? false :true}
+        draggable={props.taskDivs[i].focus ? false : true}
         onDragStart={e => taskDragStart(e, i, -1)}
         onDragOver={e => {
           taskDragOver(e, i, -1);
           draggingOverDivHeight.current = e.target.offsetHeight;
         }}
-        onDragEnter={dragging ? e => taskDragEnter(e.target, i, -1) : null}
-      >
+        onDragEnter={dragging ? e => taskDragEnter(e.target, i, -1) : null}>
         {props.constructTaskDiv(taskDiv, i, -1)}
       </div>,
       taskDiv.children
@@ -226,14 +213,13 @@ export default function DragSorting(props) {
                   display: taskDiv.collapsed == 1 ? "none" : "",
                   animation: taskDiv.collapsed == -1 ? "tasks-slide-out 0.3s ease-in-out 1" : "",
                 }}
-                draggable={props.taskDivs[i].children[j].focus ? false :true}
+                draggable={props.taskDivs[i].children[j].focus ? false : true}
                 onDragStart={e => taskDragStart(e, i, j)}
                 onDragOver={e => {
                   taskDragOver(e, i, j);
                   draggingOverDivHeight.current = e.target.offsetHeight;
                 }}
-                onDragEnter={dragging ? e => taskDragEnter(e.target, i, j) : null}
-              >
+                onDragEnter={dragging ? e => taskDragEnter(e.target, i, j) : null}>
                 {props.constructTaskDiv(element, i, j)}
               </div>,
             ])

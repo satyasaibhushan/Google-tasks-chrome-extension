@@ -7,7 +7,7 @@ export default function MessageBox(props) {
     if (t) clearTimeout(t);
     if (props.isVisible) {
       var tl = gsap.timeline();
-      tl.to(messageDiv.current, { duration: 0, display: "flex",opacity:0, y: 0 });
+      tl.to(messageDiv.current, { duration: 0, display: "flex", opacity: 0, y: 0 });
       tl.to(messageDiv.current, { duration: 0.5, ease: "easeInOut", opacity: 1, y: "-=3rem" });
       t = setTimeout(() => {
         tl.to(messageDiv.current, { duration: 0.5, ease: "easeInOut", opacity: 0, y: "+=3rem" });
@@ -28,8 +28,7 @@ export default function MessageBox(props) {
         alignItems: "center",
         opacity: 0,
       }}
-      ref={messageDiv}
-    >
+      ref={messageDiv}>
       <div className="messageDiv">
         <p style={{ fontSize: "16px" }}>{props.message}</p>
       </div>
@@ -49,8 +48,7 @@ export default function MessageBox(props) {
           }}
           onClick={e => {
             props.clickedUndo(e);
-          }}
-        >
+          }}>
           Undo
         </button>
       </div>

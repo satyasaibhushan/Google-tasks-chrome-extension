@@ -41,8 +41,7 @@ export default function Modal(props) {
         });
         tl2.to(div.current, { duration: 0.3, opacity: 1 });
       }
-      if (props.isOpened && textArea.current.style.height != textArea.current.scrollHeight + "px")
-        setHeight();
+      if (props.isOpened && textArea.current.style.height != textArea.current.scrollHeight + "px") setHeight();
     }
   });
   useEffect(() => {
@@ -58,8 +57,7 @@ export default function Modal(props) {
     <div
       ref={container}
       className={props.isOpened ? "modal-container open" : "modal-container close"}
-      style={{ display: "none" }}
-    >
+      style={{ display: "none" }}>
       <section className={props.isOpened ? "modal-div open" : "modal-div close"} ref={div}>
         <div className="modalText">
           <p>{props.text}</p>
@@ -69,8 +67,7 @@ export default function Modal(props) {
             style={{
               padding: props.isInput ? "10px 0 0 0" : "6px 0",
               background: props.isInput ? "rgba(120, 176, 232, 0.19)" : "",
-            }}
-          >
+            }}>
             <textarea
               ref={textArea}
               rows="1"
@@ -90,24 +87,21 @@ export default function Modal(props) {
                 whiteSpace: props.isInput ? "nowrap" : "",
                 lineHeight: props.isInput ? "10px" : "19px",
                 height: props.isInput ? "24px" : "",
-              }}
-            ></textarea>
+              }}></textarea>
           </div>
         </div>
         <div className="modalButtonsContainer">
           <button
             onClick={_ => {
               props.clickedClose();
-            }}
-          >
+            }}>
             Cancel
           </button>
           <button
             onClick={_ => {
               props.submitted(inputValue);
               props.clickedClose();
-            }}
-          >
+            }}>
             Done
           </button>
         </div>
