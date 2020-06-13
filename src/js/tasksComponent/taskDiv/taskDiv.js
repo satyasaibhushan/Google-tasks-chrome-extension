@@ -29,7 +29,7 @@ export class TaskDiv extends React.Component {
       this.props.taskArrayElement.height != 0 &&
       this.wholeDiv.current.style.height != 0 + "px"
     ) {
-      this.Animation(this.wholeDiv.current,"backward",0.3,0)
+      this.Animation(this.wholeDiv.current,"backward",0.2,0)
       this.props.setHeight(0);
     }
 

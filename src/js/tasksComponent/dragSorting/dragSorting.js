@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import api from "../../functionalities/tasks.api";
+import "./dragSorting.css";
 
 export default function DragSorting(props) {
   const [dragging, setDragging] = useState(false);
@@ -9,6 +10,7 @@ export default function DragSorting(props) {
   const draggingOverDivHeight = useRef();
   const [draggingOverHighlightPosition, setHighlight] = useState(0);
   const draggingOverHighlightPositionRef = useRef();
+  let ghostEle;
 
   useEffect(() => {
     let taskDivs = props.taskDivs;
@@ -22,17 +24,47 @@ export default function DragSorting(props) {
     props.setTaskList(taskDivs);
   }, [dragOverItem.current, draggingOverHighlightPosition]);
 
-  let taskDragStart = (item, i, j) => {
+  useEffect(() => {
+    dragOverItem.current = null;
+    dragItem.current = null;
+  }, [props.taskListId]);
+  let taskDragStart = (e, i, j) => {
+    let item = e.target;
+    ghostEle = document.createElement("div");
+    let textArea = e.currentTarget.cloneNode(true);
+    textArea = textArea.getElementsByTagName("textarea")[0];
+    ghostEle.appendChild(textArea);
+    ghostEle.classList.add("ghostEle");
+    if (j == -1 && props.taskDivs[i].children.length > 0) {
+      let childrenIndicator = document.createElement("span");
+      childrenIndicator.classList.add("ghostEleChildCount");
+      childrenIndicator.innerHTML = "+" + props.taskDivs[i].children.length;
+      ghostEle.append(childrenIndicator);
+    }
+    e.dataTransfer.setDragImage(ghostEle, 0, 0);
+    ghostEle.style = "opacity: 0.01";
+    document.getElementsByClassName("taskDivsContainer")[0].appendChild(ghostEle);
+
     dragItemNode.current = item;
-    j == -1 ? (dragItem.current = i) : (dragItem.current = [i, j]);
-    j == -1 ? (props.taskDivs[i].dragging = true) : (props.taskDivs[i].children[j].dragging = true);
+    if (j == -1) {
+      dragItem.current = i;
+      props.taskDivs[i].dragging = true;
+      props.taskDivs[i].children.length > 0
+        ? props.taskDivs[i].children.forEach(element => {
+            element.dragging = true;
+          })
+        : "";
+    } else {
+      dragItem.current = [i, j];
+      props.taskDivs[i].children[j].dragging = true;
+    }
     dragItemNode.current.addEventListener("dragend", taskDragEnd);
     setTimeout(() => {
       setDragging(true);
     }, 0);
   };
 
-  let taskDragEnter = (item, i, j, e) => {
+  let taskDragEnter = (item, i, j) => {
     let taskDivs = props.taskDivs;
     if (dragItemNode.current !== item && (dragOverItem.current != i || dragOverItem.current != [i, j])) {
       new Promise((resolve, reject) => {
@@ -57,11 +89,17 @@ export default function DragSorting(props) {
   };
 
   let taskDragEnd = e => {
+    document.getElementsByClassName("taskDivsContainer")[0].removeChild(ghostEle);
     e.preventDefault();
     let taskDivs = props.taskDivs;
     let taskDiv,
       draggedTaskDisplacement = 0,
       isBefore = 0;
+    // if (!dragOverItem.current)
+    //   dragItem.current.length == 2
+    //     ? (taskDivs[dragItem.current[0]].children[dragItem.current[1]].dragging = false)
+    //     : (taskDivs[dragItem.current].dragging = false);
+    // else
     dragOverItem.current.length != 2
       ? (taskDivs[dragOverItem.current].draggingOver = false)
       : (taskDivs[dragOverItem.current[0]].children[dragOverItem.current[1]].draggingOver = false);
@@ -80,6 +118,9 @@ export default function DragSorting(props) {
       } else {
         if (taskDivs[dragItem.current].children.length > 0) {
           taskDivs[dragItem.current].dragging = false;
+          taskDivs[dragItem.current].children.forEach(element => {
+            element.dragging = false;
+          });
         } else {
           taskDiv = taskDivs.splice(dragItem.current, 1)[0];
           if (dragItem.current < dragOverItem.current[0]) isBefore = 1;
@@ -91,7 +132,9 @@ export default function DragSorting(props) {
         let prev =
           dragOverItem.current[1] == 0 && draggingOverHighlightPositionRef.current == 1
             ? ""
-            : parentTask.children[dragOverItem.current[1] + draggedTaskDisplacement - 1].id;
+            : parentTask.children[dragOverItem.current[1] + draggedTaskDisplacement - 1]
+            ? parentTask.children[dragOverItem.current[1] + draggedTaskDisplacement - 1].id
+            : "";
         moveTaskElement(
           parentTask.children,
           props.taskListId,
@@ -110,6 +153,9 @@ export default function DragSorting(props) {
         delete taskDiv.parentId;
         if (draggingOverHighlightPositionRef.current == -1) draggedTaskDisplacement++;
       } else {
+        taskDivs[dragItem.current].children.forEach(element => {
+          element.dragging = false;
+        });
         taskDiv = taskDivs.splice(dragItem.current, 1)[0];
         draggedTaskDisplacement = dragOverItem.current > dragItem.current ? 0 : 1;
         if (draggingOverHighlightPositionRef.current == 1) draggedTaskDisplacement--;
@@ -117,7 +163,9 @@ export default function DragSorting(props) {
       let prev =
         dragOverItem.current == 0 && draggingOverHighlightPositionRef.current == 1
           ? ""
-          : taskDivs[dragOverItem.current + draggedTaskDisplacement - 1].id;
+          : taskDivs[dragOverItem.current + draggedTaskDisplacement - 1]
+          ? taskDivs[dragOverItem.current + draggedTaskDisplacement - 1].id
+          : "";
       moveTaskElement(taskDivs, props.taskListId, taskDiv, prev, draggedTaskDisplacement);
     }
     // props.setTaskList(taskDivs)
@@ -144,10 +192,8 @@ export default function DragSorting(props) {
 
   let taskDragOver = (e, i, j) => {
     e.preventDefault();
-    if (draggingOverDivHeight.current && dragging) {
-      let scrollDist = document.getElementsByClassName("tasksComponentContainer")[0].scrollTop;
-
-      if (e.pageY - e.currentTarget.offsetTop - draggingOverDivHeight.current * 1.5 + scrollDist > 0) {
+    if (draggingOverDivHeight.current) {
+      if (e.pageY - e.target.getBoundingClientRect().y - draggingOverDivHeight.current * 0.5 > 0) {
         setHighlight(-1);
         draggingOverHighlightPositionRef.current = -1;
       } else {
@@ -162,12 +208,12 @@ export default function DragSorting(props) {
       <div
         key={i}
         draggable
-        onDragStart={e => taskDragStart(e.target, i, -1)}
+        onDragStart={e => taskDragStart(e, i, -1)}
         onDragOver={e => {
-          dragging ? taskDragOver(e, i, -1) : "";
-          draggingOverDivHeight.current = e.currentTarget.offsetHeight;
+          taskDragOver(e, i, -1);
+          draggingOverDivHeight.current = e.target.offsetHeight;
         }}
-        onDragEnter={dragging ? e => taskDragEnter(e.target, i, -1, e) : null}
+        onDragEnter={dragging ? e => taskDragEnter(e.target, i, -1) : null}
       >
         {props.constructTaskDiv(taskDiv, i, -1)}
       </div>,
@@ -181,10 +227,10 @@ export default function DragSorting(props) {
                   animation: taskDiv.collapsed == -1 ? "tasks-slide-out 0.3s ease-in-out 1" : "",
                 }}
                 draggable
-                onDragStart={e => taskDragStart(e.target, i, j)}
+                onDragStart={e => taskDragStart(e, i, j)}
                 onDragOver={e => {
-                  dragging ? taskDragOver(e, i, j) : "";
-                  draggingOverDivHeight.current = e.currentTarget.offsetHeight;
+                  taskDragOver(e, i, j);
+                  draggingOverDivHeight.current = e.target.offsetHeight;
                 }}
                 onDragEnter={dragging ? e => taskDragEnter(e.target, i, j) : null}
               >
