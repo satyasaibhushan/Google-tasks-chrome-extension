@@ -6,6 +6,7 @@ import updateTasks from "../functionalities/taskFunctionalities";
 import TotalTaskDivs from "../functionalities/taskDivConstruction";
 import manageApi from "../functionalities/apiManagement";
 import MessageBox from "./messageBox/messageBox";
+import {getCookie} from  "../functionalities/cookies"
 import "./taskComponent.css";
 
 export class TaskComponent extends React.Component {
@@ -16,6 +17,7 @@ export class TaskComponent extends React.Component {
       taskListIndex: -1,
       count: 0,
       message: { showMessage: false, message: "hi there How are you", msgChange: false },
+      showCompletedTab: getCookie("defaultShowCompletedTab") === "true" ||!getCookie("defaultShowCompletedTab")
     };
   }
 
@@ -64,6 +66,7 @@ export class TaskComponent extends React.Component {
           taskLists={this.state.taskList}
           setTaskLists={Lists => this.setState({ taskList: Lists })}
           setTaskListIndex={index => this.setState({ taskListIndex: index })}
+          setCompletedTabVisibility={boolean => this.setState({ showCompletedTab:boolean})}
           clickedOptions={_ => {}}
           setMessage={setMessage}
         />
@@ -117,6 +120,7 @@ export class TaskComponent extends React.Component {
         ) : (
           ""
         )}
+        {this.state.showCompletedTab ? 
         <CheckedDivTotal
           checkedList={this.state.taskListIndex == -1 ? "" : this.state.taskList[this.state.taskListIndex].checkedDivs}
           tasksList={this.state.taskListIndex == -1 ? "" : this.state.taskList[this.state.taskListIndex].taskDivs}
@@ -142,8 +146,8 @@ export class TaskComponent extends React.Component {
           }
           changeCheckedArray={array => setTaskDivs(array, true)}
           changeTaskArray={array => setTaskDivs(array)}
-        />
-      </div>
+        />:''}
+      </div> 
     );
   }
 }

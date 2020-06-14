@@ -17,9 +17,9 @@ export class TaskListSelector extends React.Component {
       {
         title: "Set Defaults",
         type: "toggles",
-        options: ["Collapse subtasks"],
-        inactive: [1],
-        selected: [getCookie("defaultShowSubtasks") === "true"],
+        options: ["Collapse subtasks", "Show completed tasks tab"],
+        inactive: [],
+        selected: [getCookie("defaultShowSubtasks") === "true", getCookie("defaultShowCompletedTab") === "true" ||!getCookie("defaultShowCompletedTab")],
       },
       {
         title: "",
@@ -133,29 +133,42 @@ export class TaskListSelector extends React.Component {
             this.setState({ isOptionsOpen: false });
           }}
           clickedToggle={(i, j) => {
-            let tasksLists = this.props.taskLists;
-            if (this.displayOptionNames[i].selected[j]) {
-              this.displayOptionNames[i].selected[j] = false;
-              if (tasksLists.length > 0)
-                tasksLists.forEach(list => {
-                  if (list.taskDivs.length > 0)
-                    list.taskDivs.forEach(element => {
-                      if (element.collapsed == 1) element.collapsed = -1;
-                    });
-                });
-            } else {
-              this.displayOptionNames[i].selected[j] = true;
-              if (tasksLists.length > 0)
-                tasksLists.forEach(list => {
-                  if (list.taskDivs.length > 0)
-                    list.taskDivs.forEach(element => {
-                      if (element.collapsed == -1) element.collapsed = 1;
-                    });
-                });
+            if (j == 0) {
+              let tasksLists = this.props.taskLists;
+              if (this.displayOptionNames[i].selected[j]) {
+                this.displayOptionNames[i].selected[j] = false;
+                if (tasksLists.length > 0)
+                  tasksLists.forEach(list => {
+                    if (list.taskDivs.length > 0)
+                      list.taskDivs.forEach(element => {
+                        if (element.collapsed == 1) element.collapsed = -1;
+                      });
+                  });
+              } else {
+                this.displayOptionNames[i].selected[j] = true;
+                if (tasksLists.length > 0)
+                  tasksLists.forEach(list => {
+                    if (list.taskDivs.length > 0)
+                      list.taskDivs.forEach(element => {
+                        if (element.collapsed == -1) element.collapsed = 1;
+                      });
+                  });
+              }
+              this.props.setTaskLists(tasksLists);
+              setCookie("defaultShowSubtasks", this.displayOptionNames[i].selected[j], 365);
+              this.forceUpdate();
+            } else if (j == 1) {
+              console.log(this.displayOptionNames[i].selected[j]);
+              if (this.displayOptionNames[i].selected[j]) {
+                this.displayOptionNames[i].selected[j] = false;
+                this.props.setCompletedTabVisibility(false)
+              } else {
+                this.displayOptionNames[i].selected[j] = true;
+                this.props.setCompletedTabVisibility(true)
+              }
+              setCookie("defaultShowCompletedTab", this.displayOptionNames[i].selected[j], 365);
+              this.forceUpdate();
             }
-            this.props.setTaskLists(tasksLists);
-            setCookie("defaultShowSubtasks", this.displayOptionNames[i].selected[j], 365);
-            this.forceUpdate();
           }}
         />
       </div>

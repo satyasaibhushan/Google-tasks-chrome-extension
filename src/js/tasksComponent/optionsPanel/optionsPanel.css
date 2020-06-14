@@ -74,8 +74,9 @@
 .toggleTickIcon {
   height: 1rem;
   vertical-align: middle;
-  position: relative;
-  left: 3rem;
+  position: absolute;
+  right: 1rem;
+  transform: translateY(10px);
   vertical-align: text-top;
 }
 .seperator {
