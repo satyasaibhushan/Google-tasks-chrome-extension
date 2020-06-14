@@ -133,16 +133,28 @@ export class TaskListSelector extends React.Component {
             this.setState({ isOptionsOpen: false });
           }}
           clickedToggle={(i, j) => {
-            console.log("clicked TOGgLE", i, j, this.displayOptionNames[i].selected[j]);
-            // console.length(this.displayOptionNames[i].selected[j])
+            let tasksLists = this.props.taskLists;
             if (this.displayOptionNames[i].selected[j]) {
               this.displayOptionNames[i].selected[j] = false;
-              
+              if (tasksLists.length > 0)
+                tasksLists.forEach(list => {
+                  if (list.taskDivs.length > 0)
+                    list.taskDivs.forEach(element => {
+                      if (element.collapsed == 1) element.collapsed = -1;
+                    });
+                });
+            } else {
+              this.displayOptionNames[i].selected[j] = true;
+              if (tasksLists.length > 0)
+                tasksLists.forEach(list => {
+                  if (list.taskDivs.length > 0)
+                    list.taskDivs.forEach(element => {
+                      if (element.collapsed == -1) element.collapsed = 1;
+                    });
+                });
             }
-            else this.displayOptionNames[i].selected[j] = true;
-            console.log(getCookie("defaultShowSubtasks"));
+            this.props.setTaskLists(tasksLists);
             setCookie("defaultShowSubtasks", this.displayOptionNames[i].selected[j], 365);
-            console.log(getCookie("defaultShowSubtasks"));
             this.forceUpdate();
           }}
         />

@@ -21,6 +21,16 @@ export class TaskComponent extends React.Component {
 
   componentDidUpdate() {
     manageApi.showAll(this);
+    if (this.state.taskListIndex != -1) {
+      let taskList = this.state.taskList[this.state.taskListIndex];
+      let taskDivs = taskList.taskDivs
+      if(taskDivs.length>0)
+      taskDivs.forEach(element => {
+        if(element.children.length==0 && element.collapsed!=0) {element.collapsed = 0 ;console.log(element)}
+      });
+      if(taskList!= this.state.taskList[this.state.taskListIndex])
+      this.setState({taskList})
+    }
   }
 
   render() {

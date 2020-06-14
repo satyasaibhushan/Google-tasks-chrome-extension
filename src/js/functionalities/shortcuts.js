@@ -60,6 +60,7 @@ let moveTaskElement = (tasksArray, taskArrayId, task, i,j=-1,parentId = null) =>
     if (parentId) {
       task.subset = i
       task.parentId = parentId;
+      tasksArray[i].collapsed = -1
     }
     api.moveTask({
       taskListId: taskArrayId,

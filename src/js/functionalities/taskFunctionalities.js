@@ -35,8 +35,10 @@ export default {
       e.preventDefault();
     } else if (e.keyCode == 38 && !(i == 1 && j == -1) && e.target.selectionEnd == 0) {
       if (j == -1) {
-        if (taskDivs[i - 2].children && taskDivs[i - 2].children.length > 0)
+        if (taskDivs[i - 2].children && taskDivs[i - 2].children.length > 0){
           taskDivs[i - 2].children[taskDivs[i - 2].children.length - 1].focus = true;
+          taskDivs[i - 2].collapsed = -1
+        }
         else taskDivs[i - 2].focus = true;
       } else if (j == 0) {
         taskDivs[i - 1].focus = true;
@@ -49,7 +51,9 @@ export default {
       }
       if (j == -1) {
         if (taskDivs[i - 1].children.length == 0) taskDivs[i].focus = true;
-        else taskDivs[i - 1].children[0].focus = true;
+        else {taskDivs[i - 1].children[0].focus = true;
+          taskDivs[i - 1].collapsed = -1
+        }
       } else if (j == taskDivs[i - 1].children.length - 1) taskDivs[i].focus = true;
       else taskDivs[i - 1].children[j + 1].focus = true;
     } else return;
@@ -75,6 +79,7 @@ export default {
     if (isBefore) taskDiv.focus = false;
 
     if (isMetaPressed && !isBefore) {
+      taskDivs[i-1].collapsed = -1
       if (taskDivs[i - 1].id != "") {
         taskDiv.parentId = taskDivs[i - 1].id;
         if (taskListId)
@@ -137,7 +142,7 @@ export default {
       }
     }
     if (taskDivs[i - 1] && taskDivs[i - 1].children && taskDivs[i - 1].children.length > 0)
-      taskDivs[i - 1].collapsed = getCookie("defaultShowSubtasks") === "true" ? 1:-1;
+      taskDivs[i - 1].collapsed = -1;
     setTaskList(taskDivs);
   },
 
