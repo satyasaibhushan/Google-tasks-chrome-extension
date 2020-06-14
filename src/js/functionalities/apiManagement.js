@@ -57,7 +57,7 @@ export default {
                         taskListElement.taskDivs[parentIndex].children.push(
                           this.newTask(false, element.title, parentIndex, element.id, element.parent)
                         );
-                        taskListElement.taskDivs[parentIndex].collapsed = -1;
+                        taskListElement.taskDivs[parentIndex].collapsed = getCookie("defaultShowSubtasks") === "true" ? 1:-1;
                       }
                     }
                   });

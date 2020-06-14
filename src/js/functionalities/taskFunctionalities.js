@@ -1,6 +1,7 @@
 import apiManagement from "./apiManagement";
 import api from "./tasks.api";
 import { TaskDiv } from "../tasksComponent/taskDiv/taskDiv";
+import { getCookie } from "./cookies";
 import { moveTaskUp, moveTaskDown,intendTask,unintendTask } from "../functionalities/shortcuts";
 
 export default {
@@ -136,7 +137,7 @@ export default {
       }
     }
     if (taskDivs[i - 1] && taskDivs[i - 1].children && taskDivs[i - 1].children.length > 0)
-      taskDivs[i - 1].collapsed = -1;
+      taskDivs[i - 1].collapsed = getCookie("defaultShowSubtasks") === "true" ? 1:-1;
     setTaskList(taskDivs);
   },
 

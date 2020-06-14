@@ -4,6 +4,7 @@ import Modal from "../modal/modal";
 import OptionsPanel from "../optionsPanel/optionsPanel";
 import updateTaskLists from "../../functionalities/taskListFunctionalities";
 import Dropdown from "./dropdown";
+import { getCookie, setCookie } from "../../functionalities/cookies";
 
 export class TaskListSelector extends React.Component {
   constructor(props) {
@@ -13,7 +14,13 @@ export class TaskListSelector extends React.Component {
       modal: { text: "", inputValue: "", isInput: false, isOpened: false, selectedOptionIndex: "-1,-1" },
     };
     this.displayOptionNames = [
-      { title: "Sort By", type: "selection", options: ["Date", "My Order"], inactive: [0, 1] },
+      {
+        title: "Set Defaults",
+        type: "toggles",
+        options: ["Collapse subtasks"],
+        inactive: [1],
+        selected: [getCookie("defaultShowSubtasks") === "true"],
+      },
       {
         title: "",
         type: "options",
@@ -87,10 +94,7 @@ export class TaskListSelector extends React.Component {
         ) : (
           ""
         )}
-        <div
-          className="taskListIcon"
-          onClick={_ => this.setState({ isOptionsOpen: !this.state.isOptionsOpen })}
-        ></div>
+        <div className="taskListIcon" onClick={_ => this.setState({ isOptionsOpen: !this.state.isOptionsOpen })}></div>
         <Modal
           text={this.state.modal.text}
           inputValue={this.state.modal.inputValue}
@@ -127,6 +131,19 @@ export class TaskListSelector extends React.Component {
             modal.isOpened = true;
             this.setState({ modal: modal });
             this.setState({ isOptionsOpen: false });
+          }}
+          clickedToggle={(i, j) => {
+            console.log("clicked TOGgLE", i, j, this.displayOptionNames[i].selected[j]);
+            // console.length(this.displayOptionNames[i].selected[j])
+            if (this.displayOptionNames[i].selected[j]) {
+              this.displayOptionNames[i].selected[j] = false;
+              
+            }
+            else this.displayOptionNames[i].selected[j] = true;
+            console.log(getCookie("defaultShowSubtasks"));
+            setCookie("defaultShowSubtasks", this.displayOptionNames[i].selected[j], 365);
+            console.log(getCookie("defaultShowSubtasks"));
+            this.forceUpdate();
           }}
         />
       </div>

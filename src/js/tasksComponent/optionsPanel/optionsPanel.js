@@ -23,18 +23,28 @@ export default function OptionsPanel(props) {
               ""
             ),
             element.options.map((ele, j) => {
-              return (
+              return [
                 <div
                   onClick={e => {
                     element.type == "options" ? props.clickedOption(i, j) : {};
+                    element.type == "toggles" ? props.clickedToggle(i, j) : {};
                   }}
                   className={element.inactive.indexOf(j) != -1 ? "options inactive" : "options"}
-                  key={i * 10 + j}>
+                  key={(i + 1) * 10 + j}>
                   {ele}
-                </div>
-              );
+                  {element.type == "toggles" &&
+                  element.inactive.indexOf(j) == -1 &&
+                  element.selected[j] ? (
+                    <span className="toggleOptionsTick" key={(i + 1) * 100 + j}>
+                      <img src="../../images/tick.svg" className="toggleTickIcon" style={{}} alt="" />
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                </div>,
+              ];
             }),
-            i != props.displayOptionNames.length - 1 ? <div key={i + 10} className="seperator"></div> : "",
+            i != props.displayOptionNames.length - 1 ? <div key={(i + 1) * 1000 + 10} className="seperator"></div> : "",
           ];
         })}
       </div>

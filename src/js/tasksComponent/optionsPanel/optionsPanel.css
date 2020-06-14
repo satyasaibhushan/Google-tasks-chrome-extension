@@ -31,70 +31,82 @@
 .optionsPanel {
   width: 15rem;
   position: absolute;
-  height: 22rem;
+  max-height: 22rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
   top: 8px;
   right: 16px;
   box-shadow: 1px 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12),
     0 5px 5px -3px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
-  background-color: rgb(255,255,255);
+  background-color: rgb(255, 255, 255);
   z-index: 9;
-  padding: 8px 0;
+  padding: 8px 0 0px 0;
 }
 
-.optionsTitle,.options{
-    height: 40px;
-    line-height: 40px;
-    justify-content: center;
-    align-items: center;
-    padding: 0 16px;
-    padding-right: 48px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.optionsTitle,
+.options {
+  height: 40px;
+  line-height: 40px;
+  justify-content: center;
+  align-items: center;
+  padding: 0 16px;
+  padding-right: 22px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.options:hover{
-    background-color: whitesmoke;
-    cursor: pointer;
- }
-.options.inactive{
-   pointer-events: none;
-   color: rgb(184,184,184);
+.options:hover {
+  background-color: whitesmoke;
+  cursor: pointer;
 }
-.optionsTitle{
-    height: 20px;
-    line-height: 20px;
-    font-weight: bold;
-    cursor: default;
+.options.inactive {
+  pointer-events: none;
+  color: rgb(184, 184, 184);
 }
-.seperator{
-    border-top: 1px solid rgba(0,0,0,0.2);
+.optionsTitle {
+  height: 20px;
+  line-height: 20px;
+  font-weight: unset;
+  opacity: 0.7;
+  cursor: default;
+}
+.toggleTickIcon {
+  height: 1rem;
+  vertical-align: middle;
+  position: relative;
+  left: 3rem;
+  vertical-align: text-top;
+}
+.seperator {
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .closeIcon {
-    position: absolute;
-    right: 18px;
-    top: 18px;
-    width: 32px;
-    height: 20px;
-    opacity: 0.3;
-    z-index: 99;
-    cursor: pointer;
-  }
-  .closeIcon:hover {
-    opacity: 1;
-  }
-  .closeIcon:before, .closeIcon:after {
-    position: absolute;
-    left: 15px;
-    content: ' ';
-    height: 20px;
-    width: 2px;
-    background-color: #333;
-  }
-  .closeIcon:before {
-    transform: rotate(45deg);
-  }
-  .closeIcon:after {
-    transform: rotate(-45deg);
-  }
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  width: 32px;
+  height: 20px;
+  opacity: 0.3;
+  z-index: 99;
+  cursor: pointer;
+}
+.closeIcon:hover {
+  opacity: 1;
+}
+.closeIcon:before,
+.closeIcon:after {
+  position: absolute;
+  left: 15px;
+  content: " ";
+  height: 20px;
+  width: 2px;
+  background-color: #333;
+}
+.closeIcon:before {
+  transform: rotate(45deg);
+}
+.closeIcon:after {
+  transform: rotate(-45deg);
+}
