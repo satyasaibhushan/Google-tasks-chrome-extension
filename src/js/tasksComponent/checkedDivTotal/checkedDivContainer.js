@@ -63,7 +63,7 @@ export class CheckedDivTotal extends React.Component {
             taskArrayElement={checkedItem}
             key={i}
             changeElement={_ => this.removeClick(i)}
-            manageTasks={_ => console.log(2)}
+            manageTasks={_ => console.log("Please write a complaint about this")}
             clickedTick={_ => this.props.clickedTick(i)}
             setHeight={value => this.props.setHeight(value, i)}
             changeElementKey={value => this.changeElementKey(value, i)}

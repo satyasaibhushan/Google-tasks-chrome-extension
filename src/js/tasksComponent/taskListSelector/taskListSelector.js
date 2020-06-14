@@ -158,7 +158,6 @@ export class TaskListSelector extends React.Component {
               setCookie("defaultShowSubtasks", this.displayOptionNames[i].selected[j], 365);
               this.forceUpdate();
             } else if (j == 1) {
-              console.log(this.displayOptionNames[i].selected[j]);
               if (this.displayOptionNames[i].selected[j]) {
                 this.displayOptionNames[i].selected[j] = false;
                 this.props.setCompletedTabVisibility(false)

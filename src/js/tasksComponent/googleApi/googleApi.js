@@ -1,23 +1,4 @@
 import React, { useEffect, useRef } from "react";
-
-export function listTaskLists() {
-  gapi.client.tasks.tasklists
-    .list({
-      maxResults: 10,
-    })
-    .then(function (response) {
-      var taskLists = response.result.items;
-      if (taskLists && taskLists.length > 0) {
-        for (var i = 0; i < taskLists.length; i++) {
-          var taskList = taskLists[i];
-          console.log(taskList);
-        }
-      } else {
-        appendPre("No task lists found.");
-      }
-    });
-}
-
 export default function GoogleApi(props) {
   /**
    *  On load, called to load the auth2 library and API client library.
