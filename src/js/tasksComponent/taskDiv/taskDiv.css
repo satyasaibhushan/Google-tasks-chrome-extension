@@ -29,10 +29,10 @@
   content: "";
   display: block;
   position: relative;
-  right: 98%;
+  right: 115%;
   /* bottom: 00%; */
   /* top:48; */
-  width: 100%;
+  width: 105%;
   height: 2px;
   background: rgb(66, 133, 244);
   transition: transform 250ms ease-in-out;
@@ -133,16 +133,16 @@ textarea {
 }
 
 .collapseIcon.unCollapsed {
-  transform: rotate(45deg)  translate(-50%,-50%);
-  -webkit-transform: rotate(45deg)  translate(-50%,-50%);
+  transform: rotate(45deg) translate(-50%, -50%);
+  -webkit-transform: rotate(45deg) translate(-50%, -50%);
   top: 50%;
 }
 .collapseIcon.collapsed {
-  transform: rotate(-45deg)  translate(50%,-50%);
-  -webkit-transform: rotate(-45deg)  translate(50%,-50%);
+  transform: rotate(-45deg) translate(50%, -50%);
+  -webkit-transform: rotate(-45deg) translate(50%, -50%);
   top: 50%;
 }
-.collapseIcon:hover{
+.collapseIcon:hover {
   border: solid black;
   border-width: 0 2px 2px 0;
 }
@@ -172,7 +172,40 @@ textarea {
   background: black;
   animation: go-out 0.3s linear 1;
 }
+.taskDivEditIconContainer {
+  position: relative;
+  right: 40px;
+  top: 50%;
+  transform: translate(0px, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.taskDivEditIcon,
+.checkedDivDeleteIcon {
+  width: 16px;
+  height: 16px;
+  opacity: 0;
+}
+
+.taskDiv:hover .taskDivEditIcon,
+.taskDiv:hover .checkedDivDeleteIcon {
+  opacity: 0.5;
+}
+.taskDivEditIconContainer:hover .taskDivEditIcon,
+.taskDivEditIconContainer:hover .checkedDivDeleteIcon {
+  opacity: 0.8 !important;
+}
+.taskDivEditIconContainer:hover {
+  background-color: rgba(212, 211, 211, 0.171);
+}
+.taskDivEditIconContainer:active {
+  background-color: rgba(212, 211, 211, 0.466);
+}
 .tickAnimtionDivs div:nth-child(1) {
   transform: rotate(0deg);
 }
@@ -232,11 +265,11 @@ textarea {
   }
 }
 
-@keyframes tasks-slide-out{
-  0%{
+@keyframes tasks-slide-out {
+  0% {
     opacity: 0;
   }
-  100%{
+  100% {
     opacity: 1;
   }
 }
