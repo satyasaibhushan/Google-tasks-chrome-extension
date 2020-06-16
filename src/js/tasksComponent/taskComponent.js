@@ -104,6 +104,8 @@ export class TaskComponent extends React.Component {
               setTaskList={taskDivs => setTaskDivs(taskDivs)}
               setCheckedDivs={checkedDivs => setTaskDivs(checkedDivs, true)}
               setMessage={setMessage}
+              listNames={this.state.taskList.map(element => element.name)}
+              selectedList={this.state.taskListIndex}
             />
           ) : (
             ""

@@ -116,10 +116,13 @@
 } */
 textarea {
   resize: none;
-  overflow: hidden;
+  /* overflow: hidden; */
   min-height: 2rem;
   max-height: 4.4rem;
   background-color: transparent;
+}
+textarea::-webkit-scrollbar{
+  display: none;
 }
 .collapseIcon {
   border: solid #626366;
@@ -174,7 +177,7 @@ textarea {
 }
 .taskDivEditIconContainer {
   position: relative;
-  right: 40px;
+  right: 34px;
   top: 50%;
   transform: translate(0px, -50%);
   width: 40px;
@@ -183,6 +186,7 @@ textarea {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .taskDivEditIcon,

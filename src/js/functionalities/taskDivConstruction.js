@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import SlidingMenu from "../tasksComponent/slidingMenu/slidingMenu";
 import { TaskDiv } from "../tasksComponent/taskDiv/taskDiv";
 import api from "./tasks.api";
 import updateTasks from "./taskFunctionalities";
@@ -6,6 +7,8 @@ import drag from "../tasksComponent/dragSorting/dragSorting";
 import DragSorting from "../tasksComponent/dragSorting/dragSorting";
 
 export default function TotalTaskDivs(props) {
+  const [isEditMenuOpened, setEditMenu] = useState(false);
+
   let constructTaskDiv = (taskDiv, i, j) => {
     return (
       <TaskDiv
@@ -55,16 +58,22 @@ export default function TotalTaskDivs(props) {
         clickedCollapseIcon={_ => {
           updateTasks.clickedCollapseIcon(props.taskDivs, props.setTaskList, i);
         }}
+        clickedEdit={_ => {
+          setEditMenu(true);
+        }}
         checkedList={false}></TaskDiv>
     );
   };
 
   return (
-    <DragSorting
-      taskDivs={props.taskDivs}
-      constructTaskDiv={constructTaskDiv}
-      taskListId={props.taskListId}
-      setTaskList={props.setTaskList}
-    />
+    <div>
+      <DragSorting
+        taskDivs={props.taskDivs}
+        constructTaskDiv={constructTaskDiv}
+        taskListId={props.taskListId}
+        setTaskList={props.setTaskList}
+      />
+      <SlidingMenu isOpened={isEditMenuOpened} listNames={props.listNames} selectedList={props.selectedList} />
+    </div>
   );
 }

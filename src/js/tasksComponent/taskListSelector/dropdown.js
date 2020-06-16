@@ -9,10 +9,11 @@ class Dropdown extends React.Component {
     this.state = {
       displayLists: false,
     };
+    this.listMenu = React.createRef();
   }
 
   componentDidMount() {
-    let listMenu = document.getElementsByClassName("select-selected")[0];
+    let listMenu = this.listMenu.current;
     let listMenuSpan = listMenu.childNodes[0];
     document.addEventListener("click", e => {
       if (this.state.displayLists && e.target != listMenuSpan && e.target != listMenu)
@@ -26,6 +27,7 @@ class Dropdown extends React.Component {
         <div
           className= {this.state.displayLists? "select-selected select-arrow-active":"select-selected"}
           onClick={_ => this.setState({ displayLists: !this.state.displayLists })}
+          ref={this.listMenu}
         >
           <span> {this.props.selectedList}</span>
         </div>

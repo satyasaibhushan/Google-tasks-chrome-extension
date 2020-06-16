@@ -1,0 +1,177 @@
+.slidingMenuContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  z-index: 99;
+  font-family: Google Sans, Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+}
+.slidingMenuTopSection,
+.slidingMenuSubTasksSectoin {
+  margin-top: 10px;
+  display: flex;
+}
+.closeArrowContainer,
+.slidingMenuDeleteIconContainer,
+.slidingMenuSubtasksIconContainer {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  margin-left: 5px;
+  cursor: pointer;
+}
+.slidingMenuDeleteIconContainer {
+  position: absolute;
+  right: 10px;
+}
+.closeArrow,
+.subtasksIcon {
+  display: inline-block;
+  height: 12px;
+  opacity: 0.6;
+  width: 12px;
+  transform: rotate(135deg) translate(2px, -2px);
+}
+.subtasksIcon {
+  transform: rotate(-45deg) translate(2px, -2px);
+}
+.closeArrow::before {
+  bottom: 1px;
+  content: "";
+  height: 14px;
+  position: absolute;
+  right: 4px;
+  transform-origin: bottom;
+  width: 2px;
+  -moz-transform: rotate(-45deg) translate(0px, 1px);
+  -ms-transform: rotate(-45deg) translate(0px, 1px);
+  -webkit-transform: rotate(-45deg) translate(0px, 1px);
+  transform: rotate(-45deg) translate(0px, 1px);
+  background-color: black;
+}
+.closeArrow::after,
+.subtasksIcon::after {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-right-style: solid;
+  border-right-width: 2px;
+  content: "";
+  display: inline-block;
+  height: 8px;
+  /* left: 0; */
+  /* position: absolute; */
+  /* top: 0; */
+  width: 8px;
+}
+.slidingMenuDeleteIcon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
+}
+.closeArrowContainer:hover,
+.slidingMenuDeleteIconContainer:hover {
+  background: rgba(212, 211, 211, 0.171);
+}
+.closeArrowContainer:hover .closeArrow,
+.slidingMenuDeleteIconContainer:hover .slidingMenuDeleteIcon {
+  opacity: 0.8;
+}
+.closeArrowContainer:active,
+.slidingMenuDeleteIconContainer:active {
+  background-color: rgba(212, 211, 211, 0.466);
+}
+.slidingAreaTextContainer,
+.slidingNotesContainer {
+  position: relative;
+  margin: 8px 16px;
+}
+.slidingAreaText,
+.slidingNotesText {
+  font-family: sans-serif;
+  resize: none;
+  overflow: hidden;
+  line-height: 1.2rem;
+  font-size: 1.1rem;
+  padding: 14px 10px;
+  min-height: unset;
+  max-height: 5rem;
+  background-color: rgba(120, 176, 232, 0.19);
+  border: none;
+  outline: none;
+  resize: none;
+  vertical-align: middle;
+  font-size: 16px;
+  font-weight: 300;
+  overflow-y: scroll;
+}
+.slidingMenuListSection {
+  margin: 10px;
+  height: 2rem;
+}
+.listIconContainer {
+  position: relative;
+  top: 7px;
+}
+.listIcon {
+  color: #000;
+  position: absolute;
+  margin-left: 2px;
+  margin-top: 10px;
+  width: 17px;
+  height: 1px;
+  background-color: currentColor;
+}
+
+.listIcon:before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 0;
+  width: 17px;
+  height: 1px;
+  background-color: currentColor;
+}
+
+.listIcon:after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 0;
+  width: 17px;
+  height: 1px;
+  background-color: currentColor;
+}
+.slidingMenuDropdown {
+  margin-left: 8px;
+}
+.subtasksIcon::before {
+  bottom: 1px;
+  content: "";
+  height: 17px;
+  position: absolute;
+  right: -4px; /* transform-origin: bottom; */
+  width: 17px;
+  -moz-transform: rotate(-45deg) translate(0px, 1px);
+  -ms-transform: rotate(-45deg) translate(0px, 1px);
+  -webkit-transform: rotate(-45deg) translate(0px, 1px);
+  transform: rotate(-45deg) translate(0px, 1px); /* background-color: black; */
+  border-top: 2px solid black;
+  border-left: 2px solid; /* border: 1px solid; */
+  top: -11px;
+}
+.addSubtasksButton {
+  color: gray;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  cursor: pointer;
+}
+.addSubtasksButton:hover {
+  background-color: rgba(187, 204, 231, 0.11);
+  color: rgb(41, 122, 228);
+}

@@ -52,6 +52,11 @@ export default function Modal(props) {
     textArea.current.style.height = "auto";
     textArea.current.style.height = textArea.current.scrollHeight + "px";
   };
+  if(props.isOpened)
+  document.getElementsByClassName('tasksComponentContainer')[0].onscroll=function(){
+    document.getElementsByClassName('tasksComponentContainer')[0].scrollTo(0,0)
+    return null
+  }
 
   return (
     <div

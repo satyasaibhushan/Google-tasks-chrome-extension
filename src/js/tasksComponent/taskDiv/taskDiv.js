@@ -229,7 +229,7 @@ export class TaskDiv extends React.Component {
               zIndex: this.props.taskArrayElement.focus ? 0 : -2,
             }}></textarea>
         </div>
-        <div className="taskDivEditIconContainer ">
+        <div className="taskDivEditIconContainer " onClick={!this.props.checkedList ? this.props.clickedEdit:this.props.clickedDelete}>
           {!this.props.checkedList ? (
             <img src="../../images/edit.svg" className="taskDivEditIcon " alt="edit icon" />
           ) : (
