@@ -8,8 +8,12 @@ export default function SlidingMenu(props) {
       document.getElementsByClassName("tasksComponentContainer")[0].scrollTo(0, 0);
       return null;
     };
+  const [titleTextAreaFocus,setTitleTextAreaFocus] = useState(false);
+  const [notesTextAreaFocus,setNotesTextAreaFocus] = useState(false)
   return (
-    <div className="slidingMenuContainer" style={{ display: props.isOpened ? "" : "none" }}>
+    <div
+      className={props.isOpened ? "slidingMenuContainer open" : "slidingMenuContainer close"}
+      style={{ display: props.isOpened ? "" : "none" }}>
       <section className="slidingMenuTopSection">
         <div className="closeArrowContainer">
           <span className="closeArrow"></span>
@@ -29,12 +33,17 @@ export default function SlidingMenu(props) {
           cols="30"
           rows=""
           placeholder="Enter title"
-          style={{ height: "47px",maxHeight:'' }}
+          style={{ height: "47px", maxHeight: "" }}
+          onFocus={_ => setTitleTextAreaFocus(true)}
+          onBlur={_ => setTitleTextAreaFocus(false)}
           onInput={e => {
             e.target.style.height = "0";
             e.target.style.height = e.target.scrollHeight + "px";
             console.log(e.target.style.height, e.target.scrollHeight);
           }}></textarea>
+        <span
+          className="textAreaBorderBottom"
+          style={{ transform: titleTextAreaFocus ? "scaleX(1)" : "scaleX(0)" }}></span>
       </section>
       <section className="slidingNotesContainer">
         <textarea
@@ -45,28 +54,35 @@ export default function SlidingMenu(props) {
           rows=""
           placeholder="Add details"
           style={{ minHeight: "85px" }}
+          onFocus={_ => setNotesTextAreaFocus(true)}
+          onBlur={_ => setNotesTextAreaFocus(false)}
           onInput={e => {
             e.target.style.height = "0";
             e.target.style.height = e.target.scrollHeight + "px";
             console.log(e.target.style.height, e.target.scrollHeight);
           }}></textarea>
+          <span
+          className="textAreaBorderBottom"
+          style={{ transform: notesTextAreaFocus ? "scaleX(1)" : "scaleX(0)" }}></span>
       </section>
       <section className="slidingMenuListSection">
         <div className="listIconContainer">
-            <div className="listIcon"></div>
+          <div className="listIcon"></div>
         </div>
-        <div className='slidingMenuDropdown'>
-        <Dropdown
-        listNames={props.listNames}
-        selectedList={props.listNames[props.selectedList]}
-        selectedListIndex={props.selectedList}
-        clickedList={e=>{console.log(e)}}
-        />
+        <div className="slidingMenuDropdown">
+          <Dropdown
+            listNames={props.listNames}
+            selectedList={props.listNames[props.selectedList]}
+            selectedListIndex={props.selectedList}
+            clickedList={e => {
+              console.log(e);
+            }}
+          />
         </div>
       </section>
       <section className="slidingMenuSubTasksSectoin">
         <div className="slidingMenuSubtasksIconContainer">
-            <span className="subtasksIcon"></span>
+          <span className="subtasksIcon"></span>
         </div>
         <span className="addSubtasksButton">Add subtasks</span>
       </section>

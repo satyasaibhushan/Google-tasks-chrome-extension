@@ -8,6 +8,24 @@
   z-index: 99;
   font-family: Google Sans, Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
 }
+.slidingMenuContainer.open{
+    animation: slideIn 0.3s ease-in-out 1;
+}
+@keyframes slideIn {
+    0% {
+      width: 40%;
+      opacity: 0.5;
+      left: 100%;
+    }
+    50% {
+      opacity: 0.9;
+    }
+    100% {
+        width: 100%;
+      left: 0;
+      opacity: 1;
+    }
+  }
 .slidingMenuTopSection,
 .slidingMenuSubTasksSectoin {
   margin-top: 10px;
@@ -100,7 +118,7 @@
   padding: 14px 10px;
   min-height: unset;
   max-height: 5rem;
-  background-color: rgba(120, 176, 232, 0.19);
+  background-color: rgba(155, 193, 230, 0.19);
   border: none;
   outline: none;
   resize: none;
@@ -108,7 +126,18 @@
   font-size: 16px;
   font-weight: 300;
   overflow-y: scroll;
+  border-radius: 3px;
 }
+.textAreaBorderBottom{
+    content: "";
+    display: block;
+    position: relative;
+    width: 99%;
+    height: 2px;
+    background: rgb(66, 133, 244);
+    transition: transform 250ms ease-in-out;
+}
+
 .slidingMenuListSection {
   margin: 10px;
   height: 2rem;
