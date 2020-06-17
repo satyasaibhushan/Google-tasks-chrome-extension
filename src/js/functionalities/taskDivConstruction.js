@@ -81,17 +81,18 @@ export default function TotalTaskDivs(props) {
       resolve();
     })
       .then(_ => {
-        if (title != taskDiv.value) {
+        if (title != taskDiv.value || notes != taskDiv.notes) {
           api.updateTask({
             taskListId: props.taskListId,
             taskId: taskDiv.id,
             title: title,
+            notes: notes,
           });
           taskDiv.value = title;
         }
       })
       .then(_ => {
-        if (list != props.taskListId) {
+        if (list != props.selectedList) {
           if (
             (editingTask.current[1] == -1 && taskDivs[editingTask.current[0]].children.length == 0) ||
             editingTask.current[1] != -1
@@ -129,12 +130,14 @@ export default function TotalTaskDivs(props) {
               .then(res => {
                 newDiv.id = res.id;
                 newSubtasks.forEach(ele => {
-                  api.insertTask({
-                    taskListId: props.taskLists[list].id,
-                    title: ele.value,
-                    notes: ele.notes,
-                    parent: res.id,
-                  }).then(result=> ele.id = result.id)
+                  api
+                    .insertTask({
+                      taskListId: props.taskLists[list].id,
+                      title: ele.value,
+                      notes: ele.notes,
+                      parent: res.id,
+                    })
+                    .then(result => (ele.id = result.id));
                 });
               });
 
@@ -162,7 +165,7 @@ export default function TotalTaskDivs(props) {
           clickedClose={_ => setEditMenu(false)}
           taskNumber={editingTask.current}
           taskDivs={props.taskDivs}
-          submitted={(title, taskListIndex) => submitted(title, "", taskListIndex)}
+          submitted={(title, notes, taskListIndex) => submitted(title, notes, taskListIndex)}
           clickedDelete={_ => {
             setEditMenu(false);
             updateTasks.deleteTask(

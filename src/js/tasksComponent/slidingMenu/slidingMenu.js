@@ -7,7 +7,8 @@ export default function SlidingMenu(props) {
   const [titleTextAreaFocus, setTitleTextAreaFocus] = useState(false);
   const [notesTextAreaFocus, setNotesTextAreaFocus] = useState(false);
   const [titleInputValue, setTitle] = useState();
-  const [taskListNumber , setTaskListNumber] = useState(props.selectedList);
+  const [notesInputValue, setNotes] = useState();
+  const [taskListNumber, setTaskListNumber] = useState(props.selectedList);
 
   let tasksComponentContanier = document.getElementsByClassName("tasksComponentContainer")[0];
   let taskDivs = props.taskDivs;
@@ -18,7 +19,10 @@ export default function SlidingMenu(props) {
     : "";
 
   useEffect(() => {
-    taskDiv ? setTitle(taskDiv.value) : "";
+    if (taskDiv) {
+      setTitle(taskDiv.value);
+      setNotes(taskDiv.notes)
+    }
   }, [taskDiv]);
   if (props.isOpened) {
     tasksComponentContanier.scrollTo(0, 0);
@@ -37,7 +41,7 @@ export default function SlidingMenu(props) {
         <div
           className="closeArrowContainer"
           onClick={_ => {
-            props.submitted(titleInputValue,taskListNumber);
+            props.submitted(titleInputValue,notesInputValue, taskListNumber);
             props.clickedClose();
           }}>
           <span className="closeArrow"></span>
@@ -77,6 +81,8 @@ export default function SlidingMenu(props) {
           id=""
           cols="30"
           rows=""
+          value={notesInputValue}
+          onChange={e => setNotes(e.target.value)}
           placeholder="Add details"
           style={{ minHeight: "85px" }}
           onFocus={_ => setNotesTextAreaFocus(true)}
@@ -99,7 +105,7 @@ export default function SlidingMenu(props) {
             selectedList={props.listNames[taskListNumber]}
             selectedListIndex={taskListNumber}
             clickedList={e => {
-              setTaskListNumber(e)
+              setTaskListNumber(e);
             }}
           />
         </div>
