@@ -8,6 +8,7 @@ import DragSorting from "../tasksComponent/dragSorting/dragSorting";
 
 export default function TotalTaskDivs(props) {
   const [isEditMenuOpened, setEditMenu] = useState(false);
+  const editingTask = useRef([-1, -1]);
 
   let constructTaskDiv = (taskDiv, i, j) => {
     return (
@@ -60,6 +61,7 @@ export default function TotalTaskDivs(props) {
         }}
         clickedEdit={_ => {
           setEditMenu(true);
+          editingTask.current = [i, j];
         }}
         checkedList={false}></TaskDiv>
     );
@@ -73,7 +75,23 @@ export default function TotalTaskDivs(props) {
         taskListId={props.taskListId}
         setTaskList={props.setTaskList}
       />
-      <SlidingMenu isOpened={isEditMenuOpened} listNames={props.listNames} selectedList={props.selectedList} />
+      <SlidingMenu
+        isOpened={isEditMenuOpened}
+        listNames={props.listNames}
+        selectedList={props.selectedList}
+        clickedClose={_ => setEditMenu(false)}
+        clickedDelete={_ => {
+          setEditMenu(false);
+          updateTasks.deleteTask(
+            props.taskDivs,
+            props.setTaskList,
+            props.taskListId,
+            editingTask.current[0],
+            editingTask.current[1],
+            props.setMessage
+          );
+        }}
+      />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import apiManagement from "./apiManagement";
 import api from "./tasks.api";
 import { TaskDiv } from "../tasksComponent/taskDiv/taskDiv";
 import { getCookie } from "./cookies";
-import { moveTaskUp, moveTaskDown,intendTask,unintendTask } from "../functionalities/shortcuts";
+import { moveTaskUp, moveTaskDown, intendTask, unintendTask } from "../functionalities/shortcuts";
 
 export default {
   //  setTaskList()
@@ -20,9 +20,13 @@ export default {
   checkKeyPress(taskDivs, setTaskList, taskListId, e, i, j) {
     if (e.keyCode == 38 && e.getModifierState("Alt")) moveTaskUp(taskDivs, setTaskList, taskListId, i - 1, j);
     else if (e.keyCode == 40 && e.getModifierState("Alt")) moveTaskDown(taskDivs, setTaskList, taskListId, i - 1, j);
-    else if(e.metaKey && e.keyCode ==221) {e.preventDefault();intendTask(taskDivs, setTaskList, taskListId, i - 1, j)}
-    else if(e.metaKey && e.keyCode ==219) {e.preventDefault();unintendTask(taskDivs, setTaskList, taskListId, i - 1, j)}
-    else if (e.keyCode == 13) {
+    else if (e.metaKey && e.keyCode == 221) {
+      e.preventDefault();
+      intendTask(taskDivs, setTaskList, taskListId, i - 1, j);
+    } else if (e.metaKey && e.keyCode == 219) {
+      e.preventDefault();
+      unintendTask(taskDivs, setTaskList, taskListId, i - 1, j);
+    } else if (e.keyCode == 13) {
       e.preventDefault();
       if (e.metaKey) {
         this.addTask(taskDivs, setTaskList, taskListId, i, j, "", true);
@@ -35,11 +39,10 @@ export default {
       e.preventDefault();
     } else if (e.keyCode == 38 && !(i == 1 && j == -1) && e.target.selectionEnd == 0) {
       if (j == -1) {
-        if (taskDivs[i - 2].children && taskDivs[i - 2].children.length > 0){
+        if (taskDivs[i - 2].children && taskDivs[i - 2].children.length > 0) {
           taskDivs[i - 2].children[taskDivs[i - 2].children.length - 1].focus = true;
-          taskDivs[i - 2].collapsed = -1
-        }
-        else taskDivs[i - 2].focus = true;
+          taskDivs[i - 2].collapsed = -1;
+        } else taskDivs[i - 2].focus = true;
       } else if (j == 0) {
         taskDivs[i - 1].focus = true;
       } else if (j >= 1) taskDivs[i - 1].children[j - 1].focus = true;
@@ -51,8 +54,9 @@ export default {
       }
       if (j == -1) {
         if (taskDivs[i - 1].children.length == 0) taskDivs[i].focus = true;
-        else {taskDivs[i - 1].children[0].focus = true;
-          taskDivs[i - 1].collapsed = -1
+        else {
+          taskDivs[i - 1].children[0].focus = true;
+          taskDivs[i - 1].collapsed = -1;
         }
       } else if (j == taskDivs[i - 1].children.length - 1) taskDivs[i].focus = true;
       else taskDivs[i - 1].children[j + 1].focus = true;
@@ -79,7 +83,7 @@ export default {
     if (isBefore) taskDiv.focus = false;
 
     if (isMetaPressed && !isBefore) {
-      taskDivs[i-1].collapsed = -1
+      taskDivs[i - 1].collapsed = -1;
       if (taskDivs[i - 1].id != "") {
         taskDiv.parentId = taskDivs[i - 1].id;
         if (taskListId)
@@ -256,6 +260,23 @@ export default {
     if (taskDivs[i].collapsed == 1) taskDivs[i].collapsed = -1;
     else if (taskDivs[i].collapsed == -1) taskDivs[i].collapsed = 1;
     // else if(taskDivs[i].collapsed == 0 )
+    setTaskList(taskDivs);
+  },
+  deleteTask(taskDivs, setTaskList, taskListId, i, j, setMessage) {
+    if (j == -1) {
+      api.deleteTask(taskListId, taskDivs[i].id);
+      let message = "deleted 1 task ";
+      taskDivs[i] && taskDivs[i].children && taskDivs[i].children.length > 0
+        ? (message += "with " + taskDivs[i].children.length + " subtasks")
+        : "";
+      taskDivs.splice(i, 1);
+      setMessage(message);
+    } else {
+      api.deleteTask(taskListId, taskDivs[i].children[j].id);
+      taskDivs[i].children.splice(j, 1);
+      setMessage("deleted 1 subtask");
+      if (taskDivs[i].children.length == 0) taskDivs[i].collapsed = 0;
+    }
     setTaskList(taskDivs);
   },
 };

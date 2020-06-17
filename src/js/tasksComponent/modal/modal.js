@@ -8,6 +8,7 @@ export default function Modal(props) {
   const mounted = useRef();
   const [inputValue, setValue] = useState(props.inputValue);
   const [isOpened, setOpen] = useState(props.isOpened);
+  let tasksComponentContanier = document.getElementsByClassName("tasksComponentContainer")[0];
 
   useEffect(() => {
     let modalContainer = document.getElementsByClassName("modal-container")[0];
@@ -52,10 +53,14 @@ export default function Modal(props) {
     textArea.current.style.height = "auto";
     textArea.current.style.height = textArea.current.scrollHeight + "px";
   };
-  if(props.isOpened)
-  document.getElementsByClassName('tasksComponentContainer')[0].onscroll=function(){
-    document.getElementsByClassName('tasksComponentContainer')[0].scrollTo(0,0)
-    return null
+  if (props.isOpened) {
+    tasksComponentContanier.scrollTo(0, 0);
+    tasksComponentContanier.onscroll = function () {
+      tasksComponentContanier.scrollTo(0, 0);
+    };
+  } else {
+    if(tasksComponentContanier)
+    tasksComponentContanier.onscroll = function () {};
   }
 
   return (

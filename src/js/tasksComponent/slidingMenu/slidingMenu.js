@@ -3,22 +3,26 @@ import "./slidingMenu.css";
 import Dropdown from "../taskListSelector/dropdown";
 
 export default function SlidingMenu(props) {
-  if (props.isOpened)
-    document.getElementsByClassName("tasksComponentContainer")[0].onscroll = function () {
-      document.getElementsByClassName("tasksComponentContainer")[0].scrollTo(0, 0);
-      return null;
+  let tasksComponentContanier = document.getElementsByClassName("tasksComponentContainer")[0];
+  if (props.isOpened) {
+    tasksComponentContanier.scrollTo(0, 0);
+    tasksComponentContanier.onscroll = function () {
+      tasksComponentContanier.scrollTo(0, 0);
     };
-  const [titleTextAreaFocus,setTitleTextAreaFocus] = useState(false);
-  const [notesTextAreaFocus,setNotesTextAreaFocus] = useState(false)
+  } else {
+    tasksComponentContanier.onscroll = function () {};
+  }
+  const [titleTextAreaFocus, setTitleTextAreaFocus] = useState(false);
+  const [notesTextAreaFocus, setNotesTextAreaFocus] = useState(false);
   return (
     <div
       className={props.isOpened ? "slidingMenuContainer open" : "slidingMenuContainer close"}
       style={{ display: props.isOpened ? "" : "none" }}>
       <section className="slidingMenuTopSection">
-        <div className="closeArrowContainer">
+        <div className="closeArrowContainer" onClick={_ => props.clickedClose()}>
           <span className="closeArrow"></span>
         </div>
-        <div className="slidingMenuDeleteIconContainer">
+        <div className="slidingMenuDeleteIconContainer" onClick={_ => props.clickedDelete()}>
           <img src="../../images/delete.svg" className="slidingMenuDeleteIcon " alt="delete icon" />
         </div>
       </section>
@@ -61,7 +65,7 @@ export default function SlidingMenu(props) {
             e.target.style.height = e.target.scrollHeight + "px";
             console.log(e.target.style.height, e.target.scrollHeight);
           }}></textarea>
-          <span
+        <span
           className="textAreaBorderBottom"
           style={{ transform: notesTextAreaFocus ? "scaleX(1)" : "scaleX(0)" }}></span>
       </section>
