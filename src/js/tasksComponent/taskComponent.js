@@ -98,14 +98,15 @@ export class TaskComponent extends React.Component {
           {this.state.taskListIndex != -1 ? (
             <TotalTaskDivs
               taskComponent={this}
+              taskLists={this.state.taskList}
+              selectedList={this.state.taskListIndex}
               taskListId={this.state.taskList[this.state.taskListIndex].id}
               taskDivs={this.state.taskList[this.state.taskListIndex].taskDivs}
               checkedDivs={this.state.taskList[this.state.taskListIndex].checkedDivs}
+              listNames={this.state.taskList.map(element => element.name)}
               setTaskList={taskDivs => setTaskDivs(taskDivs)}
               setCheckedDivs={checkedDivs => setTaskDivs(checkedDivs, true)}
-              setMessage={setMessage}
-              listNames={this.state.taskList.map(element => element.name)}
-              selectedList={this.state.taskListIndex}
+              setMessage={setMessage}             
             />
           ) : (
             ""

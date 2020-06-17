@@ -3,7 +3,21 @@ import "./slidingMenu.css";
 import Dropdown from "../taskListSelector/dropdown";
 
 export default function SlidingMenu(props) {
+  const [titleTextAreaFocus, setTitleTextAreaFocus] = useState(false);
+  const [notesTextAreaFocus, setNotesTextAreaFocus] = useState(false);
+  const [titleInputValue, setTitle] = useState();
+
   let tasksComponentContanier = document.getElementsByClassName("tasksComponentContainer")[0];
+  let taskDivs = props.taskDivs;
+  let taskDiv = taskDivs
+    ? props.taskNumber[1] == -1
+      ? taskDivs[props.taskNumber[0]]
+      : taskDivs[props.taskNumber[0]].children[props.taskNumber[1]]
+    : "";
+
+  useEffect(() => {
+    taskDiv ? setTitle(taskDiv.value) : "";
+  }, [taskDiv]);
   if (props.isOpened) {
     tasksComponentContanier.scrollTo(0, 0);
     tasksComponentContanier.onscroll = function () {
@@ -12,14 +26,18 @@ export default function SlidingMenu(props) {
   } else {
     tasksComponentContanier.onscroll = function () {};
   }
-  const [titleTextAreaFocus, setTitleTextAreaFocus] = useState(false);
-  const [notesTextAreaFocus, setNotesTextAreaFocus] = useState(false);
+
   return (
     <div
       className={props.isOpened ? "slidingMenuContainer open" : "slidingMenuContainer close"}
       style={{ display: props.isOpened ? "" : "none" }}>
       <section className="slidingMenuTopSection">
-        <div className="closeArrowContainer" onClick={_ => props.clickedClose()}>
+        <div
+          className="closeArrowContainer"
+          onClick={_ => {
+            props.submitted(titleInputValue);
+            props.clickedClose();
+          }}>
           <span className="closeArrow"></span>
         </div>
         <div className="slidingMenuDeleteIconContainer" onClick={_ => props.clickedDelete()}>
@@ -36,6 +54,8 @@ export default function SlidingMenu(props) {
           id=""
           cols="30"
           rows=""
+          value={titleInputValue}
+          onChange={e => setTitle(e.target.value)}
           placeholder="Enter title"
           style={{ height: "47px", maxHeight: "" }}
           onFocus={_ => setTitleTextAreaFocus(true)}
@@ -43,7 +63,6 @@ export default function SlidingMenu(props) {
           onInput={e => {
             e.target.style.height = "0";
             e.target.style.height = e.target.scrollHeight + "px";
-            console.log(e.target.style.height, e.target.scrollHeight);
           }}></textarea>
         <span
           className="textAreaBorderBottom"
@@ -63,7 +82,6 @@ export default function SlidingMenu(props) {
           onInput={e => {
             e.target.style.height = "0";
             e.target.style.height = e.target.scrollHeight + "px";
-            console.log(e.target.style.height, e.target.scrollHeight);
           }}></textarea>
         <span
           className="textAreaBorderBottom"

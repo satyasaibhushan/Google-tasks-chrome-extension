@@ -67,6 +67,27 @@ export default function TotalTaskDivs(props) {
     );
   };
 
+  let submitted = (title, notes, list, subtasks) => {
+    console.log(title)
+    let taskDivs = props.taskDivs
+    let taskDiv =
+      editingTask.current[1] == -1
+        ? taskDivs[editingTask.current[0]]
+        : taskDivs[editingTask.current[0]].children[editingTask.current[1]];
+        console.log('hiii',title)
+
+    if (title || title === "") {
+      api.updateTask({
+        taskListId: props.taskListId,
+        taskId: taskDiv.id,
+        title: title,
+      });
+      taskDiv.value = title;
+      console.log('hiii')
+    }
+    props.setTaskList(taskDivs)
+  };
+
   return (
     <div>
       <DragSorting
@@ -75,23 +96,30 @@ export default function TotalTaskDivs(props) {
         taskListId={props.taskListId}
         setTaskList={props.setTaskList}
       />
-      <SlidingMenu
-        isOpened={isEditMenuOpened}
-        listNames={props.listNames}
-        selectedList={props.selectedList}
-        clickedClose={_ => setEditMenu(false)}
-        clickedDelete={_ => {
-          setEditMenu(false);
-          updateTasks.deleteTask(
-            props.taskDivs,
-            props.setTaskList,
-            props.taskListId,
-            editingTask.current[0],
-            editingTask.current[1],
-            props.setMessage
-          );
-        }}
-      />
+      {isEditMenuOpened ? (
+        <SlidingMenu
+          isOpened={isEditMenuOpened}
+          listNames={props.listNames}
+          selectedList={props.selectedList}
+          clickedClose={_ => setEditMenu(false)}
+          taskNumber={editingTask.current}
+          taskDivs={props.taskDivs}
+          submitted={title => submitted(title)}
+          clickedDelete={_ => {
+            setEditMenu(false);
+            updateTasks.deleteTask(
+              props.taskDivs,
+              props.setTaskList,
+              props.taskListId,
+              editingTask.current[0],
+              editingTask.current[1],
+              props.setMessage
+            );
+          }}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 }
