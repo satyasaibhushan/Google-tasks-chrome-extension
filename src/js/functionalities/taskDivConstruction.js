@@ -17,14 +17,15 @@ export default function TotalTaskDivs(props) {
         key={j == -1 ? i : (i + 1) * 100 + j}
         changeElement={(value, isFocus) => {
           if ((value || value === "") && !taskDiv.checked && taskDiv.id != "") {
-            if(taskDiv.value!= value){
-            api.updateTask({
-              taskListId: props.taskListId,
-              taskId: taskDiv.id,
-              title: value,
-              notes:taskDiv.notes
-            });
-            taskDiv.value = value;}
+            if (taskDiv.value != value) {
+              api.updateTask({
+                taskListId: props.taskListId,
+                taskId: taskDiv.id,
+                title: value,
+                notes: taskDiv.notes,
+              });
+              taskDiv.value = value;
+            }
           }
           taskDiv.focus = isFocus;
         }}
@@ -70,22 +71,79 @@ export default function TotalTaskDivs(props) {
   };
 
   let submitted = (title, notes, list, subtasks) => {
-    let taskDivs = props.taskDivs
+    let taskDivs = props.taskDivs;
     let taskDiv =
       editingTask.current[1] == -1
         ? taskDivs[editingTask.current[0]]
         : taskDivs[editingTask.current[0]].children[editingTask.current[1]];
 
-    if (title || title === "") {
-      api.updateTask({
-        taskListId: props.taskListId,
-        taskId: taskDiv.id,
-        title: title,
+    new Promise((resolve, reject) => {
+      resolve();
+    })
+      .then(_ => {
+        if (title != taskDiv.value) {
+          api.updateTask({
+            taskListId: props.taskListId,
+            taskId: taskDiv.id,
+            title: title,
+          });
+          taskDiv.value = title;
+        }
+      })
+      .then(_ => {
+        if (list != props.taskListId) {
+          if (
+            (editingTask.current[1] == -1 && taskDivs[editingTask.current[0]].children.length == 0) ||
+            editingTask.current[1] != -1
+          ) {
+            props.setMessage("Moved 1 task to " + props.taskLists[list].name);
+            api.deleteTask(props.taskListId, taskDiv.id);
+            let newDiv = { ...taskDiv };
+            if (editingTask.current[1] != -1) {
+              newDiv.subset = -1;
+              delete newDiv.parentId;
+              newDiv.children = [];
+              taskDivs[editingTask.current[0]].children.splice(editingTask.current[1], 1);
+              if (taskDivs[editingTask.current[0]].children.length == 0) taskDivs[editingTask.current[0]].collapsed = 0;
+            } else taskDivs.splice(editingTask.current[0], 1);
+            api
+              .insertTask({ taskListId: props.taskLists[list].id, title: newDiv.value, notes: newDiv.notes })
+              .then(res => (newDiv.id = res.id));
+            newDiv.newlyAdded = true;
+            props.taskLists[list].taskDivs.unshift(newDiv);
+            props.setTaskList(taskDivs);
+          } else {
+            props.setMessage(
+              "Moved " +
+                (taskDivs[editingTask.current[0]].children.length + 1) +
+                " tasks to " +
+                props.taskLists[list].name
+            );
+            api.deleteTask(props.taskListId, taskDiv.id);
+            let newDiv = { ...taskDiv };
+            let newSubtasks = [].concat(taskDiv.children).reverse();
+            taskDivs.splice(editingTask.current[0], 1);
+            props.taskLists[list].taskDivs.unshift(newDiv);
+            api
+              .insertTask({ taskListId: props.taskLists[list].id, title: newDiv.value, notes: newDiv.notes })
+              .then(res => {
+                newDiv.id = res.id;
+                newSubtasks.forEach(ele => {
+                  api.insertTask({
+                    taskListId: props.taskLists[list].id,
+                    title: ele.value,
+                    notes: ele.notes,
+                    parent: res.id,
+                  }).then(result=> ele.id = result.id)
+                });
+              });
+
+            props.setTaskList(taskDivs);
+          }
+        }
       });
-      taskDiv.value = title;
-    }
-    console.log(taskDivs)
-    props.setTaskList(taskDivs)
+
+    props.setTaskList(taskDivs);
   };
 
   return (
@@ -104,7 +162,7 @@ export default function TotalTaskDivs(props) {
           clickedClose={_ => setEditMenu(false)}
           taskNumber={editingTask.current}
           taskDivs={props.taskDivs}
-          submitted={title => submitted(title)}
+          submitted={(title, taskListIndex) => submitted(title, "", taskListIndex)}
           clickedDelete={_ => {
             setEditMenu(false);
             updateTasks.deleteTask(

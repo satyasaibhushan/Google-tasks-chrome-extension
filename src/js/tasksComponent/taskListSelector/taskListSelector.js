@@ -90,6 +90,7 @@ export class TaskListSelector extends React.Component {
             selectedList={this.props.listNames[this.props.selectedList]}
             selectedListIndex={this.props.selectedList}
             clickedList={this.props.setTaskListIndex}
+            setCookie={true}
           />
         ) : (
           ""

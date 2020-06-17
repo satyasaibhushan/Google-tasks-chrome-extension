@@ -42,7 +42,7 @@ class Dropdown extends React.Component {
                 onClick={_ => {
                   this.props.clickedList(i);
                   this.setState({ displayLists: false });
-                  setCookie("taskListIndex",i,2)
+                  this.props.setCookie? setCookie("taskListIndex",i,2):''
                 }}
               >
                 {list}

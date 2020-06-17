@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./slidingMenu.css";
 import Dropdown from "../taskListSelector/dropdown";
+import apiManagement from "../../functionalities/apiManagement";
 
 export default function SlidingMenu(props) {
   const [titleTextAreaFocus, setTitleTextAreaFocus] = useState(false);
   const [notesTextAreaFocus, setNotesTextAreaFocus] = useState(false);
   const [titleInputValue, setTitle] = useState();
+  const [taskListNumber , setTaskListNumber] = useState(props.selectedList);
 
   let tasksComponentContanier = document.getElementsByClassName("tasksComponentContainer")[0];
   let taskDivs = props.taskDivs;
@@ -35,7 +37,7 @@ export default function SlidingMenu(props) {
         <div
           className="closeArrowContainer"
           onClick={_ => {
-            props.submitted(titleInputValue);
+            props.submitted(titleInputValue,taskListNumber);
             props.clickedClose();
           }}>
           <span className="closeArrow"></span>
@@ -94,10 +96,10 @@ export default function SlidingMenu(props) {
         <div className="slidingMenuDropdown">
           <Dropdown
             listNames={props.listNames}
-            selectedList={props.listNames[props.selectedList]}
-            selectedListIndex={props.selectedList}
+            selectedList={props.listNames[taskListNumber]}
+            selectedListIndex={taskListNumber}
             clickedList={e => {
-              console.log(e);
+              setTaskListNumber(e)
             }}
           />
         </div>
