@@ -106,7 +106,7 @@ export class TaskComponent extends React.Component {
               listNames={this.state.taskList.map(element => element.name)}
               setTaskList={taskDivs => setTaskDivs(taskDivs)}
               setCheckedDivs={checkedDivs => setTaskDivs(checkedDivs, true)}
-              setMessage={setMessage}             
+              setMessage={setMessage}
             />
           ) : (
             ""
@@ -133,18 +133,11 @@ export class TaskComponent extends React.Component {
               updateTasks.uncheckedTask(
                 this.state.taskList[this.state.taskListIndex].checkedDivs,
                 checkedDivs => setTaskDivs(checkedDivs, true),
-                message => {
-                  this.setState({
-                    message: {
-                      showMessage: true,
-                      message: message,
-                      msgChange: !this.state.message.msgChange,
-                    },
-                  });
-                },
+                setMessage,
                 i
               )
             }
+            setMessage = {setMessage}
             setHeight={(value, i) =>
               updateTasks.setHeight(listTasks(true), checkedDivs => setTaskDivs(checkedDivs, true), value, i, -1, true)
             }

@@ -2,7 +2,7 @@ import Newtask from "../tasksComponent/newTask/newTask";
 import api from "./tasks.api";
 import { getCookie } from "../functionalities/cookies";
 export default {
-  newTask(checked, value, subset, id, parentId) {
+  newTask(checked, value, subset, id, parentId, notes) {
     let task = {
       checked: checked,
       value: value,
@@ -11,6 +11,7 @@ export default {
       height: 0,
       subset: subset,
       id: id,
+      notes: notes,
     };
     if (!parentId) task.children = [];
     else task.parentId = parentId;
@@ -41,7 +42,9 @@ export default {
                   console.log(task);
                   task.forEach((element, i) => {
                     if (element.status == "needsAction" && !element.parent) {
-                      taskListElement.taskDivs.push(this.newTask(false, element.title, -1, element.id));
+                      taskListElement.taskDivs.push(
+                        this.newTask(false, element.title, -1, element.id, undefined,element.notes ? element.notes : "")
+                      );
                       taskListElement.taskDivs[taskListElement.taskDivs.length - 1].collapsed = 0;
                     }
                   });
@@ -55,9 +58,10 @@ export default {
                       {
                         let parentIndex = taskListElement.taskDivs.map(ele => ele.id).indexOf(element.parent);
                         taskListElement.taskDivs[parentIndex].children.push(
-                          this.newTask(false, element.title, parentIndex, element.id, element.parent)
+                          this.newTask(false, element.title, parentIndex, element.id, element.parent, element.notes ? element.notes : "")
                         );
-                        taskListElement.taskDivs[parentIndex].collapsed = getCookie("defaultShowSubtasks") === "true" ? 1:-1;
+                        taskListElement.taskDivs[parentIndex].collapsed =
+                          getCookie("defaultShowSubtasks") === "true" ? 1 : -1;
                       }
                     }
                   });
@@ -76,7 +80,7 @@ export default {
                   task.forEach((element, i) => {
                     if (element.status == "completed")
                       taskListElement.checkedDivs.push(
-                        this.newTask(true, element.title, -1, element.id, element.parent ? element.parent : "")
+                        this.newTask(true, element.title, -1, element.id, element.parent ? element.parent : "", element.notes ? element.notes : "")
                       );
                   });
                 }

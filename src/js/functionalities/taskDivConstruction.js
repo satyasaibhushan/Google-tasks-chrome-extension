@@ -17,12 +17,14 @@ export default function TotalTaskDivs(props) {
         key={j == -1 ? i : (i + 1) * 100 + j}
         changeElement={(value, isFocus) => {
           if ((value || value === "") && !taskDiv.checked && taskDiv.id != "") {
+            if(taskDiv.value!= value){
             api.updateTask({
               taskListId: props.taskListId,
               taskId: taskDiv.id,
               title: value,
+              notes:taskDiv.notes
             });
-            taskDiv.value = value;
+            taskDiv.value = value;}
           }
           taskDiv.focus = isFocus;
         }}
@@ -68,13 +70,11 @@ export default function TotalTaskDivs(props) {
   };
 
   let submitted = (title, notes, list, subtasks) => {
-    console.log(title)
     let taskDivs = props.taskDivs
     let taskDiv =
       editingTask.current[1] == -1
         ? taskDivs[editingTask.current[0]]
         : taskDivs[editingTask.current[0]].children[editingTask.current[1]];
-        console.log('hiii',title)
 
     if (title || title === "") {
       api.updateTask({
@@ -83,8 +83,8 @@ export default function TotalTaskDivs(props) {
         title: title,
       });
       taskDiv.value = title;
-      console.log('hiii')
     }
+    console.log(taskDivs)
     props.setTaskList(taskDivs)
   };
 

@@ -17,7 +17,7 @@ export class CheckedDivTotal extends React.Component {
     let tasksArray = this.props.tasksList;
     let taskList = this.props.taskList;
     if (keyName == "newlyAdded" && checkedArray[i].newlyAdded == true) checkedArray[i].newlyAdded = false;
-    if (keyName == "unchecked" && checkedArray[i].unchecked == true) {
+    else if (keyName == "unchecked" && checkedArray[i].unchecked == true) {
       checkedArray[i].newlyAdded = true;
       checkedArray[i].checked = false;
       checkedArray[i].unchecked = false;
@@ -43,11 +43,17 @@ export class CheckedDivTotal extends React.Component {
       } else tasksArray.unshift(checkedArray[i]);
       checkedArray.splice(i, 1);
     }
+    else if(keyName == 'remove' && checkedArray[i].remove == true){
+      api.deleteTask(this.props.taskList.id, checkedArray[i].id);
+      checkedArray.splice(i, 1);
+      this.props.setMessage('1 Checked task deleted ')
+    }
     this.props.changeCheckedArray(checkedArray);
     this.props.changeTaskArray(tasksArray);
   }
   removeClick(i) {
     let checkedArray = this.props.checkedList;
+    if(checkedArray[i])
     checkedArray[i].focus = false;
     this.props.changeCheckedArray(checkedArray);
   }
@@ -67,6 +73,10 @@ export class CheckedDivTotal extends React.Component {
             clickedTick={_ => this.props.clickedTick(i)}
             setHeight={value => this.props.setHeight(value, i)}
             changeElementKey={value => this.changeElementKey(value, i)}
+            clickedDelete={_ => {
+              checkedItem.remove = true
+              // 
+            }}
             checkedList={true}
           />
         );

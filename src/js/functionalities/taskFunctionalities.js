@@ -109,6 +109,7 @@ export default {
           id: "",
           subset: -1,
           children: [],
+          notes:''
         };
         if (j != -1) {
           (taskDiv.subset = i - 1), delete taskDiv.children, (taskDiv.parentId = i - 1);
