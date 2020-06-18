@@ -6,19 +6,26 @@ export class TaskDiv extends React.Component {
     super();
     this.state = {
       icon: props.checkedList ? "tick" : "circle",
+      divHeight: 0,
+      notesHeight: 0,
+      textHeight: 0,
     };
     this.input = React.createRef();
     this.wholeDiv = React.createRef();
     this.notesTextArea = React.createRef();
   }
   componentDidUpdate(prevProps, prevState, snapshot) {
+    // setTimeout(() => {
+    //   if (this.state.divHeight + "px" != this.wholeDiv.current.style.height) {
+    //     this.wholeDiv.current.style.height = this.state.divHeight + "px";
+    //   }    }, 50);
     let prevHeight = this.input.current.style.height;
-    this.input.current.style.height = 0;
-    this.input.current.style.height = this.input.current.scrollHeight + "px";
-    if (this.notesTextArea.current) {
-      // this.notesTextArea.current.style.height = 0;
-      // this.notesTextArea.current.style.height = this.notesTextArea.current.scrollHeight + "px";
-    }
+    // this.input.current.style.height = 0;
+    // this.input.current.style.height = this.input.current.scrollHeight + "px";
+    // if (this.notesTextArea.current) {
+    //   this.notesTextArea.current.style.height = 0;
+    //   this.notesTextArea.current.style.height = this.notesTextArea.current.scrollHeight + "px";
+    // }
     if (
       this.input.current.style.height != this.input.current.scrollHeight + "px" ||
       (this.notesTextArea.current &&
@@ -36,7 +43,7 @@ export class TaskDiv extends React.Component {
       if (this.props.taskArrayElement.edited) {
         this.props.changeElementKey("edited");
       }
-      this.props.setHeight(this.input.current.clientHeight + notesHeight + 22);
+      this.setHeight(this.input.current);
     }
     if (
       this.props.taskArrayElement.subset != -1 &&
@@ -130,17 +137,21 @@ export class TaskDiv extends React.Component {
     }
   }
   setHeight(e) {
-    let notesHeight = 0;
+    let notesDivHeight = 0;
+    let { divHeight, notesHeight, textHeight } = this.state;
     e.style.height = "auto";
     e.style.height = e.scrollHeight + "px";
     if (this.notesTextArea.current) {
       this.notesTextArea.current.style.height = 0;
       this.notesTextArea.current.style.height = this.notesTextArea.current.scrollHeight + "px";
-      notesHeight = this.notesTextArea.current.clientHeight;
+      notesDivHeight = this.notesTextArea.current.clientHeight;
     }
-    if (e.clientHeight + notesHeight != this.props.taskArrayElement.height && e.clientHeight > 0) {
-      this.props.setHeight(e.clientHeight + notesHeight + 22);
-    }
+    divHeight = e.scrollHeight + notesDivHeight + 22;
+    notesHeight = notesDivHeight;
+    textHeight = this.input.current.clientHeight;
+    this.wholeDiv.current.style.height = e.scrollHeight + notesDivHeight + 22 + "px";
+    this.setState({ divHeight, notesHeight, textHeight });
+    this.props.setHeight(e.clientHeight + notesHeight + 22);
   }
   tickAnimation() {
     let animationDivs = (
@@ -163,7 +174,7 @@ export class TaskDiv extends React.Component {
         className={this.props.taskArrayElement.newlyAdded == true ? "taskDiv newElement" : "taskDiv"}
         style={{
           backgroundColor: this.props.taskArrayElement.focus == true ? " rgba(212, 211, 211, 0.1)" : "transparent",
-          height: this.props.taskArrayElement.height,
+          height: this.state.divHeight + "px",
           opacity: this.props.taskArrayElement.height == 0 ? 0 : "",
           zIndex: 1,
         }}
@@ -253,16 +264,19 @@ export class TaskDiv extends React.Component {
               textDecoration: this.props.taskArrayElement.checked == true ? "line-through" : "none",
               // height: this.props ? this.props.taskArrayElement.height - 22 : "",
               transform:
-                this.props.taskArrayElement.subset != -1
-                  ? !this.props.checkedList
-                    ? "translate(2.3rem,-50%)"
-                    : "translate(0,-50%)"
-                  : "translate(0,-50%)",
+                this.props.taskArrayElement.subset != -1 && !this.props.checkedList
+                  ? this.notesTextArea.current
+                    ? "translate(2.3rem,-70%)"
+                    : "translate(2.3rem,-50%)"
+                  : this.notesTextArea.current
+                  ? "translate(0rem,-70%)"
+                  : "translate(0rem,-50%)",
               width:
                 this.props.taskArrayElement.subset != -1 ? (!this.props.checkedList ? "12.7rem" : "15rem") : "15rem",
               zIndex: this.props.taskArrayElement.focus ? 0 : -2,
             }}></textarea>
-          {this.props.taskArrayElement.notes == "" ? (
+
+          {this.props.taskArrayElement.notes == "" || !this.props.taskArrayElement.notes ? (
             ""
           ) : (
             <textarea
@@ -275,11 +289,13 @@ export class TaskDiv extends React.Component {
               readOnly={true}
               style={{
                 transform:
-                  this.props.taskArrayElement.subset != -1
-                    ? !this.props.checkedList
+                  this.props.taskArrayElement.subset != -1 && !this.props.checkedList
+                    ? this.notesTextArea.current && parseInt(this.notesTextArea.current.style.height, 10) > 16
                       ? "translate(47px,1px)"
-                      : "translate(10px,1px)"
-                    : "translate(10px,1px)",
+                      : "translate(47px,-3px)"
+                    : this.notesTextArea.current && parseInt(this.notesTextArea.current.style.height, 10) > 16
+                    ? "translate(10px,1px)"
+                    : "translate(10px,-3px)",
                 width:
                   this.props.taskArrayElement.subset != -1 ? (!this.props.checkedList ? "9.7rem" : "12rem") : "12rem",
               }}></textarea>
