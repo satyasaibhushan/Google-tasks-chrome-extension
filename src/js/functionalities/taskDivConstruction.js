@@ -88,7 +88,12 @@ export default function TotalTaskDivs(props) {
             title: title,
             notes: notes,
           });
+          console.log(title, taskDiv.value, notes ,taskDiv.notes)
           taskDiv.value = title;
+          taskDiv.notes = notes;
+          taskDiv.edited = true;
+          
+          props.setTaskList(taskDivs);
         }
       })
       .then(_ => {

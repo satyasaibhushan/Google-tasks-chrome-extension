@@ -221,6 +221,10 @@ export default {
         taskDivs[i].children.splice(j, 1);
       }
     }
+    if(KeyName == "edited"){
+      if(j==-1) delete taskDivs[i].edited
+      else delete taskDivs[i].children[j].edited
+    }
 
     setTaskList(taskDivs);
     setCheckedDivs(checkedDivs);

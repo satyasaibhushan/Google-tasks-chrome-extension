@@ -9,6 +9,8 @@ export default function SlidingMenu(props) {
   const [titleInputValue, setTitle] = useState();
   const [notesInputValue, setNotes] = useState();
   const [taskListNumber, setTaskListNumber] = useState(props.selectedList);
+  const titleTextArea = useRef(null)
+  const notesTextArea = useRef(null)
 
   let tasksComponentContanier = document.getElementsByClassName("tasksComponentContainer")[0];
   let taskDivs = props.taskDivs;
@@ -24,7 +26,16 @@ export default function SlidingMenu(props) {
       setNotes(taskDiv.notes)
     }
   }, [taskDiv]);
+  useEffect(()=>{
+    if(titleTextArea.current){
+      titleTextArea.current.style.height = "0";
+      titleTextArea.current.style.height = titleTextArea.current.scrollHeight + "px";}
+      if(notesTextArea.current){
+        notesTextArea.current.style.height = "0";
+        notesTextArea.current.style.height = notesTextArea.current.scrollHeight + "px";}
+  },[titleTextArea.current,notesTextArea.current])
   if (props.isOpened) {
+    
     tasksComponentContanier.scrollTo(0, 0);
     tasksComponentContanier.onscroll = function () {
       tasksComponentContanier.scrollTo(0, 0);
@@ -61,6 +72,7 @@ export default function SlidingMenu(props) {
           cols="30"
           rows=""
           value={titleInputValue}
+          ref={titleTextArea}
           onChange={e => setTitle(e.target.value)}
           placeholder="Enter title"
           style={{ height: "47px", maxHeight: "" }}
@@ -82,6 +94,7 @@ export default function SlidingMenu(props) {
           cols="30"
           rows=""
           value={notesInputValue}
+          ref={notesTextArea}
           onChange={e => setNotes(e.target.value)}
           placeholder="Add details"
           style={{ minHeight: "85px" }}

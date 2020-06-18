@@ -9,8 +9,35 @@ export class TaskDiv extends React.Component {
     };
     this.input = React.createRef();
     this.wholeDiv = React.createRef();
+    this.notesTextArea = React.createRef();
   }
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    let prevHeight = this.input.current.style.height;
+    this.input.current.style.height = 0;
+    this.input.current.style.height = this.input.current.scrollHeight + "px";
+    if (this.notesTextArea.current) {
+      // this.notesTextArea.current.style.height = 0;
+      // this.notesTextArea.current.style.height = this.notesTextArea.current.scrollHeight + "px";
+    }
+    if (
+      this.input.current.style.height != this.input.current.scrollHeight + "px" ||
+      (this.notesTextArea.current &&
+        this.notesTextArea.current.style.height != this.notesTextArea.current.scrollHeight + "px") ||
+      this.props.taskArrayElement.edited
+    ) {
+      let notesHeight = 0;
+      this.input.current.style.height = 0;
+      this.input.current.style.height = this.input.current.scrollHeight + "px";
+      if (this.notesTextArea.current) {
+        this.notesTextArea.current.style.height = 0;
+        this.notesTextArea.current.style.height = this.notesTextArea.current.scrollHeight + "px";
+        notesHeight = this.notesTextArea.current.clientHeight;
+      }
+      if (this.props.taskArrayElement.edited) {
+        this.props.changeElementKey("edited");
+      }
+      this.props.setHeight(this.input.current.clientHeight + notesHeight + 22);
+    }
     if (
       this.props.taskArrayElement.subset != -1 &&
       this.props.taskArrayElement.icon == "" &&
@@ -34,7 +61,7 @@ export class TaskDiv extends React.Component {
     }
 
     if (
-      this.props.taskArrayElement.height == 0 &&
+      (this.props.taskArrayElement.height == 0 || this.input.current.style.height == 0) &&
       (!this.props.taskArrayElement.dragging || this.props.taskArrayElement.dragging === false)
     ) {
       this.setHeight(this.input.current);
@@ -103,10 +130,17 @@ export class TaskDiv extends React.Component {
     }
   }
   setHeight(e) {
+    let notesHeight = 0;
     e.style.height = "auto";
     e.style.height = e.scrollHeight + "px";
-    if (e.clientHeight != this.props.taskArrayElement.height && e.clientHeight > 0)
-      this.props.setHeight(e.clientHeight + 22);
+    if (this.notesTextArea.current) {
+      this.notesTextArea.current.style.height = 0;
+      this.notesTextArea.current.style.height = this.notesTextArea.current.scrollHeight + "px";
+      notesHeight = this.notesTextArea.current.clientHeight;
+    }
+    if (e.clientHeight + notesHeight != this.props.taskArrayElement.height && e.clientHeight > 0) {
+      this.props.setHeight(e.clientHeight + notesHeight + 22);
+    }
   }
   tickAnimation() {
     let animationDivs = (
@@ -186,7 +220,7 @@ export class TaskDiv extends React.Component {
             rows="1"
             type="text"
             ref={this.input}
-            name=""
+            name="taskTitle"
             value={this.props.taskArrayElement.value}
             readOnly={this.props.checkedList}
             onChange={e => {
@@ -217,7 +251,7 @@ export class TaskDiv extends React.Component {
             }}
             style={{
               textDecoration: this.props.taskArrayElement.checked == true ? "line-through" : "none",
-              height: this.props ? this.props.taskArrayElement.height - 22 : "",
+              // height: this.props ? this.props.taskArrayElement.height - 22 : "",
               transform:
                 this.props.taskArrayElement.subset != -1
                   ? !this.props.checkedList
@@ -228,8 +262,32 @@ export class TaskDiv extends React.Component {
                 this.props.taskArrayElement.subset != -1 ? (!this.props.checkedList ? "12.7rem" : "15rem") : "15rem",
               zIndex: this.props.taskArrayElement.focus ? 0 : -2,
             }}></textarea>
+          {this.props.taskArrayElement.notes == "" ? (
+            ""
+          ) : (
+            <textarea
+              name="taskNotes"
+              className="notesTaskDiv"
+              cols="30"
+              rows="10"
+              ref={this.notesTextArea}
+              value={this.props.taskArrayElement.notes}
+              readOnly={true}
+              style={{
+                transform:
+                  this.props.taskArrayElement.subset != -1
+                    ? !this.props.checkedList
+                      ? "translate(47px,1px)"
+                      : "translate(10px,1px)"
+                    : "translate(10px,1px)",
+                width:
+                  this.props.taskArrayElement.subset != -1 ? (!this.props.checkedList ? "9.7rem" : "12rem") : "12rem",
+              }}></textarea>
+          )}
         </div>
-        <div className="taskDivEditIconContainer " onClick={!this.props.checkedList ? this.props.clickedEdit:this.props.clickedDelete}>
+        <div
+          className="taskDivEditIconContainer "
+          onClick={!this.props.checkedList ? this.props.clickedEdit : this.props.clickedDelete}>
           {!this.props.checkedList ? (
             <img src="../../images/edit.svg" className="taskDivEditIcon " alt="edit icon" />
           ) : (

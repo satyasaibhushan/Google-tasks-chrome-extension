@@ -79,6 +79,14 @@
   font-weight: 300;
   cursor: default;
 }
+.notesTaskDiv{
+  border: none;
+  outline: none;
+  resize: none;
+  min-height: 16px;
+  transform: translate(10px,1px);
+  max-height: 30px;
+}
 
 .textAreaTaskDiv:focus {
   background-color: rgba(212, 211, 211, 0.034);
