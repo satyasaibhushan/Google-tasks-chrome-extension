@@ -31,13 +31,13 @@ export class TaskDiv extends React.Component {
     }
     if (
       (this.input.current.clientHeight + notesDivHeight + 22 != this.props.taskArrayElement.height ||
-      prevHeight != this.input.current.style.height) &&(this.input.current.clientHeight!=0&&prevHeight!=0+'px')
+      prevHeight != this.input.current.style.height) &&(this.input.current.clientHeight!=0&&prevHeight!=0+'px') && (!this.props.taskArrayElement.dragging)
     ) {
       this.setHeight(this.input.current);
       // this.setState({ divHeight: this.input.current.clientHeight + notesDivHeight + 22 });
       // this.wholeDiv.current.style.height = this.input.current.clientHeight + notesDivHeight + 22
       this.props.setHeight(this.input.current.clientHeight + notesDivHeight + 22)
-      this.input.current.blur()
+      // this.input.current.blur()
       this.forceUpdate();
       setTimeout(() => {
         this.input.current.focus()
@@ -167,7 +167,8 @@ export class TaskDiv extends React.Component {
     divHeight = e.clientHeight + notesDivHeight + 22;
     notesHeight = notesDivHeight;
     textHeight = this.input.current.clientHeight;
-    
+    if(this.props.taskArrayElement.focus){
+    this.input.current.focus()}
     if(isException){
     this.wholeDiv.current.style.height = e.clientHeight + notesDivHeight + 22 + "px";
   }
