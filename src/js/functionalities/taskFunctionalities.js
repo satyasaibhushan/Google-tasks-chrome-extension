@@ -17,7 +17,7 @@ export default {
     setTaskList(taskDivs);
   },
 
-  checkKeyPress(taskDivs, setTaskList, taskListId, e, i, j) {
+  checkKeyPress(taskDivs, setTaskList, taskListId, e, i, j, setSlidingMenu) {
     if (e.keyCode == 38 && e.getModifierState("Alt")) moveTaskUp(taskDivs, setTaskList, taskListId, i - 1, j);
     else if (e.keyCode == 40 && e.getModifierState("Alt")) moveTaskDown(taskDivs, setTaskList, taskListId, i - 1, j);
     else if (e.metaKey && e.keyCode == 221) {
@@ -30,6 +30,8 @@ export default {
       e.preventDefault();
       if (e.metaKey) {
         this.addTask(taskDivs, setTaskList, taskListId, i, j, "", true);
+      } else if (e.getModifierState("Shift")) {
+        setSlidingMenu(true, i, j);
       } else if (e.target.selectionEnd == 0 && e.target.value != "") {
         this.addTask(taskDivs, setTaskList, taskListId, i, j, e.target.value, false, true);
       } else this.addTask(taskDivs, setTaskList, taskListId, i, j);
@@ -109,7 +111,7 @@ export default {
           id: "",
           subset: -1,
           children: [],
-          notes:''
+          notes: "",
         };
         if (j != -1) {
           (taskDiv.subset = i - 1), delete taskDiv.children, (taskDiv.parentId = i - 1);
@@ -221,9 +223,9 @@ export default {
         taskDivs[i].children.splice(j, 1);
       }
     }
-    if(KeyName == "edited"){
-      if(j==-1) delete taskDivs[i].edited
-      else delete taskDivs[i].children[j].edited
+    if (KeyName == "edited") {
+      if (j == -1) delete taskDivs[i].edited;
+      else delete taskDivs[i].children[j].edited;
     }
 
     setTaskList(taskDivs);

@@ -26,11 +26,12 @@
     opacity: 1;
   }
 }
-.slidingMenuTopSection,
+
 .slidingMenuSubTasksSectoin {
-  margin-top: 10px;
+  margin-top: 13px;
 }
 .slidingMenuTopSection {
+  margin-top: 10px;
   display: flex;
 }
 .closeArrowContainer,
@@ -134,7 +135,7 @@
   content: "";
   display: block;
   position: relative;
-  width: 99%;
+  width: 102%;
   height: 2px;
   background: rgb(66, 133, 244);
   transition: transform 250ms ease-in-out;

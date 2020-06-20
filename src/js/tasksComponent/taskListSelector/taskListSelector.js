@@ -19,7 +19,10 @@ export class TaskListSelector extends React.Component {
         type: "toggles",
         options: ["Collapse subtasks", "Show completed tasks tab"],
         inactive: [],
-        selected: [getCookie("defaultShowSubtasks") === "true", getCookie("defaultShowCompletedTab") === "true" ||!getCookie("defaultShowCompletedTab")],
+        selected: [
+          getCookie("defaultShowSubtasks") === "true",
+          getCookie("defaultShowCompletedTab") === "true" || !getCookie("defaultShowCompletedTab"),
+        ],
       },
       {
         title: "",
@@ -45,7 +48,18 @@ export class TaskListSelector extends React.Component {
     ];
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState != this.state) {
+      if (prevState.isOptionsOpen != this.state.isOptionsOpen)
+        this.state.isOptionsOpen
+          ? document.addEventListener("keyup", this.closeOptions.bind(this))
+          : document.removeEventListener("keyup", this.closeOptions.bind(this));
+      else {
+        this.state.modal.isOpened
+          ? document.addEventListener("keyup", this.closeModal.bind(this))
+          : document.removeEventListener("keyup", this.closeModal.bind(this));
+      }
+    }
     let noOfTasks, noOfCheckedTasks;
     if (this.props.selectedList != -1) {
       noOfTasks = this.props.taskLists[this.props.selectedList].taskDivs.length;
@@ -79,6 +93,14 @@ export class TaskListSelector extends React.Component {
         if (inactiveArray.indexOf(3) != -1) inactiveArray.splice(inactiveArray.indexOf(3), 1);
       }
     }
+  }
+  closeOptions(e) {
+    if (e.keyCode == 27) this.setState({ isOptionsOpen: false });
+  }
+  closeModal() {
+    let modal = this.state.modal;
+    modal.isOpened = false;
+    this.setState({ modal });
   }
 
   render() {
@@ -161,10 +183,10 @@ export class TaskListSelector extends React.Component {
             } else if (j == 1) {
               if (this.displayOptionNames[i].selected[j]) {
                 this.displayOptionNames[i].selected[j] = false;
-                this.props.setCompletedTabVisibility(false)
+                this.props.setCompletedTabVisibility(false);
               } else {
                 this.displayOptionNames[i].selected[j] = true;
-                this.props.setCompletedTabVisibility(true)
+                this.props.setCompletedTabVisibility(true);
               }
               setCookie("defaultShowCompletedTab", this.displayOptionNames[i].selected[j], 365);
               this.forceUpdate();

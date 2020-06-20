@@ -9,6 +9,7 @@ export default function SlidingMenu(props) {
   const [notesTextAreaFocus, setNotesTextAreaFocus] = useState(false);
   const [titleInputValue, setTitle] = useState();
   const [notesInputValue, setNotes] = useState();
+  
   const [taskListNumber, setTaskListNumber] = useState(props.selectedList);
   const titleTextArea = useRef(null)
   const notesTextArea = useRef(null)
@@ -24,7 +25,8 @@ export default function SlidingMenu(props) {
   useEffect(() => {
     if (taskDiv) {
       setTitle(taskDiv.value);
-      setNotes(taskDiv.notes)
+      setNotes(taskDiv.notes);
+      titleTextArea.current.focus()
     }
   }, [taskDiv]);
   useEffect(()=>{
@@ -125,14 +127,11 @@ export default function SlidingMenu(props) {
         </div>
       </section>
       {props.taskNumber[1] == -1 ? 
-      <section className="slidingMenuSubTasksSectoin">
+      <section className="slidingMenuSubTasksSectoin" style={{display:'none'}}>
         <div className="slidingMenuSubtasksIconContainer">
           <span className="subtasksIcon"></span>
         </div>
         <div className = 'subtasksContainer'>
-        {taskDiv.children.map((ele,j)=>{
-           return props.constructTaskDiv(ele,props.taskNumber[0],j)
-        })}
          {/* {props.constructTaskDiv()} */}
         <span className="addSubtasksButton">Add subtasks</span>
         </div>

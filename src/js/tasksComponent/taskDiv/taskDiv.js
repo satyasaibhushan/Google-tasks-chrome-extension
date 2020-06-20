@@ -38,6 +38,7 @@ export class TaskDiv extends React.Component {
     }
     if (this.props.taskArrayElement.edited) {
       this.props.changeElementKey("edited");
+      this.forceUpdate()
     }
     if (
       this.input.current.style.height != this.input.current.scrollHeight + "px" ||

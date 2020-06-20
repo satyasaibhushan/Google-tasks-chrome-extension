@@ -17,6 +17,7 @@ export class TaskComponent extends React.Component {
       taskListIndex: -1,
       count: 0,
       message: { showMessage: false, message: "hi there How are you", msgChange: false },
+      isSlidingMenuOpen :false,
       showCompletedTab: getCookie("defaultShowCompletedTab") === "true" || !getCookie("defaultShowCompletedTab"),
     };
   }
@@ -106,6 +107,7 @@ export class TaskComponent extends React.Component {
               listNames={this.state.taskList.map(element => element.name)}
               setTaskList={taskDivs => setTaskDivs(taskDivs)}
               setCheckedDivs={checkedDivs => setTaskDivs(checkedDivs, true)}
+              isSlidingMenuOpen={this.state.isSlidingMenuOpen}
               setMessage={setMessage}
             />
           ) : (

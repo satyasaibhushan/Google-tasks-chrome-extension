@@ -7,8 +7,16 @@ import drag from "../tasksComponent/dragSorting/dragSorting";
 import DragSorting from "../tasksComponent/dragSorting/dragSorting";
 
 export default function TotalTaskDivs(props) {
-  const [isEditMenuOpened, setEditMenu] = useState(false);
+  const [isEditMenuOpened, setEditMenu] = useState();
   const editingTask = useRef([-1, -1]);
+
+  useEffect(() => {
+    if (isEditMenuOpened === true) {
+      document.addEventListener("keyup", closeEditMenu);
+    } else if (isEditMenuOpened === false) {
+      document.removeEventListener("keyup", closeEditMenu);
+    }
+  }, [isEditMenuOpened]);
 
   let constructTaskDiv = (taskDiv, i, j) => {
     return (
@@ -29,7 +37,9 @@ export default function TotalTaskDivs(props) {
           }
           taskDiv.focus = isFocus;
         }}
-        manageTasks={e => updateTasks.checkKeyPress(props.taskDivs, props.setTaskList, props.taskListId, e, i + 1, j)}
+        manageTasks={e =>
+          updateTasks.checkKeyPress(props.taskDivs, props.setTaskList, props.taskListId, e, i + 1, j, setSlidingMenu)
+        }
         clickedTick={() => updateTasks.checkedTask(props.taskDivs, props.setTaskList, props.setMessage, i, j)}
         setHeight={value => updateTasks.setHeight(props.taskDivs, props.setTaskList, value, i, j)}
         changeElementKey={value =>
@@ -69,6 +79,13 @@ export default function TotalTaskDivs(props) {
         checkedList={false}></TaskDiv>
     );
   };
+  let closeEditMenu = e => {
+    if (e.keyCode == 27 && isEditMenuOpened) setEditMenu(false);
+  };
+  let setSlidingMenu = (isOpen, i, j) => {
+    isOpen ? (editingTask.current = [i, j]) : "";
+    setEditMenu(isOpen);
+  };
 
   let submitted = (title, notes, list, subtasks) => {
     let taskDivs = props.taskDivs;
@@ -88,11 +105,10 @@ export default function TotalTaskDivs(props) {
             title: title,
             notes: notes,
           });
-          console.log(title, taskDiv.value, notes ,taskDiv.notes)
           taskDiv.value = title;
           taskDiv.notes = notes;
           taskDiv.edited = true;
-          
+
           props.setTaskList(taskDivs);
         }
       })
@@ -142,7 +158,10 @@ export default function TotalTaskDivs(props) {
                       notes: ele.notes,
                       parent: res.id,
                     })
-                    .then(result => (ele.id = result.id));
+                    .then(result => {
+                      ele.id = result.id;
+                      ele.parentId = res.id;
+                    });
                 });
               });
 
