@@ -6,9 +6,6 @@ export class TaskDiv extends React.Component {
     super();
     this.state = {
       icon: props.checkedList ? "tick" : "circle",
-      divHeight: 0,
-      notesHeight: 0,
-      textHeight: 0,
     };
     this.input = React.createRef();
     this.wholeDiv = React.createRef();
@@ -16,11 +13,6 @@ export class TaskDiv extends React.Component {
   }
   componentDidUpdate(prevProps, prevState, snapshot) {
     let notesDivHeight = 0;
-    // setTimeout(() => {
-    //   if (this.state.divHeight + "px" != this.wholeDiv.current.style.height) {
-    //     this.wholeDiv.current.style.height = this.state.divHeight + "px";
-    //   }    }, 50);
-    // this.wholeDiv.current.style.height = this.state.divHeight + "px";
     let prevHeight = this.input.current.style.height;
     this.input.current.style.height = 0;
     this.input.current.style.height = this.input.current.scrollHeight + "px";
@@ -31,17 +23,17 @@ export class TaskDiv extends React.Component {
     }
     if (
       (this.input.current.clientHeight + notesDivHeight + 22 != this.props.taskArrayElement.height ||
-      prevHeight != this.input.current.style.height) &&(this.input.current.clientHeight!=0&&prevHeight!=0+'px') && (!this.props.taskArrayElement.dragging)
+        prevHeight != this.input.current.style.height) &&
+      this.input.current.clientHeight != 0 &&
+      prevHeight != 0 + "px" &&
+      !this.props.taskArrayElement.dragging
     ) {
       this.setHeight(this.input.current);
-      // this.setState({ divHeight: this.input.current.clientHeight + notesDivHeight + 22 });
-      // this.wholeDiv.current.style.height = this.input.current.clientHeight + notesDivHeight + 22
-      this.props.setHeight(this.input.current.clientHeight + notesDivHeight + 22)
-      // this.input.current.blur()
+      this.props.setHeight(this.input.current.clientHeight + notesDivHeight + 22);
       this.forceUpdate();
       setTimeout(() => {
-        this.input.current.focus()
-        this.setHeight(this.input.current,true)
+        this.input.current.focus();
+        this.setHeight(this.input.current, true);
       }, 0);
     }
     if (this.props.taskArrayElement.edited) {
@@ -154,9 +146,8 @@ export class TaskDiv extends React.Component {
       return this.setState({ icon: "circle" });
     }
   }
-  setHeight(e,isException  =false) {
+  setHeight(e, isException = false) {
     let notesDivHeight = 0;
-    let { divHeight, notesHeight, textHeight } = this.state;
     e.style.height = "auto";
     e.style.height = e.scrollHeight + "px";
     if (this.notesTextArea.current) {
@@ -164,17 +155,13 @@ export class TaskDiv extends React.Component {
       this.notesTextArea.current.style.height = this.notesTextArea.current.scrollHeight + "px";
       notesDivHeight = this.notesTextArea.current.clientHeight;
     }
-    divHeight = e.clientHeight + notesDivHeight + 22;
-    notesHeight = notesDivHeight;
-    textHeight = this.input.current.clientHeight;
-    if(this.props.taskArrayElement.focus){
-    this.input.current.focus()}
-    if(isException){
-    this.wholeDiv.current.style.height = e.clientHeight + notesDivHeight + 22 + "px";
-  }
-    // this.setState({ divHeight, notesHeight, textHeight });
-    if(e.clientHeight>0)
-    this.props.setHeight(e.clientHeight + notesHeight + 22);
+    if (this.props.taskArrayElement.focus) {
+      this.input.current.focus();
+    }
+    if (isException) {
+      this.wholeDiv.current.style.height = e.clientHeight + notesDivHeight + 22 + "px";
+    }
+    if (e.clientHeight > 0) this.props.setHeight(e.clientHeight + notesDivHeight + 22);
   }
   tickAnimation() {
     let animationDivs = (
@@ -197,7 +184,7 @@ export class TaskDiv extends React.Component {
         className={this.props.taskArrayElement.newlyAdded == true ? "taskDiv newElement" : "taskDiv"}
         style={{
           backgroundColor: this.props.taskArrayElement.focus == true ? " rgba(212, 211, 211, 0.1)" : "transparent",
-          height: this.props.taskArrayElement.height ,
+          height: this.props.taskArrayElement.height,
           opacity: this.props.taskArrayElement.height == 0 ? 0 : "",
           zIndex: 1,
         }}

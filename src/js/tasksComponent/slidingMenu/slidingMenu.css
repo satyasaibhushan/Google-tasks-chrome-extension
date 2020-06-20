@@ -8,27 +8,29 @@
   z-index: 99;
   font-family: Google Sans, Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
 }
-.slidingMenuContainer.open{
-    animation: slideIn 0.3s ease-in-out 1;
+.slidingMenuContainer.open {
+  animation: slideIn 0.3s ease-in-out 1;
 }
 @keyframes slideIn {
-    0% {
-      width: 40%;
-      opacity: 0.5;
-      left: 100%;
-    }
-    50% {
-      opacity: 0.9;
-    }
-    100% {
-        width: 100%;
-      left: 0;
-      opacity: 1;
-    }
+  0% {
+    width: 40%;
+    opacity: 0.5;
+    left: 100%;
   }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    width: 100%;
+    left: 0;
+    opacity: 1;
+  }
+}
 .slidingMenuTopSection,
 .slidingMenuSubTasksSectoin {
   margin-top: 10px;
+}
+.slidingMenuTopSection {
   display: flex;
 }
 .closeArrowContainer,
@@ -128,14 +130,14 @@
   overflow-y: scroll;
   border-radius: 3px;
 }
-.textAreaBorderBottom{
-    content: "";
-    display: block;
-    position: relative;
-    width: 99%;
-    height: 2px;
-    background: rgb(66, 133, 244);
-    transition: transform 250ms ease-in-out;
+.textAreaBorderBottom {
+  content: "";
+  display: block;
+  position: relative;
+  width: 99%;
+  height: 2px;
+  background: rgb(66, 133, 244);
+  transition: transform 250ms ease-in-out;
 }
 
 .slidingMenuListSection {
@@ -193,12 +195,24 @@
   border-left: 2px solid; /* border: 1px solid; */
   top: -11px;
 }
+.subtasksContainer {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  bottom: 0;
+  top: -3rem;
+}
 .addSubtasksButton {
   color: gray;
   display: flex;
   align-items: center;
+  justify-content: center;
   user-select: none;
   cursor: pointer;
+  width: 8rem;
+  height: 3rem;
+  position: relative;
+  left: 14%;
 }
 .addSubtasksButton:hover {
   background-color: rgba(187, 204, 231, 0.11);

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./slidingMenu.css";
 import Dropdown from "../taskListSelector/dropdown";
 import apiManagement from "../../functionalities/apiManagement";
+import { TaskDiv } from "../taskDiv/taskDiv";
 
 export default function SlidingMenu(props) {
   const [titleTextAreaFocus, setTitleTextAreaFocus] = useState(false);
@@ -123,12 +124,19 @@ export default function SlidingMenu(props) {
           />
         </div>
       </section>
+      {props.taskNumber[1] == -1 ? 
       <section className="slidingMenuSubTasksSectoin">
         <div className="slidingMenuSubtasksIconContainer">
           <span className="subtasksIcon"></span>
         </div>
+        <div className = 'subtasksContainer'>
+        {taskDiv.children.map((ele,j)=>{
+           return props.constructTaskDiv(ele,props.taskNumber[0],j)
+        })}
+         {/* {props.constructTaskDiv()} */}
         <span className="addSubtasksButton">Add subtasks</span>
-      </section>
+        </div>
+      </section> :''}
     </div>
   );
 }

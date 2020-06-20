@@ -167,6 +167,7 @@ export default function TotalTaskDivs(props) {
           isOpened={isEditMenuOpened}
           listNames={props.listNames}
           selectedList={props.selectedList}
+          constructTaskDiv={constructTaskDiv}
           clickedClose={_ => setEditMenu(false)}
           taskNumber={editingTask.current}
           taskDivs={props.taskDivs}
