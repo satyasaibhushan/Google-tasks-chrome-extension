@@ -14,7 +14,6 @@ export class TaskListSelector extends React.Component {
       isOptionsOpen: false,
       modal: { text: "", inputValue: "", isInput: false, isOpened: false, selectedOptionIndex: "-1,-1" },
       informative:{isOpened : false,i:-1,j:-1 },
-      isInformativeOpened : false,
     };
     this.displayOptionNames = [
       {
@@ -64,18 +63,37 @@ export class TaskListSelector extends React.Component {
         {
           title: "Application",
           column1: ["Exit edit menu", "Open shortcuts",],
-          column2: ["esc", "⌘/ctrl + /", ],
+          column2: ["esc / ⌘/ctrl+enter", "⌘/ctrl + /", ],
         },
       ],
     ];
   }
+  componentDidMount(){
+    document.addEventListener('keydown',e=>{
+      if(e.keyCode ==191 && e.metaKey){
+        let informative = this.state.informative
+        informative.isOpened = true
+        informative.i =2;
+        informative.j = 0;
+        this.setState({informative})
+      }
+    })
+  }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevState != this.state) {
+      
       if (prevState.isOptionsOpen != this.state.isOptionsOpen)
         this.state.isOptionsOpen
           ? document.addEventListener("keyup", this.closeOptions.bind(this))
           : document.removeEventListener("keyup", this.closeOptions.bind(this));
+      else if(this.state.informative.isOpened){
+        if (this.state.informative.isOpened === true) {
+          document.addEventListener("keyup", this.closeEditMenu.bind(this));
+        } else if (this.state.informative.isOpened === false) {
+          document.removeEventListener("keyup", this.closeEditMenu.bind(this));
+        }
+      }    
       else {
         this.state.modal.isOpened
           ? document.addEventListener("keyup", this.closeModal.bind(this))
@@ -124,6 +142,13 @@ export class TaskListSelector extends React.Component {
     modal.isOpened = false;
     this.setState({ modal });
   }
+   closeEditMenu(e) {
+    if (e.keyCode == 27 && this.state.informative.isOpened) {
+      let informative = this.state.informative;
+      informative.isOpened = false;
+      this.setState({informative})
+    };
+  };
 
   render() {
     return (

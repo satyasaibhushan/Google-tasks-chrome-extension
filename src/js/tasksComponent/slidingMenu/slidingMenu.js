@@ -41,11 +41,9 @@ export default function SlidingMenu(props) {
   }, [titleTextArea.current, notesTextArea.current]);
   if (props.isOpened) {
     tasksComponentContanier.scrollTo(0, 0);
-    tasksComponentContanier.onscroll = function () {
-      tasksComponentContanier.scrollTo(0, 0);
-    };
+    tasksComponentContanier.style.overflow = 'hidden'
   } else if (tasksComponentContanier) {
-    tasksComponentContanier.onscroll = function () {};
+    tasksComponentContanier.style.overflow = ''
   }
 
   return (
@@ -86,7 +84,6 @@ export default function SlidingMenu(props) {
               </table>
             </div>
           ))}
-          {console.log(props.data, props.title)}
         </div>
       ) : (
         <div>

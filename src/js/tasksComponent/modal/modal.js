@@ -54,13 +54,11 @@ export default function Modal(props) {
     textArea.current.style.height = textArea.current.scrollHeight + "px";
   };
   if (props.isOpened) {
-    tasksComponentContanier.scrollTo(0, 0);
-    tasksComponentContanier.onscroll = function () {
-      tasksComponentContanier.scrollTo(0, 0);
-    };
+    tasksComponentContanier.style.overflow = 'hidden'
   } else {
-    if(tasksComponentContanier)
-    tasksComponentContanier.onscroll = function () {};
+    if(tasksComponentContanier){
+      tasksComponentContanier.style.overflow = ''
+    }
   }
 
   return (

@@ -12,9 +12,9 @@ export default function TotalTaskDivs(props) {
 
   useEffect(() => {
     if (isEditMenuOpened === true) {
-      document.addEventListener("keyup", closeEditMenu);
+      document.addEventListener("keydown", closeEditMenu);
     } else if (isEditMenuOpened === false) {
-      document.removeEventListener("keyup", closeEditMenu);
+      document.removeEventListener("keydown", closeEditMenu);
     }
   }, [isEditMenuOpened]);
 
@@ -81,9 +81,12 @@ export default function TotalTaskDivs(props) {
   };
   let closeEditMenu = e => {
     if (e.keyCode == 27 && isEditMenuOpened) setEditMenu(false);
+    else if(e.keyCode == 13 && e.metaKey){
+      setEditMenu(false);
+    }
   };
   let setSlidingMenu = (isOpen, i, j) => {
-    isOpen ? (editingTask.current = [i, j]) : "";
+    isOpen ? (editingTask.current = [i-1, j]) : "";
     setEditMenu(isOpen);
   };
 
