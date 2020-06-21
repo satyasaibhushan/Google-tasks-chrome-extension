@@ -9,19 +9,19 @@
   user-select: none;
 }
 .optionsPanel.open {
-  animation: slideOut 0.2s ease-in-out 1;
+  animation: slideOut 0.3s ease-in-out 1;
 }
 @keyframes slideOut {
   0% {
     width: 5rem;
     opacity: 0;
-    height: 10rem;
+    max-height: 10rem;
   }
   50% {
     opacity: 0.7;
   }
   75% {
-    height: 22rem;
+    max-height: 22rem;
   }
   100% {
     width: 15rem;

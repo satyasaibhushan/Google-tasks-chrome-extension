@@ -4,6 +4,7 @@ import Modal from "../modal/modal";
 import OptionsPanel from "../optionsPanel/optionsPanel";
 import updateTaskLists from "../../functionalities/taskListFunctionalities";
 import Dropdown from "./dropdown";
+import SlidingMenu from "../slidingMenu/slidingMenu";
 import { getCookie, setCookie } from "../../functionalities/cookies";
 
 export class TaskListSelector extends React.Component {
@@ -12,6 +13,8 @@ export class TaskListSelector extends React.Component {
     this.state = {
       isOptionsOpen: false,
       modal: { text: "", inputValue: "", isInput: false, isOpened: false, selectedOptionIndex: "-1,-1" },
+      informative:{isOpened : false,i:-1,j:-1 },
+      isInformativeOpened : false,
     };
     this.displayOptionNames = [
       {
@@ -32,9 +35,9 @@ export class TaskListSelector extends React.Component {
       },
       {
         title: "",
-        type: "shortcuts",
-        options: ["KeyBoard shortcuts", "Copy remainders to tasks"],
-        inactive: [0, 1],
+        type: "informatives",
+        options: ["KeyBoard shortcuts"],
+        inactive: [],
       },
     ];
     this.modalTemplates = [];
@@ -44,6 +47,25 @@ export class TaskListSelector extends React.Component {
         updateTaskLists.updateTaskList,
         updateTaskLists.deleteTaskList,
         updateTaskLists.deleteCompletedTasks,
+      ],
+    ];
+    this.informativeTemplates = [
+      [
+        {
+          title: "Inline Task actions",
+          column1: ["move task up/ down", "Indent/Unindent", "Enter details view"],
+          column2: ["⌥/Alt + Up/Down", "⌘/ctrl + ] / [", "shift + enter"],
+        },
+        {
+          title: "Inline edit actions",
+          column1: ["Add task(when on a task)", "Add task(when on a subtask)", "Add subtask(when on a subtask)", "Add subtask(when on a subtask)"],
+          column2: ["enter", "⌘/ctrl + enter", "enter", "⌘/ctrl + enter"],
+        },
+        {
+          title: "Application",
+          column1: ["Exit edit menu", "Open shortcuts",],
+          column2: ["esc", "⌘/ctrl + /", ],
+        },
       ],
     ];
   }
@@ -192,7 +214,27 @@ export class TaskListSelector extends React.Component {
               this.forceUpdate();
             }
           }}
+          clickedInformative={(i, j) => {
+            let informative = this.state.informative
+            informative.isOpened = true
+            informative.i = i
+            informative.j = j
+            this.setState({informative: informative,isOptionsOpen:false})
+          }}
         />
+        {this.state.informative.i!=-1?
+        <SlidingMenu
+          isOpened={this.state.informative.isOpened}
+          isInformative ={true}
+          clickedClose={_ => {
+            let informative = this.state.informative
+            informative.isOpened = false
+            this.setState({informative})
+          }}
+          data={this.informativeTemplates[this.state.informative.j]}
+          title={this.state.informative.i!=-1?this.displayOptionNames[this.state.informative.i].options[this.state.informative.j]:''}
+          submitted={_=>_}
+        />:''}
       </div>
     );
   }

@@ -219,3 +219,35 @@
   background-color: rgba(187, 204, 231, 0.11);
   color: rgb(41, 122, 228);
 }
+
+.informativeTotal {
+  font-family: sans-serif;
+  margin: 10px 10px 10px 20px;
+}
+.informativeTitle {
+  font-size: large;
+  margin: 8px;
+  color: #000000e6;
+}
+.informativeTable{
+  width: 100%;
+}
+.informativeTableTitle {
+  font-size: medium;
+  font-weight: 600;
+  opacity: 0.7;
+  margin: 3px 1px;
+}
+.informativeRow{
+   height: 30px;
+}
+.informativeTableCol1 {
+  width: 66%;
+  font-size: 15px;
+}
+.informativeTableCol2 {
+  font-size: 15px;
+}
+.informativeTableSeperator{
+  border-bottom: 2px solid transparent;
+}
