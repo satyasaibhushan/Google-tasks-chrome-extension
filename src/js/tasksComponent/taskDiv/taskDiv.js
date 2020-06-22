@@ -276,15 +276,16 @@ export class TaskDiv extends React.Component {
               // height: this.props ? this.props.taskArrayElement.height - 22 : "",
               transform:
                 this.props.taskArrayElement.subset != -1 && !this.props.checkedList
-                  ? this.notesTextArea.current
+                  ? this.notesTextArea.current && !this.props.taskArrayElement.dragging
                     ? "translate(2.3rem,-70%)"
                     : "translate(2.3rem,-35%)"
-                  : this.notesTextArea.current
+                  : this.notesTextArea.current && !this.props.taskArrayElement.dragging
                   ? "translate(0rem,-70%)"
                   : "translate(0rem,-35%)",
               width:
                 this.props.taskArrayElement.subset != -1 ? (!this.props.checkedList ? "12.7rem" : "15rem") : "15rem",
               zIndex: this.props.taskArrayElement.focus ? 0 : -2,
+              top: '50%',
             }}></textarea>
 
           {this.props.taskArrayElement.notes == "" || !this.props.taskArrayElement.notes ? (

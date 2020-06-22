@@ -6,6 +6,33 @@ import updateTasks from "./taskFunctionalities";
 import drag from "../tasksComponent/dragSorting/dragSorting";
 import DragSorting from "../tasksComponent/dragSorting/dragSorting";
 
+let timer, updatingTaskData;
+let updateTaskApi = updatingTaskData => {
+  api.updateTask({
+    taskListId: updatingTaskData[0],
+    taskId: updatingTaskData[1],
+    title: updatingTaskData[2],
+    notes: updatingTaskData[3],
+  });
+};
+function updateTask(taskListId, taskId, title, notes) {
+  if (
+    updatingTaskData &&
+    (updatingTaskData[0] != taskListId || updatingTaskData[1] != taskId || updatingTaskData[3] != notes)
+  ) {
+    clearTimeout(timer);
+    timer = null;
+    updateTaskApi(updatingTaskData);
+  }
+  updatingTaskData = [taskListId, taskId, title, notes];
+  if (!timer)
+    timer = setTimeout(() => {
+      updateTaskApi(updatingTaskData);
+      timer = null;
+      updatingTaskData = null;
+    }, 3000);
+}
+
 export default function TotalTaskDivs(props) {
   const [isEditMenuOpened, setEditMenu] = useState();
   const editingTask = useRef([-1, -1]);
@@ -26,12 +53,7 @@ export default function TotalTaskDivs(props) {
         changeElement={(value, isFocus) => {
           if ((value || value === "") && !taskDiv.checked && taskDiv.id != "") {
             if (taskDiv.value != value) {
-              api.updateTask({
-                taskListId: props.taskListId,
-                taskId: taskDiv.id,
-                title: value,
-                notes: taskDiv.notes,
-              });
+              updateTask(props.taskListId, taskDiv.id, value, taskDiv.notes);
               taskDiv.value = value;
             }
           }
@@ -81,12 +103,12 @@ export default function TotalTaskDivs(props) {
   };
   let closeEditMenu = e => {
     if (e.keyCode == 27 && isEditMenuOpened) setEditMenu(false);
-    else if(e.keyCode == 13 && e.metaKey){
+    else if (e.keyCode == 13 && e.metaKey) {
       setEditMenu(false);
     }
   };
   let setSlidingMenu = (isOpen, i, j) => {
-    isOpen ? (editingTask.current = [i-1, j]) : "";
+    isOpen ? (editingTask.current = [i - 1, j]) : "";
     setEditMenu(isOpen);
   };
 

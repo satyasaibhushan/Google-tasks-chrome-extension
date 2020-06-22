@@ -33,6 +33,7 @@ export default function DragSorting(props) {
     ghostEle = document.createElement("div");
     let textArea = e.currentTarget.cloneNode(true);
     textArea = textArea.getElementsByTagName("textarea")[0];
+    textArea.style.transform="translate(0rem,-35%)"
     ghostEle.appendChild(textArea);
     ghostEle.classList.add("ghostEle");
     if (j == -1 && props.taskDivs[i].children.length > 0) {
