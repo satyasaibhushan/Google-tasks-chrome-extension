@@ -21,11 +21,12 @@ export default {
     let cookieTaskListIndex = getCookie("taskListIndex");
     if (cookieTaskListIndex == "" || !cookieTaskListIndex) cookieTaskListIndex = 0;
     if (taskComponent.props.gapiAvailable && taskComponent.state.count == 0) {
+      let taskList = [];
       api
         .listTaskLists()
         .then(x => {
           x.forEach((ele, i) => {
-            let taskList = taskComponent.state.taskList;
+            
             let taskListElement = {
               name: ele.title,
               taskDivs: [],
@@ -88,17 +89,18 @@ export default {
               .then(task => {
                 if (
                   taskComponent.state.taskList.length > 1 &&
-                  taskComponent.state.taskListIndex == -1 &&
                   i == cookieTaskListIndex
                 ) {
                   taskComponent.setState({ taskListIndex: i, count: 1 });
                 }
               });
             taskList.push(taskListElement);
-            taskComponent.setState({ taskList });
+            
           });
         })
-        .then(_ => {});
+        .then(_ => {
+          taskComponent.setState({ taskList });
+        });
       taskComponent.setState({ count: 1 });
     }
   },

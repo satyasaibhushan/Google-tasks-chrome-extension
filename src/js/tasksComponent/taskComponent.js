@@ -24,9 +24,10 @@ export class TaskComponent extends React.Component {
   }
   componentDidMount() {
     let taskListData = getLocalStorage("taskListsData")
-    console.log(taskListData,'');
+    let cookieTaskListIndex = getCookie("taskListIndex");
+    if (cookieTaskListIndex == "" || !cookieTaskListIndex) cookieTaskListIndex = 0;
     if (taskListData) {
-      this.setState({ taskList: taskListData, taskListIndex: 1 });
+      this.setState({ taskList: taskListData , taskListIndex:cookieTaskListIndex });
     }
   }
   componentDidUpdate() {
@@ -76,7 +77,7 @@ export class TaskComponent extends React.Component {
           }}
           taskLists={this.state.taskList}
           setTaskLists={Lists => {
-            setLocalStorage(taskList,"taskListsData")
+            setLocalStorage(Lists,"taskListsData")
             this.setState({ taskList: Lists });
           }}
           setTaskListIndex={index => this.setState({ taskListIndex: index })}
