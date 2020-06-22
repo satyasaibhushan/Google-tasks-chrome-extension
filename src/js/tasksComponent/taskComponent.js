@@ -7,7 +7,7 @@ import TotalTaskDivs from "../functionalities/taskDivConstruction";
 import manageApi from "../functionalities/apiManagement";
 import MessageBox from "./messageBox/messageBox";
 import { getCookie, setCookie } from "../functionalities/cookies";
-import { setLocalStorage,getLocalStorage} from "../functionalities/localStorage"
+import { setLocalStorage, getLocalStorage } from "../functionalities/localStorage";
 import "./taskComponent.css";
 
 export class TaskComponent extends React.Component {
@@ -23,26 +23,25 @@ export class TaskComponent extends React.Component {
     };
   }
   componentDidMount() {
-    let taskListData = getLocalStorage("taskListsData")
+    let taskListData = getLocalStorage("taskListsData");
     let cookieTaskListIndex = getCookie("taskListIndex");
     if (cookieTaskListIndex == "" || !cookieTaskListIndex) cookieTaskListIndex = 0;
     if (taskListData) {
-      this.setState({ taskList: taskListData , taskListIndex:cookieTaskListIndex });
+      this.setState({ taskList: taskListData, taskListIndex: cookieTaskListIndex });
     }
+    window.addEventListener("beforeunload", e => {
+      setLocalStorage(this.state.taskList, "taskListsData");
+    });
   }
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState, screenShot) {
     manageApi.showAll(this);
     if (this.state.taskListIndex != -1) {
-      let taskList = this.state.taskList[this.state.taskListIndex];
-      let taskDivs = taskList.taskDivs;
-      if (taskDivs.length > 0)
+      let taskList = this.state.taskList;
+      let taskDivs = [this.state.taskListIndex].taskDivs;
+      if (taskDivs && taskDivs.length > 0)
         taskDivs.forEach(element => {
           if (element.children.length == 0 && element.collapsed != 0) element.collapsed = 0;
         });
-      if (taskList != this.state.taskList[this.state.taskListIndex]) {
-        setLocalStorage(taskList,"taskListsData")
-        this.setState({ taskList });
-      }
     }
   }
 
@@ -55,7 +54,6 @@ export class TaskComponent extends React.Component {
       let taskList = this.state.taskList;
       if (isFromCheckedList) taskList[this.state.taskListIndex].checkedDivs = divs;
       else taskList[this.state.taskListIndex].taskDivs = divs;
-      setLocalStorage(taskList,"taskListsData")
       this.setState({ taskList });
     };
     let setMessage = message => {
@@ -76,10 +74,7 @@ export class TaskComponent extends React.Component {
             if (index != -1) this.setState({ taskListIndex: index });
           }}
           taskLists={this.state.taskList}
-          setTaskLists={Lists => {
-            setLocalStorage(Lists,"taskListsData")
-            this.setState({ taskList: Lists });
-          }}
+          setTaskLists={Lists => this.setState({ taskList: Lists })}
           setTaskListIndex={index => this.setState({ taskListIndex: index })}
           setCompletedTabVisibility={boolean => this.setState({ showCompletedTab: boolean })}
           clickedOptions={_ => {}}

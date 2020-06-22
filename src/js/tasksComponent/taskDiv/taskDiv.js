@@ -1,5 +1,6 @@
 import React from "react";
 import "./taskDiv.css";
+let inputCurrentChanged = true;
 
 export class TaskDiv extends React.Component {
   constructor(props) {
@@ -17,22 +18,24 @@ export class TaskDiv extends React.Component {
     this.input.current.style.height = 0;
     this.input.current.style.height = this.input.current.scrollHeight + "px";
     if (this.notesTextArea.current) {
+      this.input.current.style.transform = "translate(0rem, -70%)"
       this.notesTextArea.current.style.height = 0;
       this.notesTextArea.current.style.height = this.notesTextArea.current.scrollHeight + "px";
       notesDivHeight = this.notesTextArea.current.clientHeight;
     }
+    if(prevProps.taskArrayElement != this.props.taskArrayElement && inputCurrentChanged ){
+      inputCurrentChanged = false
+      this.wholeDiv.current.style.height = this.props.taskArrayElement.height;
+      notesDivHeight =1;//yeah work-around
+    }
     if (
-      (this.input.current.clientHeight + notesDivHeight + 22 != this.props.taskArrayElement.height ||
-        prevHeight != this.input.current.style.height) &&
-      this.input.current.clientHeight != 0 &&
-      prevHeight != 0 + "px" &&
-      !this.props.taskArrayElement.dragging
+      (this.input.current.clientHeight + notesDivHeight + 22 != this.props.taskArrayElement.height ) &&
+      !this.props.taskArrayElement.dragging 
     ) {
       this.setHeight(this.input.current);
       this.props.setHeight(this.input.current.clientHeight + notesDivHeight + 22);
       this.forceUpdate();
       setTimeout(() => {
-        this.input.current.focus();
         this.setHeight(this.input.current, true);
       }, 0);
     }
@@ -95,8 +98,10 @@ export class TaskDiv extends React.Component {
     }
     if (this.props.taskArrayElement.checked == true && this.props.checkedList != true)
       this.removeAfterAnimation(this.wholeDiv.current, "checked", 0.35, 0.2);
-    else if (this.props.taskArrayElement.remove == true)
+    else if (this.props.taskArrayElement.remove == true){
       this.removeAfterAnimation(this.wholeDiv.current, "remove", 0.3, 0.2);
+      inputCurrentChanged = true
+    }
     if (this.props.taskArrayElement.unchecked == true && this.props.checkedList == true)
       this.removeAfterAnimation(this.wholeDiv.current, "unchecked", 0.25, 0.1);
   }
