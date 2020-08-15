@@ -232,7 +232,7 @@ export class TaskDiv extends React.Component {
               height: this.state.icon == "circle" ? "1.2rem" : 0,
             }}></div>
           <img
-            src="../../images/tick.svg"
+            src="images/tick.svg"
             alt="tick sign"
             className="taskDivTick"
             style={{
@@ -322,9 +322,9 @@ export class TaskDiv extends React.Component {
           className="taskDivEditIconContainer "
           onClick={!this.props.checkedList ? this.props.clickedEdit : this.props.clickedDelete}>
           {!this.props.checkedList ? (
-            <img src="../../images/edit.svg" className="taskDivEditIcon " alt="edit icon" />
+            <img src="./images/edit.svg" className="taskDivEditIcon " alt="edit icon" />
           ) : (
-            <img src="../../images/delete.svg" className="checkedDivDeleteIcon " alt="delete icon" />
+            <img src="./images/delete.svg" className="checkedDivDeleteIcon " alt="delete icon" />
           )}
         </div>
         <span

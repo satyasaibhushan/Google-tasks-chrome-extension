@@ -60,7 +60,7 @@ export default function SlidingMenu(props) {
           <span className="closeArrow"></span>
         </div>
         <div className="slidingMenuDeleteIconContainer" onClick={_ => props.clickedDelete()}>
-          <img src="../../images/delete.svg" className="slidingMenuDeleteIcon " alt="delete icon" />
+          <img src="images/delete.svg" className="slidingMenuDeleteIcon " alt="delete icon" />
         </div>
       </section>
 

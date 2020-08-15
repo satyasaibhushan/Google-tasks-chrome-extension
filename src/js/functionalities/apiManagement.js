@@ -8,7 +8,6 @@ export default {
       value: value,
       focus: false,
       newlyAdded: false,
-      height: 0,
       subset: subset,
       id: id,
       notes: notes,

@@ -37,7 +37,7 @@ export default function OptionsPanel(props) {
                   element.inactive.indexOf(j) == -1 &&
                   element.selected[j] ? (
                     <span className="toggleOptionsTick" key={(i + 1) * 100 + j}>
-                      <img src="../../images/tick.svg" className="toggleTickIcon" style={{}} alt="" />
+                      <img src="images/tick.svg" className="toggleTickIcon" style={{}} alt="" />
                     </span>
                   ) : (
                     ""

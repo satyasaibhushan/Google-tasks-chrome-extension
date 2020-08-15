@@ -55,7 +55,7 @@ class Dropdown extends React.Component {
                 }}>
                 {list}
                 {i == this.props.selectedListIndex ? (
-                  <img src="../../images/tick.svg" className="selectedListIcon" alt="" />
+                  <img src="images/tick.svg" className="selectedListIcon" alt="" />
                 ) : (
                   ""
                 )}
