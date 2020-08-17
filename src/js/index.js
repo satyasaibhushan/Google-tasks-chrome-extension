@@ -19,6 +19,7 @@ class App extends React.Component {
         >
           <TaskComponent gapiAvailable={this.state?.loaded} />
         </div>
+        {/* {this.setState({loaded:true})} */}
         <GoogleApi onUpdateSignIn={_ => this.setState({ loaded: true })} />
       </div>
     );
