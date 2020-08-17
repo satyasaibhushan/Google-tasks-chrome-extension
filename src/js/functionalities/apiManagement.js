@@ -17,6 +17,7 @@ export default {
     return task;
   },
   showAll(taskComponent) {
+    console.log(taskComponent.state.count,taskComponent.props.gapiAvailable )
     let cookieTaskListIndex = getCookie("taskListIndex");
     if (cookieTaskListIndex == "" || !cookieTaskListIndex) cookieTaskListIndex = 0;
     if (taskComponent.props.gapiAvailable && taskComponent.state.count == 0) {
