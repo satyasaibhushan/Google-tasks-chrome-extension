@@ -1,0 +1,30 @@
+{
+  "name": "Google tasks chrome extension",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "google tasks chrome extension using tasks api",
+  "browser_action": {
+    "default_icon": "images/Google_Tasks.png",
+    "default_popup": "index.html",
+    "default_title": "google tasks"
+  },
+
+  "permissions": ["identity"],
+  "content_security_policy": "script-src 'self' https://apis.google.com/ https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.4/gsap.min.js; object-src 'self'",
+  "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "js": ["./content.js"]
+    }
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "oauth2": {
+    "client_id": "236781244008-s7ucppgvvv1bjbptqcfb8cbdtk1ktrg1.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/tasks"]
+  }
+}
