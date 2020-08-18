@@ -99,7 +99,10 @@ export default {
           });
         })
         .then(_ => {
+          // console.log(taskComponent.state.taskList, taskList,JSON.stringify(taskList) == JSON.stringify(taskComponent.state.taskList))
+          // if(JSON.stringify(taskList) != JSON.stringify(taskComponent.state.taskList)){
           taskComponent.setState({ taskList });
+        // }
         });
       taskComponent.setState({ count: 1 });
     }

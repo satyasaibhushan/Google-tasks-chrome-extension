@@ -23,15 +23,20 @@ export class TaskComponent extends React.Component {
     };
   }
   componentDidMount() {
-    // let taskListData = getLocalStorage("taskListsData");
+    let taskListData = getLocalStorage("taskListsData");
     let cookieTaskListIndex = getCookie("taskListIndex");
     if (cookieTaskListIndex == "" || !cookieTaskListIndex) cookieTaskListIndex = 0;
-    // if (taskListData) {
-    //   this.setState({ taskList: taskListData, taskListIndex: cookieTaskListIndex });
-    // }
-    // window.addEventListener("beforeunload", e => {
-    //   setLocalStorage(this.state.taskList, "taskListsData");
-    // });
+    if (taskListData && taskListData!=undefined ) {
+      this.setState({ taskList: taskListData, taskListIndex: cookieTaskListIndex });
+    }
+        if(!chrome.extension){
+        window.addEventListener("beforeunload", e => {
+          setLocalStorage(this.state.taskList, "taskListsData");
+        });
+        }else{
+          //set storage in chrome ext.
+        }
+
   }
   componentDidUpdate(prevProps, prevState, screenShot) {
     manageApi.showAll(this);

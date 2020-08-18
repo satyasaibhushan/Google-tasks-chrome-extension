@@ -20,13 +20,15 @@ export default function MessageBox(props) {
       style={{
         position: "fixed",
         height: "3rem",
-        width: "20rem",
-        bottom: "3rem",
+        width: "19rem",
+        bottom: "-38px",
+        right:"12px",
         backgroundColor: "rgba(32,33,37,0.95)",
         color: "white",
         justifyContent: "space-around",
         alignItems: "center",
         opacity: 0,
+        zIndex:'9999'
       }}
       ref={messageDiv}>
       <div className="messageDiv">
