@@ -8,28 +8,51 @@ export default function GoogleApi(props) {
   let signoutButton = useRef();
 
   useEffect(() => {
-    function load(url) {
-      return new Promise(function (resolve, reject) {
-        var script = document.createElement("script");
-        script.type = "text/javascript";
-        script.async = true;
-        script.src = url;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
+    load("https://apis.google.com/js/api.js")
+      .then(() => {
+        if (chrome.identity) {
+          gapi.load("client:auth2", (_) => {
+            gapi.client
+              .init({
+                // Don't pass client nor scope as these will init auth2, which we don't want
+                discoveryDocs: DISCOVERY_DOCS,
+              })
+              .then(function () {
+                chrome.identity.getAuthToken({ interactive: true }, (token) => {
+                  console.log(gapi, token);
+                  gapi.auth.setToken({
+                    access_token: token,
+                  });
+                    props.onUpdateSignIn(true);
+                });
+              });
+          });
+        } else gapi.load("client:auth2", initClient);
+      })
+      .catch((err) => {
+        console.log(err, "error");
       });
-    }
-
-    load("https://apis.google.com/js/api.js").then(_ => gapi.load("client:auth2", initClient));
   }, []);
 
-  //   }
+  function load(url) {
+    return new Promise(function (resolve, reject) {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.async = true;
+      script.src = url;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  // }
 
   /**
    *  Initializes the API client library and sets up sign-in state
    *  listeners.
    */
-  function initClient() {
+  function initClient(a) {
     gapi.client
       .init({
         clientId: CLIENT_ID,
@@ -38,6 +61,7 @@ export default function GoogleApi(props) {
       })
       .then(
         function () {
+          console.log("no error from server");
           // Listen for sign-in state changes.
           gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
@@ -47,6 +71,7 @@ export default function GoogleApi(props) {
           signoutButton.current.onclick = handleSignoutClick;
         },
         function (error) {
+          console.log(error);
           appendPre(JSON.stringify(error, null, 2));
         }
       );
@@ -59,7 +84,6 @@ export default function GoogleApi(props) {
       authorizeButton.current.style.display = "block";
       signoutButton.current.style.display = "none";
     }
-
     props.onUpdateSignIn(isSignedIn);
   }
 
@@ -89,10 +113,13 @@ export default function GoogleApi(props) {
     pre.appendChild(textContent);
   }
 
-  var CLIENT_ID = "236781244008-7vuna7fllcma1po5bf8ljt6e65o79hpf.apps.googleusercontent.com";
+  var CLIENT_ID =
+    "236781244008-7vuna7fllcma1po5bf8ljt6e65o79hpf.apps.googleusercontent.com";
 
   // Array of API discovery doc URLs for APIs used by the quickstart
-  var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/tasks/v1/rest"];
+  var DISCOVERY_DOCS = [
+    "https://www.googleapis.com/discovery/v1/apis/tasks/v1/rest",
+  ];
 
   // Authorization scopes required by the API; multiple scopes can be
   // included, separated by spaces.
@@ -100,10 +127,18 @@ export default function GoogleApi(props) {
 
   return (
     <div className="authorization">
-      <button id="authorize_button" style={{ display: "none" }} ref={authorizeButton}>
+      <button
+        id="authorize_button"
+        style={{ display: "none" }}
+        ref={authorizeButton}
+      >
         Authorize
       </button>
-      <button id="signout_button" style={{ display: "none" }} ref={signoutButton}>
+      <button
+        id="signout_button"
+        style={{ display: "none" }}
+        ref={signoutButton}
+      >
         Sign Out
       </button>
 

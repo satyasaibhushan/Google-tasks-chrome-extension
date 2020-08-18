@@ -53,7 +53,6 @@
   position: absolute;
   right: 10px;
 }
-.closeArrow,
 .subtasksIcon {
   display: inline-block;
   height: 12px;
@@ -61,24 +60,16 @@
   width: 12px;
   transform: rotate(135deg) translate(2px, -2px);
 }
+.closeArrow{
+  width: 18px;
+  height: 18px;
+  opacity: 0.6;
+  display: inline-block;
+}
 .subtasksIcon {
   transform: rotate(-45deg) translate(2px, -2px);
 }
-.closeArrow::before {
-  bottom: 1px;
-  content: "";
-  height: 14px;
-  position: absolute;
-  right: 4px;
-  transform-origin: bottom;
-  width: 2px;
-  -moz-transform: rotate(-45deg) translate(0px, 1px);
-  -ms-transform: rotate(-45deg) translate(0px, 1px);
-  -webkit-transform: rotate(-45deg) translate(0px, 1px);
-  transform: rotate(-45deg) translate(0px, 1px);
-  background-color: black;
-}
-.closeArrow::after,
+
 .subtasksIcon::after {
   border-bottom-style: solid;
   border-bottom-width: 2px;
@@ -138,7 +129,7 @@
   content: "";
   display: block;
   position: relative;
-  width: 102%;
+  width: 99%;
   height: 2px;
   background: rgb(66, 133, 244);
   transition: transform 250ms ease-in-out;

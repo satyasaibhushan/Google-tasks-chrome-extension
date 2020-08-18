@@ -15,6 +15,7 @@
     width: 8px;
     height: 8px;
     border: 6px solid transparent;
+    top: -2px;
     border-color: rgba(33,34,37,0.7) transparent transparent transparent;
     cursor: pointer;
   }
@@ -53,10 +54,12 @@
   .select-selected span{
         display: inline-block;
         padding-right: 0.5rem;
+        font-size:16px;
   }
   
   
   .select-items {
+    font-size:14px;
     width: 70%;
     position: absolute;
     background-color: white;
@@ -137,7 +140,7 @@
   }
   .taskListIcon:after {
     content: '\2807';
-    font-size: 1.8em;
+    font-size: 2rem;
     color: #2e2e2e;
     transform: translate(20%,7%);
 

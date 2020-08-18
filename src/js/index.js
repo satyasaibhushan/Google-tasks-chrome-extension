@@ -14,7 +14,7 @@ class App extends React.Component {
           style={{
             display: "flex",
             justifyContent: "space-around",
-            marginTop: "3rem",
+            margin: "5px",
           }}
         >
           <TaskComponent gapiAvailable={this.state?.loaded} />

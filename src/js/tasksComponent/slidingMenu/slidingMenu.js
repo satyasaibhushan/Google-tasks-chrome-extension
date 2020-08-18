@@ -57,9 +57,12 @@ export default function SlidingMenu(props) {
             props.submitted(titleInputValue, notesInputValue, taskListNumber);
             props.clickedClose();
           }}>
-          <span className="closeArrow"></span>
+          <span className="closeArrow">
+            <img src="images/left-arrow.svg" alt=""/>
+          </span>
         </div>
-        <div className="slidingMenuDeleteIconContainer" onClick={_ => props.clickedDelete()}>
+        <div className="slidingMenuDeleteIconContainer" onClick={_ => props.clickedDelete()}
+        style={{display:props.isInformative?'none':'' }}>
           <img src="images/delete.svg" className="slidingMenuDeleteIcon " alt="delete icon" />
         </div>
       </section>

@@ -23,15 +23,15 @@ export class TaskComponent extends React.Component {
     };
   }
   componentDidMount() {
-    let taskListData = getLocalStorage("taskListsData");
+    // let taskListData = getLocalStorage("taskListsData");
     let cookieTaskListIndex = getCookie("taskListIndex");
     if (cookieTaskListIndex == "" || !cookieTaskListIndex) cookieTaskListIndex = 0;
-    if (taskListData) {
-      this.setState({ taskList: taskListData, taskListIndex: cookieTaskListIndex });
-    }
-    window.addEventListener("beforeunload", e => {
-      setLocalStorage(this.state.taskList, "taskListsData");
-    });
+    // if (taskListData) {
+    //   this.setState({ taskList: taskListData, taskListIndex: cookieTaskListIndex });
+    // }
+    // window.addEventListener("beforeunload", e => {
+    //   setLocalStorage(this.state.taskList, "taskListsData");
+    // });
   }
   componentDidUpdate(prevProps, prevState, screenShot) {
     manageApi.showAll(this);
@@ -65,6 +65,7 @@ export class TaskComponent extends React.Component {
         },
       });
     };
+
     return (
       <div className="tasksComponentContainer">
         <TaskListSelector
@@ -105,7 +106,7 @@ export class TaskComponent extends React.Component {
             )
           }
         />
-        <div className="taskDivsContainer" style={{ paddingBottom: "1rem", flex: "1 0 auto" }}>
+        <div className="taskDivsContainer" style={{ paddingBottom: "1rem", flex: "1 0 auto",borderTop:'1px solid rgb(224,224,224)' }}>
           {this.state.taskListIndex != -1 ? (
             <TotalTaskDivs
               taskComponent={this}

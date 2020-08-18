@@ -18,7 +18,7 @@ export class TaskDiv extends React.Component {
     this.input.current.style.height = 0;
     this.input.current.style.height = this.input.current.scrollHeight + "px";
     if (this.notesTextArea.current) {
-      this.input.current.style.transform = "translate(0rem, -70%)"
+      // this.input.current.style.transform = "translate(2.3rem, -70%)"
       this.notesTextArea.current.style.height = 0;
       this.notesTextArea.current.style.height = this.notesTextArea.current.scrollHeight + "px";
       notesDivHeight = this.notesTextArea.current.clientHeight;

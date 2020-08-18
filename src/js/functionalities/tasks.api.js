@@ -1,22 +1,4 @@
 export default {
-  authorize(params) {
-    return new Promise((resolve, reject) => {
-      gapi.auth.authorize(
-        {
-          client_id: __CONFIG__.clientId,
-          scope: SCOPES,
-          immediate: params.immediate,
-          cookie_policy: "single_host_origin",
-        },
-        authResult => {
-          if (authResult.error) {
-            return reject(authResult.error);
-          }
-          return gapi.client.load("tasks", "v1", () => gapi.client.load("plus", "v1", () => resolve()));
-        }
-      );
-    });
-  },
 
   listTaskLists() {
     const request = gapi.client.tasks.tasklists.list();
